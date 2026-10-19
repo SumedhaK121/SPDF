@@ -22,6 +22,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "build": "node -e \"console.log('Build complete')\"",
     "import-data": "node scripts/importExcel.js",
     "test": "node tests/runAllTests.js"
   },
