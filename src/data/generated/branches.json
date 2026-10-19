@@ -1,0 +1,152 @@
+[
+  {
+    "id": "BR-01",
+    "name": "KOLHAPUR",
+    "code": "KOL",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-02",
+    "name": "SANGLI",
+    "code": "SAN",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-03",
+    "name": "SATARA",
+    "code": "SAT",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-04",
+    "name": "PUNE",
+    "code": "PUN",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-05",
+    "name": "SOLAPUR",
+    "code": "SOL",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-06",
+    "name": "NASHIK",
+    "code": "NAS",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-07",
+    "name": "AHMEDNAGAR",
+    "code": "AHM",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-08",
+    "name": "AURANGABAD",
+    "code": "AUR",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-09",
+    "name": "JALGAON",
+    "code": "JAL",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-10",
+    "name": "DHULE",
+    "code": "DHU",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-11",
+    "name": "RATNAGIRI",
+    "code": "RAT",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-12",
+    "name": "SINDHUDURG",
+    "code": "SIN",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-13",
+    "name": "BELAGAVI",
+    "code": "BEL",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-14",
+    "name": "NIPANI",
+    "code": "NIP",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-15",
+    "name": "BAGALKOT",
+    "code": "BAG",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-16",
+    "name": "VIJAYAPURA",
+    "code": "VIJ",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-17",
+    "name": "DHARWAD",
+    "code": "DHA",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-18",
+    "name": "HUBBALLI",
+    "code": "HUB",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-19",
+    "name": "NANDED",
+    "code": "NAN",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-20",
+    "name": "LATUR",
+    "code": "LAT",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-21",
+    "name": "OSMANABAD",
+    "code": "OSM",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-22",
+    "name": "BEED",
+    "code": "BEE",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-23",
+    "name": "PARBHANI",
+    "code": "PAR",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-24",
+    "name": "JALNA",
+    "code": "JAL",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-25",
+    "name": "AMRAVATI",
+    "code": "AMR",
+    "isSampleData": true
+  }
+]
