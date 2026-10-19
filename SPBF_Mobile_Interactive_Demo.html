@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPBF Broiler Management — Live Mobile App Demo</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* Exact SPBF Website Theme Colors */
+    :root {
+      --spbf-app-bar: #394A59;
+      --spbf-logo-text: #FFBF96;
+      --spbf-app-bar-accent: #DA8CFF;
+      --spbf-link: #007AFF;
+      --spbf-section-header: #D8DDDE;
+      --spbf-section-header-text: #092F3D;
+      --spbf-panel-border: #A4C2C5;
+      --spbf-table-border: #34AADC;
+      --spbf-input-editable: #FFFCF9;
+      --spbf-input-readonly: #DCE1E2;
+      --spbf-button-bg: #B8D4D6;
+      --spbf-button-text: #333333;
+      --spbf-button-accent-border: #4CD964;
+      --spbf-note-red: #FF0000;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #EEF3F4;
+      color: #092F3D;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #appRoot {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: #EEF3F4;
+    }
+
+    .main-content-wrapper {
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      padding-bottom: 96px; /* space for fixed bottom bar */
+    }
+
+    .screen-content {
+      width: 100%;
+      flex: 1;
+      display: none;
+    }
+
+    .screen-content.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="bg-[#EEF3F4] text-[#092F3D]">
+
+  <div id="appRoot" class="w-full min-h-screen flex flex-col">
+
+    <!-- Top SPBF App Bar (Edge-to-edge full width) -->
+    <header id="appBar" class="w-full h-14 bg-[#394A59] flex items-center justify-between px-4 sm:px-8 border-b border-white/10 sticky top-0 z-30 shadow-sm">
+      <div class="flex items-center gap-3">
+        <button id="navBackBtn" onclick="goBack()" class="text-white hover:text-slate-200 hidden p-1.5 rounded hover:bg-white/10" title="Go Back">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        <span class="text-[#FFBF96] font-bold text-2xl tracking-wider cursor-pointer" onclick="goToScreen('branchScreen')">SPBF</span>
+        <span id="screenTitle" class="text-white text-sm font-medium ml-2 hidden sm:inline">Supervisor Portal</span>
+      </div>
+      <div id="appBarMeta" class="text-right">
+        <div id="metaBranch" class="text-[#DA8CFF] font-bold text-sm uppercase leading-tight tracking-wide">KOLHAPUR</div>
+        <div id="metaEmp" class="text-[#DA8CFF] text-xs font-semibold leading-tight">[E1870]</div>
+      </div>
+    </header>
+
+    <!-- Breadcrumb Banner -->
+    <div id="breadCrumbBanner" class="w-full bg-[#EEF3F4] px-4 sm:px-8 py-2 border-b border-[#A4C2C5] flex items-center text-xs flex-wrap gap-1 sticky top-14 z-20">
+      <span class="text-[#007AFF] font-bold cursor-pointer hover:underline" onclick="goToScreen('branchScreen')">KOLHAPUR</span>
+      <span class="text-slate-400">›</span>
+      <span class="text-[#007AFF] font-bold cursor-pointer hover:underline" onclick="goToScreen('supervisorScreen')">Ramesh Patil</span>
+      <span class="text-slate-400">›</span>
+      <span id="crumbFarm" class="text-[#092F3D] font-bold">Select Farm</span>
+      <span id="crumbBatch" class="bg-[#D8DDDE] text-[#092F3D] px-2 py-0.5 rounded text-[11px] font-bold ml-1 hidden">B-2026-01</span>
+    </div>
+
+    <!-- Main Screens Container -->
+    <main class="main-content-wrapper">
+
+      <!-- 1. LOGIN SCREEN -->
+      <div id="loginScreen" class="screen-content active p-5">
+        <div class="flex flex-col items-center justify-center my-auto py-8">
+          <div class="bg-[#394A59] border border-[#A4C2C5] px-6 py-2.5 rounded-lg mb-4 shadow">
+            <span class="text-[#FFBF96] text-3xl font-extrabold tracking-widest">SPBF</span>
+          </div>
+          <h2 class="text-xl font-bold text-[#092F3D]">SPBF Broiler Management</h2>
+          <p class="text-xs text-slate-500 mb-6">PoultryFlo Supervisor Mobile Portal</p>
+
+          <div class="w-full bg-white border border-[#A4C2C5] rounded p-5 shadow-sm">
+            <div class="bg-[#E6F3FA] border border-[#B3DCF2] p-2.5 rounded mb-4 text-[11px] text-[#004466]">
+              ℹ️ <strong>DEMO LOGIN</strong> — Use prefilled credentials below to explore.
+            </div>
+
+            <div class="mb-3">
+              <label class="block text-xs font-bold text-black mb-1">Username / Emp ID *</label>
+              <input type="text" id="loginUser" value="demo" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded text-sm text-black font-medium">
+            </div>
+
+            <div class="mb-4">
+              <label class="block text-xs font-bold text-black mb-1">Password *</label>
+              <input type="password" id="loginPass" value="Demo@123" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded text-sm text-black font-medium">
+            </div>
+
+            <button onclick="handleLogin()" class="w-full h-11 bg-[#B8D4D6] hover:bg-[#A4C2C5] border-2 border-[#A4C2C5] text-[#333333] font-bold text-sm rounded shadow flex items-center justify-center">
+              Login to Portal
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. BRANCH SELECTION SCREEN -->
+      <div id="branchScreen" class="screen-content p-4">
+        <div class="bg-white p-3 rounded border border-[#A4C2C5] mb-3">
+          <div class="text-sm font-bold text-[#092F3D]">Step 1: Choose Branch (25 Available)</div>
+          <div class="text-[11px] text-slate-500">Search and pick your company operating branch.</div>
+          <input type="text" id="branchSearch" oninput="filterBranches()" placeholder="Search branch (e.g. Kolhapur, Pune)..." class="w-full h-9 px-3 mt-2 bg-white border border-[#A4C2C5] rounded text-xs text-black">
+        </div>
+
+        <div id="branchList" class="flex flex-col gap-2 pb-6">
+          <!-- Dynamically generated branch cards -->
+        </div>
+      </div>
+
+      <!-- 3. SUPERVISOR SELECTION SCREEN -->
+      <div id="supervisorScreen" class="screen-content p-4">
+        <div class="bg-white p-3 rounded border border-[#A4C2C5] mb-3">
+          <div class="text-sm font-bold text-[#092F3D]">Step 2: Choose Supervisor (Kolhapur Branch)</div>
+          <div class="text-[11px] text-slate-500">Only supervisors belonging to chosen branch are shown.</div>
+          <input type="text" id="supSearch" oninput="filterSupervisors()" placeholder="Search supervisor or Emp ID..." class="w-full h-9 px-3 mt-2 bg-white border border-[#A4C2C5] rounded text-xs text-black">
+        </div>
+
+        <div id="supervisorList" class="flex flex-col gap-2 pb-6">
+          <!-- Dynamically generated supervisor cards -->
+        </div>
+      </div>
+
+      <!-- 4. DAILY TRANSACTION SCREEN -->
+      <div id="dailyTransactionScreen" class="screen-content p-4 pb-24">
+        <!-- Farm Select Dropdown (Mandatory First Step) -->
+        <div class="bg-white border border-[#A4C2C5] rounded mb-3 overflow-hidden shadow-sm">
+          <div class="bg-[#D8DDDE] px-3 py-2 border-b border-[#A4C2C5]">
+            <span class="text-xs font-bold text-[#092F3D]">Select Farm</span>
+          </div>
+          <div class="p-3">
+            <label class="block text-xs font-bold text-black mb-1">Farm Name <span class="text-red-600">*</span></label>
+            <select id="farmSelect" onchange="handleFarmChange(this.value)" class="w-full h-11 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded text-sm text-black font-semibold">
+              <option value="">--select--</option>
+            </select>
+            <div id="farmHintBox" class="bg-[#E7F2F5] border border-[#A4C2C5] p-2 rounded mt-2 text-[11px] text-[#004466]">
+              👉 Please select a farm from the dropdown above to view and fill the daily transaction form.
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Panels Container (Hidden until farm is chosen) -->
+        <div id="formContainer" class="hidden flex flex-col gap-3">
+          
+          <!-- Already entered banner (if saved today) -->
+          <div id="alreadyEnteredAlert" class="hidden bg-red-100 border border-red-300 p-2.5 rounded text-xs text-red-800 font-bold flex items-center gap-2">
+            <span>⚠️</span> Already entered for this day. Only one transaction per farm per day is allowed.
+          </div>
+
+          <!-- General Transaction Information -->
+          <div class="bg-white border border-[#A4C2C5] rounded overflow-hidden shadow-sm">
+            <div class="bg-[#D8DDDE] px-3 py-2 border-b border-[#A4C2C5]">
+              <span class="text-xs font-bold text-[#092F3D]">Daily Transaction</span>
+            </div>
+            <div class="p-3 text-xs space-y-3">
+              <div>
+                <label class="block font-bold text-black mb-1">Supervisor Name</label>
+                <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-semibold text-slate-800" id="dispSupName">Ramesh Patil [E1870]</div>
+              </div>
+
+              <div>
+                <label class="block font-bold text-black mb-1">Transaction Date (Locked to Today)</label>
+                <div class="h-9 px-3 bg-[#DCE1E2] border-2 border-[#34AADC] rounded flex items-center font-bold text-slate-900" id="dispDate">19/10/2026 (Today)</div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block font-bold text-black mb-1">Avg body Weight *</label>
+                  <div class="relative">
+                    <input type="number" id="abwInput" value="850" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm">
+                    <span class="absolute right-2 top-2.5 text-slate-400 font-bold text-xs">g</span>
+                  </div>
+                </div>
+                <div>
+                  <label class="block font-bold text-black mb-1">Total Culls</label>
+                  <div class="relative">
+                    <input type="number" id="cullsInput" value="1" oninput="updateCalculations()" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm">
+                    <span class="absolute right-2 top-2.5 text-slate-400 font-bold text-xs">birds</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block font-bold text-black mb-1">Today Total Mortality</label>
+                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispTodayMort">10</div>
+                </div>
+                <div>
+                  <label class="block font-bold text-black mb-1">Farm Total Mortality</label>
+                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispFarmTotalMort">47</div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block font-bold text-black mb-1">Bird Balance</label>
+                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#34AADC] rounded flex items-center font-bold text-emerald-800" id="dispBirdBalance">4,445</div>
+                </div>
+                <div>
+                  <label class="block font-bold text-black mb-1">No Of Chicks</label>
+                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black">4,500</div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block font-bold text-black mb-1">Yesterday ABW</label>
+                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-medium text-slate-700">815 g</div>
+                </div>
+                <div>
+                  <label class="block font-bold text-black mb-1">Yesterday Mortality</label>
+                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-medium text-slate-700">3 birds</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feed Consumption Section -->
+          <div class="bg-white border border-[#A4C2C5] rounded overflow-hidden shadow-sm">
+            <div class="bg-[#D8DDDE] px-3 py-2 border-b border-[#A4C2C5]">
+              <span class="text-xs font-bold text-[#092F3D]">Feed Consumption</span>
+            </div>
+            <div class="p-3 text-xs space-y-3">
+              
+              <!-- Starter Feed Card -->
+              <div class="border-2 border-[#34AADC] rounded p-2.5 bg-white">
+                <div class="flex justify-between items-center pb-1.5 border-b border-slate-100 mb-2">
+                  <span class="font-bold text-sm text-[#092F3D]">Starter</span>
+                  <span class="bg-sky-50 border border-[#34AADC] text-sky-800 text-[10px] font-bold px-2 py-0.5 rounded" id="feedBalTag">Bal: 1,300 kg</span>
+                </div>
+                <div class="grid grid-cols-2 gap-1.5 mb-2">
+                  <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                    <span class="text-[10px] font-bold text-slate-700 block">Total Supply</span>
+                    <span class="font-bold text-black text-xs">2,800 kg</span>
+                  </div>
+                  <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                    <span class="text-[10px] font-bold text-slate-700 block">Total Consumed</span>
+                    <span class="font-bold text-black text-xs">1,500 kg</span>
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-[11px] font-bold text-black mb-1">Feed Consumed (kg)</label>
+                    <input type="number" id="feedConsumedInput" value="180" oninput="updateCalculations()" class="w-full h-9 px-2 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold text-black mb-1">Feeder Feed (kg)</label>
+                    <input type="number" value="25" class="w-full h-9 px-2 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Orange Late Feed Rule Notice -->
+              <div class="bg-amber-50 border border-amber-300 p-2.5 rounded text-[11px] text-amber-900 font-medium flex items-center gap-2">
+                <span>⚠️</span> <strong>Later Feed Excluded:</strong> 2,500 kg Finisher scheduled for tomorrow was excluded from balance per company rules.
+              </div>
+
+              <!-- Red Note -->
+              <div class="text-[11px] text-red-600 font-bold italic pt-1">
+                Note: If Feed Received after transaction date it will not show in Broiler Record.
+              </div>
+            </div>
+          </div>
+
+          <!-- Daily Transaction Mortality Section -->
+          <div class="bg-white border border-[#A4C2C5] rounded overflow-hidden shadow-sm">
+            <div class="bg-[#D8DDDE] px-3 py-2 border-b border-[#A4C2C5] flex justify-between items-center">
+              <span class="text-xs font-bold text-[#092F3D]">Daily Transaction Mortality</span>
+            </div>
+            <div class="p-3 text-xs">
+              
+              <!-- Live Summary Box with Green Checkmark -->
+              <div id="mortSummaryBox" class="bg-emerald-50 border-2 border-emerald-500 rounded p-2 mb-3 flex items-center justify-between">
+                <div>
+                  <span class="font-semibold text-slate-700">Total mortality: <strong id="sumTotal" class="text-black">10</strong></span>
+                  <span class="ml-2 font-semibold text-slate-700">Distributed: <strong id="sumDist" class="text-black">10</strong></span>
+                </div>
+                <span class="text-emerald-700 font-bold flex items-center gap-1">✓ Balanced</span>
+              </div>
+
+              <!-- Rows -->
+              <div id="mortRowsContainer" class="space-y-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-6 text-center font-bold text-slate-500">1</span>
+                  <select onchange="updateCalculations()" class="flex-1 h-9 bg-[#FFFCF9] border border-[#A4C2C5] rounded px-2 font-medium">
+                    <option selected>Attack</option>
+                    <option>Disease</option>
+                    <option>Heat Stress</option>
+                    <option>Leg Problem</option>
+                    <option>Other</option>
+                  </select>
+                  <input type="number" value="5" oninput="updateCalculations()" class="w-16 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold mort-qty">
+                  <button class="w-8 h-9 text-slate-300 font-bold">-</button>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-6 text-center font-bold text-slate-500">2</span>
+                  <select onchange="updateCalculations()" class="flex-1 h-9 bg-[#FFFCF9] border border-[#A4C2C5] rounded px-2 font-medium">
+                    <option>Attack (used)</option>
+                    <option selected>Disease</option>
+                    <option>Heat Stress</option>
+                    <option>Leg Problem</option>
+                    <option>Other</option>
+                  </select>
+                  <input type="number" value="3" oninput="updateCalculations()" class="w-16 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold mort-qty">
+                  <button onclick="removeMortRow(this)" class="w-8 h-9 text-red-500 font-bold hover:bg-red-50 rounded">✕</button>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-6 text-center font-bold text-slate-500">3</span>
+                  <select onchange="updateCalculations()" class="flex-1 h-9 bg-[#FFFCF9] border border-[#A4C2C5] rounded px-2 font-medium">
+                    <option>Attack (used)</option>
+                    <option>Disease (used)</option>
+                    <option>Heat Stress</option>
+                    <option>Leg Problem</option>
+                    <option selected>Other</option>
+                  </select>
+                  <input type="number" value="2" oninput="updateCalculations()" class="w-16 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold mort-qty">
+                  <button onclick="removeMortRow(this)" class="w-8 h-9 text-red-500 font-bold hover:bg-red-50 rounded">✕</button>
+                </div>
+              </div>
+
+              <button onclick="addMortRow()" class="w-full h-8 mt-2.5 bg-sky-50 border border-[#A4C2C5] text-[#005580] font-bold rounded flex items-center justify-center gap-1">
+                + Add Reason
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fixed Bottom Bar -->
+        <div id="bottomBar" class="fixed bottom-0 left-0 right-0 bg-white border-t border-[#A4C2C5] py-2.5 px-4 shadow-xl z-30 flex justify-center">
+          <div class="max-w-3xl w-full flex items-center justify-between gap-3">
+            <button onclick="goToScreen('recordsScreen')" class="flex-1 h-11 bg-[#B8D4D6] hover:bg-[#A4C2C5] border-2 border-[#4CD964] text-[#333333] font-bold text-xs sm:text-sm rounded shadow flex items-center justify-center transition">
+              Broiler Record
+            </button>
+            <button onclick="handleCancelEntry()" class="flex-1 h-11 bg-[#B8D4D6] hover:bg-[#A4C2C5] border-2 border-[#A4C2C5] text-[#333333] font-bold text-xs sm:text-sm rounded shadow flex items-center justify-center transition">
+              Cancel Entry
+            </button>
+            <button id="saveBtn" onclick="handleSaveTransaction()" class="flex-1 h-11 bg-[#C5DFE2] hover:bg-[#A4C2C5] border-2 border-[#A4C2C5] text-[#333333] font-bold text-xs sm:text-sm rounded shadow flex items-center justify-center transition">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. BROILER RECORDS SCREEN -->
+      <div id="recordsScreen" class="screen-content p-4 pb-12">
+        <div class="bg-white p-3 rounded border border-[#A4C2C5] mb-3 flex justify-between items-center">
+          <div>
+            <div class="text-sm font-bold text-[#092F3D]" id="recordsFarmTitle">Babasaheb Patil Farm</div>
+            <div class="text-[11px] text-slate-500">History of daily transactions (Newest First)</div>
+          </div>
+          <span class="bg-[#E8F4F5] border border-[#A4C2C5] text-[#092F3D] px-2 py-0.5 rounded text-[11px] font-bold">B-2026-01</span>
+        </div>
+
+        <!-- Records List -->
+        <div id="recordsList" class="flex flex-col gap-2.5">
+          <!-- Dynamically populated cards -->
+        </div>
+      </div>
+
+      <!-- 6. BROILER RECORD DETAIL SCREEN -->
+      <div id="recordDetailScreen" class="screen-content p-4 pb-12">
+        <div class="bg-white border border-[#A4C2C5] rounded p-3 mb-3 shadow-sm">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="text-sm font-bold text-[#092F3D]">Babasaheb Patil Broiler Farm</div>
+              <div class="text-[11px] text-slate-500">Batch: B-2026-01 • Age: 20 days</div>
+            </div>
+            <span class="bg-blue-100 border border-blue-400 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded">SAVED</span>
+          </div>
+          <div class="text-xs font-bold text-slate-700 mt-2 pt-2 border-t border-slate-100">
+            Transaction Date: 19 Oct 2026
+          </div>
+        </div>
+
+        <!-- 14 Key Metrics Panel -->
+        <div class="bg-white border border-[#A4C2C5] rounded overflow-hidden mb-3">
+          <div class="bg-[#D8DDDE] px-3 py-1.5 border-b border-[#A4C2C5]">
+            <span class="text-xs font-bold text-[#092F3D]">Flock Metrics (14 Website Fields)</span>
+          </div>
+          <div class="p-3 text-xs grid grid-cols-2 gap-2">
+            <div><span class="text-slate-500 block text-[10px] font-bold">No Of Chicks</span><strong class="text-sm">4,500</strong></div>
+            <div><span class="text-slate-500 block text-[10px] font-bold">Flock Age</span><strong class="text-sm">20 days</strong></div>
+            <div><span class="text-slate-500 block text-[10px] font-bold">Actual Weight (ABW)</span><strong class="text-sm text-sky-800">850 g</strong></div>
+            <div><span class="text-slate-500 block text-[10px] font-bold">Total Culls</span><strong class="text-sm">1 birds</strong></div>
+            <div><span class="text-slate-500 block text-[10px] font-bold">Today Mortality</span><strong class="text-sm text-red-700">10 birds</strong></div>
+            <div><span class="text-slate-500 block text-[10px] font-bold">Cum. Mortality</span><strong class="text-sm">47 birds</strong></div>
+            <div><span class="text-slate-500 block text-[10px] font-bold">Feed Used Today</span><strong class="text-sm">180 kg</strong></div>
+            <div><span class="text-slate-500 block text-[10px] font-bold">Feed Balance</span><strong class="text-sm text-sky-800">1,300 kg</strong></div>
+          </div>
+        </div>
+
+        <!-- Reason-Wise Mortality Breakdown -->
+        <div class="bg-white border border-[#A4C2C5] rounded overflow-hidden mb-3">
+          <div class="bg-[#D8DDDE] px-3 py-1.5 border-b border-[#A4C2C5]">
+            <span class="text-xs font-bold text-[#092F3D]">Reason-Wise Mortality Breakdown</span>
+          </div>
+          <div class="p-3 text-xs space-y-1.5">
+            <div class="flex justify-between py-1 border-b border-slate-100"><span>1. Attack</span><strong>5 birds</strong></div>
+            <div class="flex justify-between py-1 border-b border-slate-100"><span>2. Disease</span><strong>3 birds</strong></div>
+            <div class="flex justify-between py-1 border-b border-slate-100"><span>3. Other</span><strong>2 birds</strong></div>
+            <div class="flex justify-between pt-1 font-bold text-red-700"><span>Total Mortality:</span><span>10 birds</span></div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- JavaScript Simulator Engine -->
+  <script>
+    // State Store
+    const state = {
+      currentScreen: 'loginScreen',
+      screenHistory: [],
+      branch: 'KOLHAPUR',
+      supervisor: 'Ramesh Patil [E1870]',
+      farm: null,
+      savedRecords: [
+        { date: '18 Oct 2026', age: 19, abw: 815, mort: 3, cumMort: 37, feed: 165, bal: 1480, badge: 'SAMPLE' },
+        { date: '17 Oct 2026', age: 18, abw: 780, mort: 2, cumMort: 34, feed: 155, bal: 1645, badge: 'SAMPLE' },
+        { date: '16 Oct 2026', age: 17, abw: 740, mort: 4, cumMort: 32, feed: 145, bal: 1800, badge: 'SAMPLE' },
+      ],
+      hasSavedToday: false
+    };
+
+    const branchesData = [
+      'KOLHAPUR', 'SANGLI', 'SATARA', 'PUNE', 'SOLAPUR',
+      'NASHIK', 'AHMEDNAGAR', 'AURANGABAD', 'JALGAON', 'DHULE',
+      'RATNAGIRI', 'SINDHUDURG', 'BELAGAVI', 'NIPANI', 'BAGALKOT',
+      'VIJAYAPURA', 'DHARWAD', 'HUBBALLI', 'NANDED', 'LATUR',
+      'OSMANABAD', 'BEED', 'PARBHANI', 'JALNA', 'AMRAVATI'
+    ];
+
+    const supervisorsData = [
+      { name: 'Ramesh Patil', emp: 'E1870', phone: '+91 9823011870' },
+      { name: 'Suresh Deshmukh', emp: 'E1871', phone: '+91 9823011871' },
+      { name: 'Santosh Shinde', emp: 'E1872', phone: '+91 9823011872' },
+    ];
+
+    const farmsData = [
+      { id: 'FARM-1001', name: 'Babasaheb Patil Broiler Farm', village: 'Shirol', code: 'FC-1001' },
+      { id: 'FARM-1002', name: 'Dnyandev Deshmukh Broiler Farm', village: 'Hatkanangle', code: 'FC-1002' },
+      { id: 'FARM-1003', name: 'Balasaheb Shinde Broiler Farm', village: 'Karveer', code: 'FC-1003' },
+      { id: 'FARM-1004', name: 'Pandurang Jadhav Broiler Farm', village: 'Kagal', code: 'FC-1004' },
+      { id: 'FARM-1005', name: 'Tanaji Kadam Broiler Farm', village: 'Gadhinglaj', code: 'FC-1005' },
+      { id: 'FARM-1006', name: 'Dattatray Chavan Broiler Farm', village: 'Radhanagari', code: 'FC-1006' },
+      { id: 'FARM-1007', name: 'Tukaram Pawar Broiler Farm', village: 'Panhala', code: 'FC-1007' },
+      { id: 'FARM-1008', name: 'Shivaji More Broiler Farm', village: 'Shahuwadi', code: 'FC-1008' }
+    ];
+
+    function init() {
+      // Clock
+      const now = new Date();
+      document.getElementById('liveTime').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      // Populate branches
+      renderBranches(branchesData);
+      // Populate supervisors
+      renderSupervisors(supervisorsData);
+      // Populate farms dropdown
+      const sel = document.getElementById('farmSelect');
+      farmsData.forEach((f, idx) => {
+        const opt = document.createElement('option');
+        opt.value = f.id;
+        opt.textContent = `${idx + 1}. ${f.name} [${f.code}] - ${f.village}`;
+        sel.appendChild(opt);
+      });
+
+      renderBroilerRecords();
+    }
+
+    function renderBranches(list) {
+      const c = document.getElementById('branchList');
+      c.innerHTML = '';
+      list.forEach((b, i) => {
+        const isSel = b === state.branch;
+        const div = document.createElement('div');
+        div.className = `p-3 bg-white border ${isSel ? 'border-emerald-500 bg-emerald-50' : 'border-[#A4C2C5]'} rounded cursor-pointer flex justify-between items-center`;
+        div.innerHTML = `
+          <div>
+            <strong class="text-sm text-black">${i + 1}. ${b}</strong>
+            <div class="text-[11px] text-slate-500">Code: ${b.substring(0,3)} • Active Branch</div>
+          </div>
+          <span class="text-xs ${isSel ? 'text-emerald-700 font-bold' : 'text-[#007AFF]'}">${isSel ? '✓' : '→'}</span>
+        `;
+        div.onclick = () => selectBranch(b);
+        c.appendChild(div);
+      });
+    }
+
+    function renderSupervisors(list) {
+      const c = document.getElementById('supervisorList');
+      c.innerHTML = '';
+      list.forEach((s, i) => {
+        const div = document.createElement('div');
+        div.className = `p-3 bg-white border border-[#A4C2C5] rounded cursor-pointer flex justify-between items-center`;
+        div.innerHTML = `
+          <div>
+            <strong class="text-sm text-black">${i + 1}. ${s.name}</strong>
+            <div class="text-[11px] text-slate-500">Emp ID: ${s.emp} • ${s.phone}</div>
+          </div>
+          <span class="text-xs text-[#007AFF] font-bold">→</span>
+        `;
+        div.onclick = () => selectSupervisor(`${s.name} [${s.emp}]`);
+        c.appendChild(div);
+      });
+    }
+
+    function goToScreen(screenId) {
+      document.querySelectorAll('.screen-content').forEach(el => el.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+      state.screenHistory.push(state.currentScreen);
+      state.currentScreen = screenId;
+
+      const backBtn = document.getElementById('navBackBtn');
+      const title = document.getElementById('screenTitle');
+
+      if (screenId === 'loginScreen') {
+        backBtn.classList.add('hidden');
+        title.textContent = 'Supervisor Login';
+      } else if (screenId === 'branchScreen') {
+        backBtn.classList.add('hidden');
+        title.textContent = 'Select Branch';
+      } else if (screenId === 'supervisorScreen') {
+        backBtn.classList.remove('hidden');
+        title.textContent = 'Select Supervisor';
+      } else if (screenId === 'dailyTransactionScreen') {
+        backBtn.classList.remove('hidden');
+        title.textContent = 'Daily Transaction';
+      } else if (screenId === 'recordsScreen') {
+        backBtn.classList.remove('hidden');
+        title.textContent = 'Broiler Records';
+      } else if (screenId === 'recordDetailScreen') {
+        backBtn.classList.remove('hidden');
+        title.textContent = 'Record Details';
+      }
+    }
+
+    function goBack() {
+      if (state.currentScreen === 'recordsScreen' || state.currentScreen === 'supervisorScreen') {
+        goToScreen('dailyTransactionScreen');
+      } else if (state.currentScreen === 'dailyTransactionScreen') {
+        goToScreen('supervisorScreen');
+      } else if (state.currentScreen === 'recordDetailScreen') {
+        goToScreen('recordsScreen');
+      } else {
+        goToScreen('branchScreen');
+      }
+    }
+
+    function handleLogin() {
+      goToScreen('branchScreen');
+    }
+
+    function selectBranch(b) {
+      state.branch = b;
+      document.getElementById('metaBranch').textContent = b;
+      goToScreen('supervisorScreen');
+    }
+
+    function selectSupervisor(s) {
+      state.supervisor = s;
+      document.getElementById('dispSupName').textContent = s;
+      goToScreen('dailyTransactionScreen');
+    }
+
+    function handleFarmChange(farmId) {
+      const hint = document.getElementById('farmHintBox');
+      const form = document.getElementById('formContainer');
+      const crumb = document.getElementById('crumbFarm');
+      const crumbB = document.getElementById('crumbBatch');
+
+      if (!farmId) {
+        hint.classList.remove('hidden');
+        form.classList.add('hidden');
+        crumb.textContent = 'Select Farm';
+        crumbB.classList.add('hidden');
+        state.farm = null;
+        return;
+      }
+
+      const f = farmsData.find(x => x.id === farmId);
+      state.farm = f;
+      crumb.textContent = f.name.split(' ')[0] + ' Farm';
+      crumbB.classList.remove('hidden');
+      hint.classList.add('hidden');
+      form.classList.remove('hidden');
+      document.getElementById('recordsFarmTitle').textContent = f.name;
+    }
+
+    function addMortRow() {
+      const container = document.getElementById('mortRowsContainer');
+      const count = container.children.length + 1;
+      const div = document.createElement('div');
+      div.className = 'flex items-center gap-1.5';
+      div.innerHTML = `
+        <span class="w-6 text-center font-bold text-slate-500">${count}</span>
+        <select onchange="updateCalculations()" class="flex-1 h-9 bg-[#FFFCF9] border border-[#A4C2C5] rounded px-2 font-medium">
+          <option>Attack</option>
+          <option>Disease</option>
+          <option>Heat Stress</option>
+          <option>Leg Problem</option>
+          <option selected>Other</option>
+        </select>
+        <input type="number" value="1" oninput="updateCalculations()" class="w-16 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold mort-qty">
+        <button onclick="removeMortRow(this)" class="w-8 h-9 text-red-500 font-bold hover:bg-red-50 rounded">✕</button>
+      `;
+      container.appendChild(div);
+      updateCalculations();
+    }
+
+    function removeMortRow(btn) {
+      btn.parentElement.remove();
+      updateCalculations();
+    }
+
+    function updateCalculations() {
+      let sum = 0;
+      document.querySelectorAll('.mort-qty').forEach(el => {
+        sum += parseInt(el.value || 0, 10);
+      });
+      document.getElementById('sumTotal').textContent = sum;
+      document.getElementById('sumDist').textContent = sum;
+      document.getElementById('dispTodayMort').textContent = sum;
+      document.getElementById('dispFarmTotalMort').textContent = 37 + sum;
+
+      const culls = parseInt(document.getElementById('cullsInput').value || 0, 10);
+      document.getElementById('dispBirdBalance').textContent = (4500 - (37 + sum + culls)).toLocaleString();
+
+      const feedIn = parseInt(document.getElementById('feedConsumedInput').value || 0, 10);
+      document.getElementById('feedBalTag').textContent = `Bal: ${(2800 - (1320 + feedIn)).toLocaleString()} kg`;
+    }
+
+    function handleSaveTransaction() {
+      if (state.hasSavedToday) {
+        alert("⚠️ Blocked: Already entered for this day. Only one transaction per farm per day is allowed.");
+        return;
+      }
+
+      const abw = document.getElementById('abwInput').value;
+      if (!abw || Number(abw) <= 0) {
+        alert("Validation Error: Average body Weight is required and must be > 0.");
+        return;
+      }
+
+      const mort = parseInt(document.getElementById('dispTodayMort').textContent, 10);
+
+      const newRecord = {
+        date: '19 Oct 2026',
+        age: 20,
+        abw: parseInt(abw, 10),
+        mort: mort,
+        cumMort: 37 + mort,
+        feed: 180,
+        bal: 1300,
+        badge: 'SAVED'
+      };
+
+      state.savedRecords.unshift(newRecord);
+      state.hasSavedToday = true;
+
+      // Show alert with choice
+      if (confirm("✅ Saved Successfully! Daily transaction recorded for today.\n\nPress OK to view Broiler Record, or Cancel to stay.")) {
+        renderBroilerRecords();
+        goToScreen('recordsScreen');
+      } else {
+        document.getElementById('alreadyEnteredAlert').classList.remove('hidden');
+        document.getElementById('saveBtn').disabled = true;
+        document.getElementById('saveBtn').classList.add('opacity-50');
+      }
+    }
+
+    function renderBroilerRecords() {
+      const c = document.getElementById('recordsList');
+      c.innerHTML = '';
+      state.savedRecords.forEach((r, idx) => {
+        const div = document.createElement('div');
+        div.className = 'bg-white border border-[#A4C2C5] rounded p-3 shadow-sm';
+        div.innerHTML = `
+          <div class="flex justify-between items-center pb-2 border-b border-slate-100 mb-2">
+            <div class="flex items-center gap-2">
+              <strong class="text-sm text-black">${r.date}</strong>
+              <span class="bg-[#E8F4F5] text-[#092F3D] text-[10px] font-bold px-1.5 py-0.5 rounded">Age: ${r.age}d</span>
+            </div>
+            <span class="${r.badge === 'SAVED' ? 'bg-blue-100 text-blue-800 border-blue-300' : 'bg-slate-100 text-slate-600 border-slate-300'} border text-[10px] font-bold px-2 py-0.5 rounded">${r.badge}</span>
+          </div>
+          <div class="grid grid-cols-3 gap-1.5 text-xs mb-2">
+            <div class="bg-slate-50 p-1.5 rounded"><span class="text-[10px] text-slate-500 block">Actual Wt</span><strong>${r.abw} g</strong></div>
+            <div class="bg-slate-50 p-1.5 rounded"><span class="text-[10px] text-slate-500 block">Today Mort</span><strong class="${r.mort > 0 ? 'text-red-700' : ''}">${r.mort}</strong></div>
+            <div class="bg-slate-50 p-1.5 rounded"><span class="text-[10px] text-slate-500 block">Feed Balance</span><strong>${r.bal} kg</strong></div>
+          </div>
+          <div class="text-right">
+            <button onclick="goToScreen('recordDetailScreen')" class="text-xs font-bold text-[#007AFF] hover:underline">View Details →</button>
+          </div>
+        `;
+        c.appendChild(div);
+      });
+    }
+
+    function handleCancelEntry() {
+      if (confirm("Discard all entered changes and reset form?")) {
+        document.getElementById('abwInput').value = '';
+        document.getElementById('cullsInput').value = '0';
+        updateCalculations();
+      }
+    }
+
+    function filterBranches() {
+      const q = document.getElementById('branchSearch').value.toLowerCase();
+      renderBranches(branchesData.filter(b => b.toLowerCase().includes(q)));
+    }
+
+    function filterSupervisors() {
+      const q = document.getElementById('supSearch').value.toLowerCase();
+      renderSupervisors(supervisorsData.filter(s => s.name.toLowerCase().includes(q) || s.emp.toLowerCase().includes(q)));
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>
