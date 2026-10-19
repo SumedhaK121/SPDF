@@ -24,11 +24,12 @@ export const formConfig = {
     currency: '₹',
   },
 
-  // Sample feed types (configurable sample list, not official company list)
+  // 4 types of feeds present for all farmers across all supervisors/branches
   feedTypes: [
     { id: 'pre_starter', name: 'Pre-Starter', defaultBagWeightKg: 50 },
     { id: 'starter', name: 'Starter', defaultBagWeightKg: 50 },
     { id: 'finisher', name: 'Finisher', defaultBagWeightKg: 50 },
+    { id: 'post_finisher', name: 'Post-Finisher', defaultBagWeightKg: 50 },
   ],
 
   // Sample mortality reasons (configurable sample list, not official company list)

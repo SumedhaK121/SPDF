@@ -435,11 +435,11 @@ export default function DailyTransactionScreen({ navigation }) {
           {/* A. Farm Selection Dropdown (Mandatory First Step §7.A) */}
           <View style={styles.farmSelectPanel}>
             <View style={styles.panelHeader}>
-              <Text style={styles.panelHeaderText}>Select Farm</Text>
+              <Text style={styles.panelHeaderText}>Select Farmer</Text>
             </View>
             <View style={styles.panelBody}>
               <SelectField
-                label="Farm Name"
+                label="Farmer Name"
                 required
                 value={activeFarm}
                 options={farmsList}

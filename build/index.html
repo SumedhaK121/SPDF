@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SPBF Broiler Management — Live Mobile App Demo</title>
+  <title>SPBF Broiler Management — Live Portal</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
-    /* Exact SPBF Website Theme Colors */
+    /* Exact SPBF Website Theme Colors measured from company screenshots */
     :root {
       --spbf-app-bar: #394A59;
       --spbf-logo-text: #FFBF96;
@@ -45,13 +45,13 @@
 
     .main-content-wrapper {
       width: 100%;
-      max-width: 860px;
+      max-width: 900px;
       margin: 0 auto;
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding: 16px;
-      padding-bottom: 96px; /* space for fixed bottom bar */
+      padding: 14px;
+      padding-bottom: 96px; /* space for fixed bottom action bar */
     }
 
     .screen-content {
@@ -68,6 +68,7 @@
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
       width: 6px;
+      height: 6px;
     }
     ::-webkit-scrollbar-thumb {
       background: #CBD5E1;
@@ -79,14 +80,14 @@
 
   <div id="appRoot" class="w-full min-h-screen flex flex-col">
 
-    <!-- Top SPBF App Bar (Edge-to-edge full width) -->
+    <!-- Top SPBF App Bar (Edge-to-edge full width matching company website) -->
     <header id="appBar" class="w-full h-14 bg-[#394A59] flex items-center justify-between px-4 sm:px-8 border-b border-white/10 sticky top-0 z-30 shadow-sm">
       <div class="flex items-center gap-3">
         <button id="navBackBtn" onclick="goBack()" class="text-white hover:text-slate-200 hidden p-1.5 rounded hover:bg-white/10" title="Go Back">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
         </button>
-        <span class="text-[#FFBF96] font-bold text-2xl tracking-wider cursor-pointer" onclick="goToScreen('branchScreen')">SPBF</span>
-        <span id="screenTitle" class="text-white text-sm font-medium ml-2 hidden sm:inline">Supervisor Portal</span>
+        <span class="text-[#FFBF96] font-bold text-2xl tracking-wider cursor-pointer" onclick="goToScreen('dailyTransactionScreen')">SPBF</span>
+        <span id="screenTitle" class="text-white text-sm font-medium ml-2 hidden sm:inline">Daily Transaction Portal</span>
       </div>
       <div id="appBarMeta" class="text-right">
         <div id="metaBranch" class="text-[#DA8CFF] font-bold text-sm uppercase leading-tight tracking-wide">KOLHAPUR</div>
@@ -96,29 +97,29 @@
 
     <!-- Breadcrumb Banner -->
     <div id="breadCrumbBanner" class="w-full bg-[#EEF3F4] px-4 sm:px-8 py-2 border-b border-[#A4C2C5] flex items-center text-xs flex-wrap gap-1 sticky top-14 z-20">
-      <span class="text-[#007AFF] font-bold cursor-pointer hover:underline" onclick="goToScreen('branchScreen')">KOLHAPUR</span>
+      <span id="crumbBranch" class="text-[#007AFF] font-bold cursor-pointer hover:underline" onclick="focusHierarchy()">KOLHAPUR</span>
       <span class="text-slate-400">›</span>
-      <span class="text-[#007AFF] font-bold cursor-pointer hover:underline" onclick="goToScreen('supervisorScreen')">Ramesh Patil</span>
+      <span id="crumbSupervisor" class="text-[#007AFF] font-bold cursor-pointer hover:underline" onclick="focusHierarchy()">Ramesh Patil</span>
       <span class="text-slate-400">›</span>
-      <span id="crumbFarm" class="text-[#092F3D] font-bold">Select Farm</span>
+      <span id="crumbFarmer" class="text-[#092F3D] font-bold">Select Farmer</span>
       <span id="crumbBatch" class="bg-[#D8DDDE] text-[#092F3D] px-2 py-0.5 rounded text-[11px] font-bold ml-1 hidden">B-2026-01</span>
     </div>
 
     <!-- Main Screens Container -->
     <main class="main-content-wrapper">
 
-      <!-- 1. LOGIN SCREEN -->
-      <div id="loginScreen" class="screen-content active p-5">
+      <!-- ================= 1. LOGIN SCREEN ================= -->
+      <div id="loginScreen" class="screen-content active p-4">
         <div class="flex flex-col items-center justify-center my-auto py-8">
           <div class="bg-[#394A59] border border-[#A4C2C5] px-6 py-2.5 rounded-lg mb-4 shadow">
             <span class="text-[#FFBF96] text-3xl font-extrabold tracking-widest">SPBF</span>
           </div>
           <h2 class="text-xl font-bold text-[#092F3D]">SPBF Broiler Management</h2>
-          <p class="text-xs text-slate-500 mb-6">PoultryFlo Supervisor Mobile Portal</p>
+          <p class="text-xs text-slate-500 mb-6">PoultryFlo Supervisor Daily Transaction Portal</p>
 
-          <div class="w-full bg-white border border-[#A4C2C5] rounded p-5 shadow-sm">
+          <div class="w-full max-w-md bg-white border border-[#A4C2C5] rounded p-5 shadow-sm">
             <div class="bg-[#E6F3FA] border border-[#B3DCF2] p-2.5 rounded mb-4 text-[11px] text-[#004466]">
-              ℹ️ <strong>DEMO LOGIN</strong> — Use prefilled credentials below to explore.
+              ℹ️ <strong>SUPERVISOR LOGIN</strong> — Enter credentials to access branch and farmer transactions.
             </div>
 
             <div class="mb-3">
@@ -131,99 +132,117 @@
               <input type="password" id="loginPass" value="Demo@123" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded text-sm text-black font-medium">
             </div>
 
-            <button onclick="handleLogin()" class="w-full h-11 bg-[#B8D4D6] hover:bg-[#A4C2C5] border-2 border-[#A4C2C5] text-[#333333] font-bold text-sm rounded shadow flex items-center justify-center">
+            <button onclick="handleLogin()" class="w-full h-11 bg-[#B8D4D6] hover:bg-[#A4C2C5] border-2 border-[#A4C2C5] text-[#333333] font-bold text-sm rounded shadow flex items-center justify-center transition">
               Login to Portal
             </button>
           </div>
         </div>
       </div>
 
-      <!-- 2. BRANCH SELECTION SCREEN -->
-      <div id="branchScreen" class="screen-content p-4">
-        <div class="bg-white p-3 rounded border border-[#A4C2C5] mb-3">
-          <div class="text-sm font-bold text-[#092F3D]">Step 1: Choose Branch (25 Available)</div>
-          <div class="text-[11px] text-slate-500">Search and pick your company operating branch.</div>
-          <input type="text" id="branchSearch" oninput="filterBranches()" placeholder="Search branch (e.g. Kolhapur, Pune)..." class="w-full h-9 px-3 mt-2 bg-white border border-[#A4C2C5] rounded text-xs text-black">
-        </div>
+      <!-- ================= 2. DAILY TRANSACTION SCREEN (WITH CASCADING DROPDOWNS) ================= -->
+      <div id="dailyTransactionScreen" class="screen-content p-2 sm:p-4 pb-28">
 
-        <div id="branchList" class="flex flex-col gap-2 pb-6">
-          <!-- Dynamically generated branch cards -->
-        </div>
-      </div>
-
-      <!-- 3. SUPERVISOR SELECTION SCREEN -->
-      <div id="supervisorScreen" class="screen-content p-4">
-        <div class="bg-white p-3 rounded border border-[#A4C2C5] mb-3">
-          <div class="text-sm font-bold text-[#092F3D]">Step 2: Choose Supervisor (Kolhapur Branch)</div>
-          <div class="text-[11px] text-slate-500">Only supervisors belonging to chosen branch are shown.</div>
-          <input type="text" id="supSearch" oninput="filterSupervisors()" placeholder="Search supervisor or Emp ID..." class="w-full h-9 px-3 mt-2 bg-white border border-[#A4C2C5] rounded text-xs text-black">
-        </div>
-
-        <div id="supervisorList" class="flex flex-col gap-2 pb-6">
-          <!-- Dynamically generated supervisor cards -->
-        </div>
-      </div>
-
-      <!-- 4. DAILY TRANSACTION SCREEN -->
-      <div id="dailyTransactionScreen" class="screen-content p-4 pb-24">
-        <!-- Farm Select Dropdown (Mandatory First Step) -->
-        <div class="bg-white border border-[#A4C2C5] rounded mb-3 overflow-hidden shadow-sm">
-          <div class="bg-[#D8DDDE] px-3 py-2 border-b border-[#A4C2C5]">
-            <span class="text-xs font-bold text-[#092F3D]">Select Farm</span>
+        <!-- CASCADING DROPDOWN FILTER SECTION: Branch -> Supervisor -> Farmer Name -->
+        <div id="hierarchyFilterCard" class="bg-white border-2 border-[#A4C2C5] rounded mb-3 overflow-hidden shadow-sm">
+          <div class="bg-[#D8DDDE] px-3 py-2 border-b border-[#A4C2C5] flex justify-between items-center">
+            <span class="text-xs font-bold text-[#092F3D]">Filter by Branch, Supervisor & Farmer</span>
+            <span class="text-[10px] bg-sky-100 text-sky-800 border border-sky-300 font-bold px-2 py-0.5 rounded">25 Branches Active</span>
           </div>
-          <div class="p-3">
-            <label class="block text-xs font-bold text-black mb-1">Farm Name <span class="text-red-600">*</span></label>
-            <select id="farmSelect" onchange="handleFarmChange(this.value)" class="w-full h-11 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded text-sm text-black font-semibold">
-              <option value="">--select--</option>
-            </select>
-            <div id="farmHintBox" class="bg-[#E7F2F5] border border-[#A4C2C5] p-2 rounded mt-2 text-[11px] text-[#004466]">
-              👉 Please select a farm from the dropdown above to view and fill the daily transaction form.
-            </div>
-          </div>
-        </div>
-
-        <!-- Form Panels Container (Hidden until farm is chosen) -->
-        <div id="formContainer" class="hidden flex flex-col gap-3">
           
-          <!-- Already entered banner (if saved today) -->
-          <div id="alreadyEnteredAlert" class="hidden bg-red-100 border border-red-300 p-2.5 rounded text-xs text-red-800 font-bold flex items-center gap-2">
-            <span>⚠️</span> Already entered for this day. Only one transaction per farm per day is allowed.
+          <div class="p-3 grid grid-cols-1 md:grid-cols-3 gap-3">
+            <!-- 1. Branch Dropdown -->
+            <div>
+              <label class="block text-xs font-bold text-black mb-1">Branch <span class="text-red-600">*</span></label>
+              <select id="branchSelect" onchange="handleBranchSelect(this.value)" class="w-full h-10 px-3 bg-[#FFFCF9] border-2 border-[#34AADC] rounded text-xs sm:text-sm text-black font-bold focus:outline-none">
+                <!-- Populated dynamically with all 25 branches -->
+              </select>
+            </div>
+
+            <!-- 2. Supervisor Dropdown -->
+            <div>
+              <label class="block text-xs font-bold text-black mb-1">Supervisor Name <span class="text-red-600">*</span></label>
+              <select id="supervisorSelect" onchange="handleSupervisorSelect(this.value)" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded text-xs sm:text-sm text-black font-semibold focus:outline-none">
+                <!-- Populated based on selected branch -->
+              </select>
+            </div>
+
+            <!-- 3. Farmer Name Dropdown (Corrected from Farm Name) -->
+            <div>
+              <label class="block text-xs font-bold text-black mb-1">Farmer Name <span class="text-red-600">*</span></label>
+              <select id="farmerSelect" onchange="handleFarmerSelect(this.value)" class="w-full h-10 px-3 bg-[#FFFCF9] border-2 border-[#4CD964] rounded text-xs sm:text-sm text-black font-bold focus:outline-none">
+                <option value="">--select farmer--</option>
+                <!-- Populated with ~25 farmers of selected supervisor -->
+              </select>
+            </div>
           </div>
 
-          <!-- General Transaction Information -->
-          <div class="bg-white border border-[#A4C2C5] rounded overflow-hidden shadow-sm">
-            <div class="bg-[#D8DDDE] px-3 py-2 border-b border-[#A4C2C5]">
-              <span class="text-xs font-bold text-[#092F3D]">Daily Transaction</span>
+          <!-- Prompt when no farmer is selected yet -->
+          <div id="selectPromptBanner" class="bg-[#E7F2F5] border-t border-[#A4C2C5] px-3 py-2 text-[11px] text-[#004466] flex items-center justify-between">
+            <span>👉 <strong>Step:</strong> Select a <strong>Farmer Name</strong> from the dropdown above to load and fill today's daily transaction.</span>
+            <span id="farmerCountBadge" class="font-bold text-slate-700">25 Farmers Available</span>
+          </div>
+        </div>
+
+        <!-- ================= FORM CONTAINER (Appears ONLY after Farmer Name is selected) ================= -->
+        <div id="formContainer" class="hidden flex flex-col gap-3">
+
+          <!-- Already entered banner (if saved today for this farmer) -->
+          <div id="alreadyEnteredAlert" class="hidden bg-red-100 border-2 border-red-400 p-3 rounded text-xs text-red-900 font-bold flex items-center gap-2 shadow-sm">
+            <span class="text-base">⚠️</span> 
+            <div>
+              <strong>Already entered for this day.</strong> Only one transaction per farmer per batch per day is allowed.
             </div>
+          </div>
+
+          <!-- SECTION 1: GENERAL TRANSACTION INFORMATION -->
+          <div class="bg-white border border-[#A4C2C5] rounded overflow-hidden shadow-sm">
+            <div class="bg-[#D8DDDE] px-3 py-2 border-b border-[#A4C2C5] flex justify-between items-center">
+              <span class="text-xs font-bold text-[#092F3D]">Daily Transaction</span>
+              <span class="text-[11px] font-bold text-[#092F3D]" id="formFarmerTag">Farmer: Babasaheb Patil</span>
+            </div>
+            
             <div class="p-3 text-xs space-y-3">
-              <div>
-                <label class="block font-bold text-black mb-1">Supervisor Name</label>
-                <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-semibold text-slate-800" id="dispSupName">Ramesh Patil [E1870]</div>
-              </div>
-
-              <div>
-                <label class="block font-bold text-black mb-1">Transaction Date (Locked to Today)</label>
-                <div class="h-9 px-3 bg-[#DCE1E2] border-2 border-[#34AADC] rounded flex items-center font-bold text-slate-900" id="dispDate">19/10/2026 (Today)</div>
-              </div>
-
-              <div class="grid grid-cols-2 gap-2">
+              <!-- Farmer & Supervisor Display -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div>
-                  <label class="block font-bold text-black mb-1">Avg body Weight *</label>
-                  <div class="relative">
-                    <input type="number" id="abwInput" value="850" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm">
-                    <span class="absolute right-2 top-2.5 text-slate-400 font-bold text-xs">g</span>
-                  </div>
+                  <label class="block font-bold text-black mb-1">Farmer Name</label>
+                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-slate-900" id="dispFarmerName">Babasaheb Patil</div>
                 </div>
                 <div>
-                  <label class="block font-bold text-black mb-1">Total Culls</label>
-                  <div class="relative">
-                    <input type="number" id="cullsInput" value="1" oninput="updateCalculations()" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm">
-                    <span class="absolute right-2 top-2.5 text-slate-400 font-bold text-xs">birds</span>
-                  </div>
+                  <label class="block font-bold text-black mb-1">Supervisor Name</label>
+                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-semibold text-slate-800" id="dispSupName">Ramesh Patil [E1870]</div>
                 </div>
               </div>
 
-              <div class="grid grid-cols-2 gap-2">
+              <!-- Transaction Date (Locked to today read-only) -->
+              <div>
+                <label class="block font-bold text-black mb-1">Transaction Date (Locked to Today per Company Rules)</label>
+                <div class="h-9 px-3 bg-[#DCE1E2] border-2 border-[#34AADC] rounded flex items-center justify-between font-bold text-slate-900">
+                  <span id="dispDate">19/10/2026 (Today)</span>
+                  <span class="text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded uppercase">Strict Daily Entry</span>
+                </div>
+              </div>
+
+              <!-- ABW & Total Culls (EDITABLE INPUTS) -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div>
+                  <label class="block font-bold text-black mb-1">Average body Weight (ABW) * <span class="text-xs font-normal text-slate-500">(Typed by supervisor)</span></label>
+                  <div class="relative">
+                    <input type="number" id="abwInput" value="850" class="w-full h-10 px-3 bg-[#FFFCF9] border-2 border-[#34AADC] rounded font-bold text-black text-sm focus:outline-none">
+                    <span class="absolute right-3 top-2.5 text-slate-500 font-bold text-xs">grams</span>
+                  </div>
+                </div>
+                <div>
+                  <label class="block font-bold text-black mb-1">Total Culls <span class="text-xs font-normal text-slate-500">(Typed by supervisor)</span></label>
+                  <div class="relative">
+                    <input type="number" id="cullsInput" value="1" oninput="updateCalculations()" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm focus:outline-none">
+                    <span class="absolute right-3 top-2.5 text-slate-500 font-bold text-xs">birds</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Today & Cumulative Mortality -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div>
                   <label class="block font-bold text-black mb-1">Today Total Mortality</label>
                   <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispTodayMort">10</div>
@@ -234,94 +253,237 @@
                 </div>
               </div>
 
-              <div class="grid grid-cols-2 gap-2">
+              <!-- Bird Balance & Chicks Placed -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div>
                   <label class="block font-bold text-black mb-1">Bird Balance</label>
-                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#34AADC] rounded flex items-center font-bold text-emerald-800" id="dispBirdBalance">4,445</div>
+                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#34AADC] rounded flex items-center font-bold text-emerald-800" id="dispBirdBalance">4,442</div>
                 </div>
                 <div>
-                  <label class="block font-bold text-black mb-1">No Of Chicks</label>
-                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black">4,500</div>
+                  <label class="block font-bold text-black mb-1">No Of Chicks Placed</label>
+                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispChicks">4,500</div>
                 </div>
               </div>
 
-              <div class="grid grid-cols-2 gap-2">
+              <!-- Flock Age & Farm Total Feed Consumed -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div>
-                  <label class="block font-bold text-black mb-1">Yesterday ABW</label>
-                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-medium text-slate-700">815 g</div>
+                  <label class="block font-bold text-black mb-1">Flock Age</label>
+                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-slate-800" id="dispAge">20 days</div>
                 </div>
                 <div>
-                  <label class="block font-bold text-black mb-1">Yesterday Mortality</label>
-                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-medium text-slate-700">3 birds</div>
+                  <label class="block font-bold text-black mb-1">Farm Total Feed Consumed (Today)</label>
+                  <div class="h-9 px-3 bg-[#DCE1E2] border-2 border-[#34AADC] rounded flex items-center font-extrabold text-sky-900" id="dispTotalFeedToday">180 kg</div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Feed Consumption Section -->
+          <!-- SECTION 2: FEED CONSUMPTION (ALL 4 FEEDS KEPT SEPARATELY) -->
           <div class="bg-white border border-[#A4C2C5] rounded overflow-hidden shadow-sm">
-            <div class="bg-[#D8DDDE] px-3 py-2 border-b border-[#A4C2C5]">
-              <span class="text-xs font-bold text-[#092F3D]">Feed Consumption</span>
+            <div class="bg-[#D8DDDE] px-3 py-2 border-b border-[#A4C2C5] flex justify-between items-center">
+              <span class="text-xs font-bold text-[#092F3D]">Feed Consumption (4 Types of Feeds)</span>
+              <span class="text-[10px] bg-white border border-[#A4C2C5] text-[#092F3D] font-bold px-2 py-0.5 rounded">Pre-Starter • Starter • Finisher • Post-Finisher</span>
             </div>
+            
             <div class="p-3 text-xs space-y-3">
-              
-              <!-- Starter Feed Card -->
-              <div class="border-2 border-[#34AADC] rounded p-2.5 bg-white">
-                <div class="flex justify-between items-center pb-1.5 border-b border-slate-100 mb-2">
-                  <span class="font-bold text-sm text-[#092F3D]">Starter</span>
-                  <span class="bg-sky-50 border border-[#34AADC] text-sky-800 text-[10px] font-bold px-2 py-0.5 rounded" id="feedBalTag">Bal: 1,300 kg</span>
-                </div>
-                <div class="grid grid-cols-2 gap-1.5 mb-2">
-                  <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
-                    <span class="text-[10px] font-bold text-slate-700 block">Total Supply</span>
-                    <span class="font-bold text-black text-xs">2,800 kg</span>
-                  </div>
-                  <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
-                    <span class="text-[10px] font-bold text-slate-700 block">Total Consumed</span>
-                    <span class="font-bold text-black text-xs">1,500 kg</span>
-                  </div>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                  <div>
-                    <label class="block text-[11px] font-bold text-black mb-1">Feed Consumed (kg)</label>
-                    <input type="number" id="feedConsumedInput" value="180" oninput="updateCalculations()" class="w-full h-9 px-2 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black">
-                  </div>
-                  <div>
-                    <label class="block text-[11px] font-bold text-black mb-1">Feeder Feed (kg)</label>
-                    <input type="number" value="25" class="w-full h-9 px-2 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black">
-                  </div>
-                </div>
+              <div class="text-[11px] text-slate-600 bg-slate-50 border border-slate-200 p-2 rounded">
+                ℹ️ Each farmer manages all <strong>4 types of feeds</strong>. Total Supply, Feed In/Out, Total Consumed, Feed Balance, Feed Consumed (Today), and Feeder Feed are kept completely separately below:
               </div>
 
-              <!-- Orange Late Feed Rule Notice -->
+              <!-- 4 Feeds Table Container (Responsive) -->
+              <div class="space-y-3" id="feedsContainer">
+                
+                <!-- FEED 1: PRE-STARTER -->
+                <div class="border border-[#A4C2C5] rounded p-2.5 bg-white shadow-sm">
+                  <div class="flex justify-between items-center pb-1.5 border-b border-slate-100 mb-2">
+                    <span class="font-bold text-sm text-[#092F3D] flex items-center gap-1.5">
+                      <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> 1. Pre-Starter
+                    </span>
+                    <span class="bg-sky-50 border border-[#34AADC] text-sky-800 text-[11px] font-bold px-2 py-0.5 rounded" id="feedBal_pre_starter">Bal: 0 kg</span>
+                  </div>
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mb-2">
+                    <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                      <span class="text-[10px] font-bold text-slate-700 block">Total Supply</span>
+                      <span class="font-bold text-black text-xs">800 kg</span>
+                    </div>
+                    <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                      <span class="text-[10px] font-bold text-slate-700 block">Feed In</span>
+                      <span class="font-bold text-black text-xs">0 kg</span>
+                    </div>
+                    <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                      <span class="text-[10px] font-bold text-slate-700 block">Feed Out</span>
+                      <span class="font-bold text-black text-xs">0 kg</span>
+                    </div>
+                    <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                      <span class="text-[10px] font-bold text-slate-700 block">Total Consumed</span>
+                      <span class="font-bold text-black text-xs">800 kg</span>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2">
+                    <div>
+                      <label class="block text-[11px] font-bold text-black mb-1">Feed Consumed Today (kg) *</label>
+                      <input type="number" id="feedInput_pre_starter" value="0" oninput="updateCalculations()" class="w-full h-9 px-2 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm focus:outline-none">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-black mb-1">Feeder Feed (kg)</label>
+                      <input type="number" id="feederInput_pre_starter" value="0" class="w-full h-9 px-2 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm focus:outline-none">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- FEED 2: STARTER (Active in current batch stage) -->
+                <div class="border-2 border-[#34AADC] rounded p-2.5 bg-sky-50/20 shadow-sm">
+                  <div class="flex justify-between items-center pb-1.5 border-b border-sky-100 mb-2">
+                    <span class="font-bold text-sm text-[#092F3D] flex items-center gap-1.5">
+                      <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span> 2. Starter <span class="text-[10px] bg-sky-100 text-sky-800 px-1.5 py-0.2 rounded font-normal">Active</span>
+                    </span>
+                    <span class="bg-sky-50 border border-[#34AADC] text-sky-800 text-[11px] font-bold px-2 py-0.5 rounded" id="feedBal_starter">Bal: 1,300 kg</span>
+                  </div>
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mb-2">
+                    <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                      <span class="text-[10px] font-bold text-slate-700 block">Total Supply</span>
+                      <span class="font-bold text-black text-xs">2,800 kg</span>
+                    </div>
+                    <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                      <span class="text-[10px] font-bold text-slate-700 block">Feed In</span>
+                      <span class="font-bold text-black text-xs">0 kg</span>
+                    </div>
+                    <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                      <span class="text-[10px] font-bold text-slate-700 block">Feed Out</span>
+                      <span class="font-bold text-black text-xs">0 kg</span>
+                    </div>
+                    <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                      <span class="text-[10px] font-bold text-slate-700 block">Total Consumed</span>
+                      <span class="font-bold text-black text-xs">1,320 kg</span>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2">
+                    <div>
+                      <label class="block text-[11px] font-bold text-black mb-1">Feed Consumed Today (kg) *</label>
+                      <input type="number" id="feedInput_starter" value="180" oninput="updateCalculations()" class="w-full h-9 px-2 bg-[#FFFCF9] border-2 border-[#34AADC] rounded font-bold text-black text-sm focus:outline-none">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-black mb-1">Feeder Feed (kg)</label>
+                      <input type="number" id="feederInput_starter" value="25" class="w-full h-9 px-2 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm focus:outline-none">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- FEED 3: FINISHER -->
+                <div class="border border-[#A4C2C5] rounded p-2.5 bg-white shadow-sm">
+                  <div class="flex justify-between items-center pb-1.5 border-b border-slate-100 mb-2">
+                    <span class="font-bold text-sm text-[#092F3D] flex items-center gap-1.5">
+                      <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> 3. Finisher
+                    </span>
+                    <span class="bg-sky-50 border border-[#34AADC] text-sky-800 text-[11px] font-bold px-2 py-0.5 rounded" id="feedBal_finisher">Bal: 3,500 kg</span>
+                  </div>
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mb-2">
+                    <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                      <span class="text-[10px] font-bold text-slate-700 block">Total Supply</span>
+                      <span class="font-bold text-black text-xs">3,500 kg</span>
+                    </div>
+                    <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                      <span class="text-[10px] font-bold text-slate-700 block">Feed In</span>
+                      <span class="font-bold text-black text-xs">0 kg</span>
+                    </div>
+                    <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                      <span class="text-[10px] font-bold text-slate-700 block">Feed Out</span>
+                      <span class="font-bold text-black text-xs">0 kg</span>
+                    </div>
+                    <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                      <span class="text-[10px] font-bold text-slate-700 block">Total Consumed</span>
+                      <span class="font-bold text-black text-xs">0 kg</span>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2">
+                    <div>
+                      <label class="block text-[11px] font-bold text-black mb-1">Feed Consumed Today (kg) *</label>
+                      <input type="number" id="feedInput_finisher" value="0" oninput="updateCalculations()" class="w-full h-9 px-2 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm focus:outline-none">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-black mb-1">Feeder Feed (kg)</label>
+                      <input type="number" id="feederInput_finisher" value="0" class="w-full h-9 px-2 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm focus:outline-none">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- FEED 4: POST-FINISHER -->
+                <div class="border border-[#A4C2C5] rounded p-2.5 bg-white shadow-sm">
+                  <div class="flex justify-between items-center pb-1.5 border-b border-slate-100 mb-2">
+                    <span class="font-bold text-sm text-[#092F3D] flex items-center gap-1.5">
+                      <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> 4. Post-Finisher
+                    </span>
+                    <span class="bg-sky-50 border border-[#34AADC] text-sky-800 text-[11px] font-bold px-2 py-0.5 rounded" id="feedBal_post_finisher">Bal: 1,200 kg</span>
+                  </div>
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mb-2">
+                    <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                      <span class="text-[10px] font-bold text-slate-700 block">Total Supply</span>
+                      <span class="font-bold text-black text-xs">1,200 kg</span>
+                    </div>
+                    <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                      <span class="text-[10px] font-bold text-slate-700 block">Feed In</span>
+                      <span class="font-bold text-black text-xs">0 kg</span>
+                    </div>
+                    <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                      <span class="text-[10px] font-bold text-slate-700 block">Feed Out</span>
+                      <span class="font-bold text-black text-xs">0 kg</span>
+                    </div>
+                    <div class="bg-[#DCE1E2] border border-[#A4C2C5] p-1.5 rounded">
+                      <span class="text-[10px] font-bold text-slate-700 block">Total Consumed</span>
+                      <span class="font-bold text-black text-xs">0 kg</span>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2">
+                    <div>
+                      <label class="block text-[11px] font-bold text-black mb-1">Feed Consumed Today (kg) *</label>
+                      <input type="number" id="feedInput_post_finisher" value="0" oninput="updateCalculations()" class="w-full h-9 px-2 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm focus:outline-none">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-black mb-1">Feeder Feed (kg)</label>
+                      <input type="number" id="feederInput_post_finisher" value="0" class="w-full h-9 px-2 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm focus:outline-none">
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Combined Total Summary for 4 Feeds -->
+              <div class="bg-sky-50 border-2 border-[#34AADC] p-2.5 rounded flex justify-between items-center">
+                <span class="font-bold text-sky-900">Total Feed Consumed Today (All 4 Feeds):</span>
+                <strong class="text-base text-sky-900" id="grandFeedTotal">180 kg</strong>
+              </div>
+
+              <!-- Orange Later Feed Excluded Hint -->
               <div class="bg-amber-50 border border-amber-300 p-2.5 rounded text-[11px] text-amber-900 font-medium flex items-center gap-2">
-                <span>⚠️</span> <strong>Later Feed Excluded:</strong> 2,500 kg Finisher scheduled for tomorrow was excluded from balance per company rules.
+                <span>⚠️</span> <strong>Later Feed Excluded:</strong> Feed received after transaction date is excluded from balance per company rules.
               </div>
 
-              <!-- Red Note -->
+              <!-- Official Red Note -->
               <div class="text-[11px] text-red-600 font-bold italic pt-1">
                 Note: If Feed Received after transaction date it will not show in Broiler Record.
               </div>
             </div>
           </div>
 
-          <!-- Daily Transaction Mortality Section -->
+          <!-- SECTION 3: DAILY TRANSACTION MORTALITY (EDITABLE REASONS & QUANTITIES) -->
           <div class="bg-white border border-[#A4C2C5] rounded overflow-hidden shadow-sm">
             <div class="bg-[#D8DDDE] px-3 py-2 border-b border-[#A4C2C5] flex justify-between items-center">
               <span class="text-xs font-bold text-[#092F3D]">Daily Transaction Mortality</span>
+              <span class="text-[10px] text-slate-600 font-semibold">Supervisor daily reason entries</span>
             </div>
+            
             <div class="p-3 text-xs">
-              
               <!-- Live Summary Box with Green Checkmark -->
               <div id="mortSummaryBox" class="bg-emerald-50 border-2 border-emerald-500 rounded p-2 mb-3 flex items-center justify-between">
                 <div>
-                  <span class="font-semibold text-slate-700">Total mortality: <strong id="sumTotal" class="text-black">10</strong></span>
+                  <span class="font-semibold text-slate-700">Total Mortality: <strong id="sumTotal" class="text-black">10</strong></span>
                   <span class="ml-2 font-semibold text-slate-700">Distributed: <strong id="sumDist" class="text-black">10</strong></span>
                 </div>
                 <span class="text-emerald-700 font-bold flex items-center gap-1">✓ Balanced</span>
               </div>
 
-              <!-- Rows -->
+              <!-- Dynamic Rows -->
               <div id="mortRowsContainer" class="space-y-2">
                 <div class="flex items-center gap-1.5">
                   <span class="w-6 text-center font-bold text-slate-500">1</span>
@@ -332,9 +494,10 @@
                     <option>Leg Problem</option>
                     <option>Other</option>
                   </select>
-                  <input type="number" value="5" oninput="updateCalculations()" class="w-16 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold mort-qty">
+                  <input type="number" value="5" oninput="updateCalculations()" class="w-20 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black mort-qty">
                   <button class="w-8 h-9 text-slate-300 font-bold">-</button>
                 </div>
+                
                 <div class="flex items-center gap-1.5">
                   <span class="w-6 text-center font-bold text-slate-500">2</span>
                   <select onchange="updateCalculations()" class="flex-1 h-9 bg-[#FFFCF9] border border-[#A4C2C5] rounded px-2 font-medium">
@@ -344,9 +507,10 @@
                     <option>Leg Problem</option>
                     <option>Other</option>
                   </select>
-                  <input type="number" value="3" oninput="updateCalculations()" class="w-16 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold mort-qty">
+                  <input type="number" value="3" oninput="updateCalculations()" class="w-20 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black mort-qty">
                   <button onclick="removeMortRow(this)" class="w-8 h-9 text-red-500 font-bold hover:bg-red-50 rounded">✕</button>
                 </div>
+
                 <div class="flex items-center gap-1.5">
                   <span class="w-6 text-center font-bold text-slate-500">3</span>
                   <select onchange="updateCalculations()" class="flex-1 h-9 bg-[#FFFCF9] border border-[#A4C2C5] rounded px-2 font-medium">
@@ -356,19 +520,20 @@
                     <option>Leg Problem</option>
                     <option selected>Other</option>
                   </select>
-                  <input type="number" value="2" oninput="updateCalculations()" class="w-16 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold mort-qty">
+                  <input type="number" value="2" oninput="updateCalculations()" class="w-20 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black mort-qty">
                   <button onclick="removeMortRow(this)" class="w-8 h-9 text-red-500 font-bold hover:bg-red-50 rounded">✕</button>
                 </div>
               </div>
 
-              <button onclick="addMortRow()" class="w-full h-8 mt-2.5 bg-sky-50 border border-[#A4C2C5] text-[#005580] font-bold rounded flex items-center justify-center gap-1">
-                + Add Reason
+              <button onclick="addMortRow()" class="w-full h-8 mt-2.5 bg-sky-50 border border-[#A4C2C5] text-[#005580] font-bold rounded flex items-center justify-center gap-1 hover:bg-sky-100 transition">
+                + Add Mortality Reason
               </button>
             </div>
           </div>
+
         </div>
 
-        <!-- Fixed Bottom Bar -->
+        <!-- FIXED BOTTOM ACTION BAR -->
         <div id="bottomBar" class="fixed bottom-0 left-0 right-0 bg-white border-t border-[#A4C2C5] py-2.5 px-4 shadow-xl z-30 flex justify-center">
           <div class="max-w-3xl w-full flex items-center justify-between gap-3">
             <button onclick="goToScreen('recordsScreen')" class="flex-1 h-11 bg-[#B8D4D6] hover:bg-[#A4C2C5] border-2 border-[#4CD964] text-[#333333] font-bold text-xs sm:text-sm rounded shadow flex items-center justify-center transition">
@@ -382,36 +547,44 @@
             </button>
           </div>
         </div>
+
       </div>
 
-      <!-- 5. BROILER RECORDS SCREEN -->
-      <div id="recordsScreen" class="screen-content p-4 pb-12">
+      <!-- ================= 3. BROILER RECORDS SCREEN (ONLY TODAY'S SAVED TRANSACTIONS) ================= -->
+      <div id="recordsScreen" class="screen-content p-2 sm:p-4 pb-28">
         <div class="bg-white p-3 rounded border border-[#A4C2C5] mb-3 flex justify-between items-center">
           <div>
-            <div class="text-sm font-bold text-[#092F3D]" id="recordsFarmTitle">Babasaheb Patil Farm</div>
-            <div class="text-[11px] text-slate-500">History of daily transactions (Newest First)</div>
+            <div class="text-sm font-bold text-[#092F3D]" id="recordsFarmerTitle">Farmer: Babasaheb Patil</div>
+            <div class="text-[11px] text-slate-500">Saved daily transactions (Only genuine entries made today)</div>
           </div>
-          <span class="bg-[#E8F4F5] border border-[#A4C2C5] text-[#092F3D] px-2 py-0.5 rounded text-[11px] font-bold">B-2026-01</span>
+          <span class="bg-[#E8F4F5] border border-[#A4C2C5] text-[#092F3D] px-2 py-0.5 rounded text-[11px] font-bold" id="recordsBatchBadge">B-2026-01</span>
         </div>
 
-        <!-- Records List -->
+        <!-- Filter banner -->
+        <div class="bg-sky-50 border border-sky-200 p-2 rounded mb-3 text-xs text-sky-800 flex justify-between items-center">
+          <span>Showing records for <strong>Today (19 Oct 2026)</strong></span>
+          <button onclick="goToScreen('dailyTransactionScreen')" class="text-[#007AFF] font-bold hover:underline">+ New Entry</button>
+        </div>
+
+        <!-- Dynamic Records List (Starts empty as requested) -->
         <div id="recordsList" class="flex flex-col gap-2.5">
-          <!-- Dynamically populated cards -->
+          <!-- Dynamically populated or empty message -->
         </div>
       </div>
 
-      <!-- 6. BROILER RECORD DETAIL SCREEN -->
-      <div id="recordDetailScreen" class="screen-content p-4 pb-12">
+      <!-- ================= 4. BROILER RECORD DETAIL SCREEN ================= -->
+      <div id="recordDetailScreen" class="screen-content p-2 sm:p-4 pb-28">
         <div class="bg-white border border-[#A4C2C5] rounded p-3 mb-3 shadow-sm">
           <div class="flex justify-between items-start">
             <div>
-              <div class="text-sm font-bold text-[#092F3D]">Babasaheb Patil Broiler Farm</div>
-              <div class="text-[11px] text-slate-500">Batch: B-2026-01 • Age: 20 days</div>
+              <div class="text-sm font-bold text-[#092F3D]" id="detailFarmerName">Babasaheb Patil (Farmer)</div>
+              <div class="text-[11px] text-slate-500" id="detailSubMeta">Branch: Kolhapur • Batch: B-2026-01 • Age: 20 days</div>
             </div>
-            <span class="bg-blue-100 border border-blue-400 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded">SAVED</span>
+            <span class="bg-emerald-100 border border-emerald-400 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">SAVED TODAY</span>
           </div>
-          <div class="text-xs font-bold text-slate-700 mt-2 pt-2 border-t border-slate-100">
-            Transaction Date: 19 Oct 2026
+          <div class="text-xs font-bold text-slate-700 mt-2 pt-2 border-t border-slate-100 flex justify-between">
+            <span>Transaction Date: <strong>19 Oct 2026</strong></span>
+            <span>Recorded By: <strong id="detailSupervisor">Ramesh Patil [E1870]</strong></span>
           </div>
         </div>
 
@@ -420,15 +593,40 @@
           <div class="bg-[#D8DDDE] px-3 py-1.5 border-b border-[#A4C2C5]">
             <span class="text-xs font-bold text-[#092F3D]">Flock Metrics (14 Website Fields)</span>
           </div>
-          <div class="p-3 text-xs grid grid-cols-2 gap-2">
-            <div><span class="text-slate-500 block text-[10px] font-bold">No Of Chicks</span><strong class="text-sm">4,500</strong></div>
-            <div><span class="text-slate-500 block text-[10px] font-bold">Flock Age</span><strong class="text-sm">20 days</strong></div>
-            <div><span class="text-slate-500 block text-[10px] font-bold">Actual Weight (ABW)</span><strong class="text-sm text-sky-800">850 g</strong></div>
-            <div><span class="text-slate-500 block text-[10px] font-bold">Total Culls</span><strong class="text-sm">1 birds</strong></div>
-            <div><span class="text-slate-500 block text-[10px] font-bold">Today Mortality</span><strong class="text-sm text-red-700">10 birds</strong></div>
-            <div><span class="text-slate-500 block text-[10px] font-bold">Cum. Mortality</span><strong class="text-sm">47 birds</strong></div>
-            <div><span class="text-slate-500 block text-[10px] font-bold">Feed Used Today</span><strong class="text-sm">180 kg</strong></div>
-            <div><span class="text-slate-500 block text-[10px] font-bold">Feed Balance</span><strong class="text-sm text-sky-800">1,300 kg</strong></div>
+          <div class="p-3 text-xs grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div class="bg-slate-50 p-2 rounded"><span class="text-slate-500 block text-[10px] font-bold">No Of Chicks</span><strong class="text-sm">4,500</strong></div>
+            <div class="bg-slate-50 p-2 rounded"><span class="text-slate-500 block text-[10px] font-bold">Flock Age</span><strong class="text-sm">20 days</strong></div>
+            <div class="bg-slate-50 p-2 rounded"><span class="text-slate-500 block text-[10px] font-bold">Actual Weight (ABW)</span><strong class="text-sm text-sky-800" id="detailABW">850 g</strong></div>
+            <div class="bg-slate-50 p-2 rounded"><span class="text-slate-500 block text-[10px] font-bold">Total Culls</span><strong class="text-sm" id="detailCulls">1 birds</strong></div>
+            <div class="bg-slate-50 p-2 rounded"><span class="text-slate-500 block text-[10px] font-bold">Today Mortality</span><strong class="text-sm text-red-700" id="detailMort">10 birds</strong></div>
+            <div class="bg-slate-50 p-2 rounded"><span class="text-slate-500 block text-[10px] font-bold">Cum. Mortality</span><strong class="text-sm" id="detailCumMort">47 birds</strong></div>
+            <div class="bg-slate-50 p-2 rounded"><span class="text-slate-500 block text-[10px] font-bold">Feed Used Today</span><strong class="text-sm text-sky-900" id="detailFeedUsed">180 kg</strong></div>
+            <div class="bg-slate-50 p-2 rounded"><span class="text-slate-500 block text-[10px] font-bold">Bird Balance</span><strong class="text-sm text-emerald-800" id="detailBirdBal">4,442</strong></div>
+            <div class="bg-slate-50 p-2 rounded"><span class="text-slate-500 block text-[10px] font-bold">Active Feeds</span><strong class="text-sm">4 Types</strong></div>
+          </div>
+        </div>
+
+        <!-- 4 Feeds Consumption Detailed Breakdown -->
+        <div class="bg-white border border-[#A4C2C5] rounded overflow-hidden mb-3">
+          <div class="bg-[#D8DDDE] px-3 py-1.5 border-b border-[#A4C2C5]">
+            <span class="text-xs font-bold text-[#092F3D]">Detailed Feed Consumption (4 Feeds Breakdown)</span>
+          </div>
+          <div class="p-3 text-xs overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-[#A4C2C5] bg-[#EEF3F4] text-[10px] text-[#092F3D]">
+                  <th class="p-1.5">Feed Name</th>
+                  <th class="p-1.5">Supply</th>
+                  <th class="p-1.5">Total Consumed</th>
+                  <th class="p-1.5">Consumed Today</th>
+                  <th class="p-1.5">Feeder Feed</th>
+                  <th class="p-1.5">Balance</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-[11px]" id="detailFeedsTable">
+                <!-- Dynamically generated rows for all 4 feeds -->
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -437,11 +635,8 @@
           <div class="bg-[#D8DDDE] px-3 py-1.5 border-b border-[#A4C2C5]">
             <span class="text-xs font-bold text-[#092F3D]">Reason-Wise Mortality Breakdown</span>
           </div>
-          <div class="p-3 text-xs space-y-1.5">
-            <div class="flex justify-between py-1 border-b border-slate-100"><span>1. Attack</span><strong>5 birds</strong></div>
-            <div class="flex justify-between py-1 border-b border-slate-100"><span>2. Disease</span><strong>3 birds</strong></div>
-            <div class="flex justify-between py-1 border-b border-slate-100"><span>3. Other</span><strong>2 birds</strong></div>
-            <div class="flex justify-between pt-1 font-bold text-red-700"><span>Total Mortality:</span><span>10 birds</span></div>
+          <div class="p-3 text-xs space-y-1.5" id="detailMortList">
+            <!-- Dynamically generated mortality rows -->
           </div>
         </div>
       </div>
@@ -449,23 +644,9 @@
     </main>
   </div>
 
-  <!-- JavaScript Simulator Engine -->
+  <!-- JavaScript Simulator & Hierarchy Engine -->
   <script>
-    // State Store
-    const state = {
-      currentScreen: 'loginScreen',
-      screenHistory: [],
-      branch: 'KOLHAPUR',
-      supervisor: 'Ramesh Patil [E1870]',
-      farm: null,
-      savedRecords: [
-        { date: '18 Oct 2026', age: 19, abw: 815, mort: 3, cumMort: 37, feed: 165, bal: 1480, badge: 'SAMPLE' },
-        { date: '17 Oct 2026', age: 18, abw: 780, mort: 2, cumMort: 34, feed: 155, bal: 1645, badge: 'SAMPLE' },
-        { date: '16 Oct 2026', age: 17, abw: 740, mort: 4, cumMort: 32, feed: 145, bal: 1800, badge: 'SAMPLE' },
-      ],
-      hasSavedToday: false
-    };
-
+    // 25 Active Branches
     const branchesData = [
       'KOLHAPUR', 'SANGLI', 'SATARA', 'PUNE', 'SOLAPUR',
       'NASHIK', 'AHMEDNAGAR', 'AURANGABAD', 'JALGAON', 'DHULE',
@@ -474,161 +655,214 @@
       'OSMANABAD', 'BEED', 'PARBHANI', 'JALNA', 'AMRAVATI'
     ];
 
-    const supervisorsData = [
-      { name: 'Ramesh Patil', emp: 'E1870', phone: '+91 9823011870' },
-      { name: 'Suresh Deshmukh', emp: 'E1871', phone: '+91 9823011871' },
-      { name: 'Santosh Shinde', emp: 'E1872', phone: '+91 9823011872' },
-    ];
+    // Supervisors mapped per branch (each branch has its own supervisors)
+    const supervisorsByBranch = {
+      'KOLHAPUR': [
+        { id: 'E1870', name: 'Ramesh Patil', emp: 'E1870' },
+        { id: 'E1871', name: 'Suresh Deshmukh', emp: 'E1871' },
+        { id: 'E1872', name: 'Santosh Shinde', emp: 'E1872' }
+      ],
+      'SANGLI': [
+        { id: 'E1873', name: 'Anil Kulkarni', emp: 'E1873' },
+        { id: 'E1874', name: 'Pravin Chavan', emp: 'E1874' },
+        { id: 'E1875', name: 'Mahesh Mane', emp: 'E1875' }
+      ],
+      'SATARA': [
+        { id: 'E1876', name: 'Vikas Bhosale', emp: 'E1876' },
+        { id: 'E1877', name: 'Sachin Jagtap', emp: 'E1877' },
+        { id: 'E1878', name: 'Nitin Salunkhe', emp: 'E1878' }
+      ],
+      'PUNE': [
+        { id: 'E1879', name: 'Amol More', emp: 'E1879' },
+        { id: 'E1880', name: 'Ganesh Gaikwad', emp: 'E1880' },
+        { id: 'E1881', name: 'Rahul Thite', emp: 'E1881' }
+      ],
+      'SOLAPUR': [
+        { id: 'E1882', name: 'Kiran Kore', emp: 'E1882' },
+        { id: 'E1883', name: 'Sunil Swami', emp: 'E1883' },
+        { id: 'E1884', name: 'Vijay Raut', emp: 'E1884' }
+      ]
+    };
 
-    const farmsData = [
-      { id: 'FARM-1001', name: 'Babasaheb Patil Broiler Farm', village: 'Shirol', code: 'FC-1001' },
-      { id: 'FARM-1002', name: 'Dnyandev Deshmukh Broiler Farm', village: 'Hatkanangle', code: 'FC-1002' },
-      { id: 'FARM-1003', name: 'Balasaheb Shinde Broiler Farm', village: 'Karveer', code: 'FC-1003' },
-      { id: 'FARM-1004', name: 'Pandurang Jadhav Broiler Farm', village: 'Kagal', code: 'FC-1004' },
-      { id: 'FARM-1005', name: 'Tanaji Kadam Broiler Farm', village: 'Gadhinglaj', code: 'FC-1005' },
-      { id: 'FARM-1006', name: 'Dattatray Chavan Broiler Farm', village: 'Radhanagari', code: 'FC-1006' },
-      { id: 'FARM-1007', name: 'Tukaram Pawar Broiler Farm', village: 'Panhala', code: 'FC-1007' },
-      { id: 'FARM-1008', name: 'Shivaji More Broiler Farm', village: 'Shahuwadi', code: 'FC-1008' }
+    // Default supervisor generator for remaining branches
+    branchesData.forEach((b, idx) => {
+      if (!supervisorsByBranch[b]) {
+        supervisorsByBranch[b] = [
+          { id: `E${1885 + idx * 3}`, name: `Supervisor ${b} A`, emp: `E${1885 + idx * 3}` },
+          { id: `E${1886 + idx * 3}`, name: `Supervisor ${b} B`, emp: `E${1886 + idx * 3}` },
+          { id: `E${1887 + idx * 3}`, name: `Supervisor ${b} C`, emp: `E${1887 + idx * 3}` },
+        ];
+      }
+    });
+
+    // 25 Farmers per supervisor (Real farmer names, village & farm codes)
+    const farmerFirstNames = [
+      'Babasaheb Patil', 'Dnyandev Deshmukh', 'Balasaheb Shinde', 'Pandurang Jadhav',
+      'Tanaji Kadam', 'Dattatray Chavan', 'Tukaram Pawar', 'Shivaji More',
+      'Ananda Mohite', 'Sambhajirao Mane', 'Rajaram Bhosale', 'Vishwasrao Jagtap',
+      'Maruti Gaikwad', 'Sanjay Nalawade', 'Ashok Sawant', 'Subhash Kamble',
+      'Sunil Ghorpade', 'Pradip Salokhe', 'Vijay Kumbhar', 'Suresh Sutar',
+      'Deepak Lohar', 'Namdev Gurav', 'Uttam Mali', 'Dilip Shete', 'Kashinath Khot'
     ];
+    const villages = ['Shirol', 'Hatkanangle', 'Karveer', 'Kagal', 'Gadhinglaj', 'Radhanagari', 'Panhala', 'Shahuwadi', 'Bavda', 'Ajara'];
+
+    // State Store (Starts empty of past fake records; only genuine today transactions)
+    const state = {
+      currentScreen: 'loginScreen',
+      branch: 'KOLHAPUR',
+      supervisor: supervisorsByBranch['KOLHAPUR'][0],
+      farmer: null,
+      savedRecords: [], // Only stores records saved today!
+      savedFarmersToday: new Set(),
+      todayRecordDetails: null
+    };
 
     function init() {
-      // Clock
-      const now = new Date();
-      document.getElementById('liveTime').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-      // Populate branches
-      renderBranches(branchesData);
-      // Populate supervisors
-      renderSupervisors(supervisorsData);
-      // Populate farms dropdown
-      const sel = document.getElementById('farmSelect');
-      farmsData.forEach((f, idx) => {
+      // 1. Populate Branch Dropdown with all 25 branches
+      const bSel = document.getElementById('branchSelect');
+      bSel.innerHTML = '';
+      branchesData.forEach(b => {
         const opt = document.createElement('option');
-        opt.value = f.id;
-        opt.textContent = `${idx + 1}. ${f.name} [${f.code}] - ${f.village}`;
-        sel.appendChild(opt);
+        opt.value = b;
+        opt.textContent = b;
+        if (b === state.branch) opt.selected = true;
+        bSel.appendChild(opt);
       });
 
+      // 2. Populate Supervisors for default branch
+      populateSupervisors(state.branch);
+
+      // 3. Render initial empty Broiler Records
       renderBroilerRecords();
     }
 
-    function renderBranches(list) {
-      const c = document.getElementById('branchList');
-      c.innerHTML = '';
-      list.forEach((b, i) => {
-        const isSel = b === state.branch;
-        const div = document.createElement('div');
-        div.className = `p-3 bg-white border ${isSel ? 'border-emerald-500 bg-emerald-50' : 'border-[#A4C2C5]'} rounded cursor-pointer flex justify-between items-center`;
-        div.innerHTML = `
-          <div>
-            <strong class="text-sm text-black">${i + 1}. ${b}</strong>
-            <div class="text-[11px] text-slate-500">Code: ${b.substring(0,3)} • Active Branch</div>
-          </div>
-          <span class="text-xs ${isSel ? 'text-emerald-700 font-bold' : 'text-[#007AFF]'}">${isSel ? '✓' : '→'}</span>
-        `;
-        div.onclick = () => selectBranch(b);
-        c.appendChild(div);
+    function populateSupervisors(branch) {
+      const sups = supervisorsByBranch[branch] || [];
+      const sSel = document.getElementById('supervisorSelect');
+      sSel.innerHTML = '';
+      sups.forEach((s, idx) => {
+        const opt = document.createElement('option');
+        opt.value = s.id;
+        opt.textContent = `${s.name} [${s.emp}]`;
+        if (idx === 0) opt.selected = true;
+        sSel.appendChild(opt);
       });
+
+      state.supervisor = sups[0] || null;
+      updateHeaderAndBanner();
+      populateFarmers(state.supervisor ? state.supervisor.id : null);
     }
 
-    function renderSupervisors(list) {
-      const c = document.getElementById('supervisorList');
-      c.innerHTML = '';
-      list.forEach((s, i) => {
-        const div = document.createElement('div');
-        div.className = `p-3 bg-white border border-[#A4C2C5] rounded cursor-pointer flex justify-between items-center`;
-        div.innerHTML = `
-          <div>
-            <strong class="text-sm text-black">${i + 1}. ${s.name}</strong>
-            <div class="text-[11px] text-slate-500">Emp ID: ${s.emp} • ${s.phone}</div>
-          </div>
-          <span class="text-xs text-[#007AFF] font-bold">→</span>
-        `;
-        div.onclick = () => selectSupervisor(`${s.name} [${s.emp}]`);
-        c.appendChild(div);
-      });
-    }
+    function populateFarmers(supervisorId) {
+      const fSel = document.getElementById('farmerSelect');
+      fSel.innerHTML = '<option value="">--select farmer--</option>';
 
-    function goToScreen(screenId) {
-      document.querySelectorAll('.screen-content').forEach(el => el.classList.remove('active'));
-      document.getElementById(screenId).classList.add('active');
-      state.screenHistory.push(state.currentScreen);
-      state.currentScreen = screenId;
-
-      const backBtn = document.getElementById('navBackBtn');
-      const title = document.getElementById('screenTitle');
-
-      if (screenId === 'loginScreen') {
-        backBtn.classList.add('hidden');
-        title.textContent = 'Supervisor Login';
-      } else if (screenId === 'branchScreen') {
-        backBtn.classList.add('hidden');
-        title.textContent = 'Select Branch';
-      } else if (screenId === 'supervisorScreen') {
-        backBtn.classList.remove('hidden');
-        title.textContent = 'Select Supervisor';
-      } else if (screenId === 'dailyTransactionScreen') {
-        backBtn.classList.remove('hidden');
-        title.textContent = 'Daily Transaction';
-      } else if (screenId === 'recordsScreen') {
-        backBtn.classList.remove('hidden');
-        title.textContent = 'Broiler Records';
-      } else if (screenId === 'recordDetailScreen') {
-        backBtn.classList.remove('hidden');
-        title.textContent = 'Record Details';
-      }
-    }
-
-    function goBack() {
-      if (state.currentScreen === 'recordsScreen' || state.currentScreen === 'supervisorScreen') {
-        goToScreen('dailyTransactionScreen');
-      } else if (state.currentScreen === 'dailyTransactionScreen') {
-        goToScreen('supervisorScreen');
-      } else if (state.currentScreen === 'recordDetailScreen') {
-        goToScreen('recordsScreen');
-      } else {
-        goToScreen('branchScreen');
-      }
-    }
-
-    function handleLogin() {
-      goToScreen('branchScreen');
-    }
-
-    function selectBranch(b) {
-      state.branch = b;
-      document.getElementById('metaBranch').textContent = b;
-      goToScreen('supervisorScreen');
-    }
-
-    function selectSupervisor(s) {
-      state.supervisor = s;
-      document.getElementById('dispSupName').textContent = s;
-      goToScreen('dailyTransactionScreen');
-    }
-
-    function handleFarmChange(farmId) {
-      const hint = document.getElementById('farmHintBox');
-      const form = document.getElementById('formContainer');
-      const crumb = document.getElementById('crumbFarm');
-      const crumbB = document.getElementById('crumbBatch');
-
-      if (!farmId) {
-        hint.classList.remove('hidden');
-        form.classList.add('hidden');
-        crumb.textContent = 'Select Farm';
-        crumbB.classList.add('hidden');
-        state.farm = null;
+      if (!supervisorId) {
+        document.getElementById('farmerCountBadge').textContent = '0 Farmers';
         return;
       }
 
-      const f = farmsData.find(x => x.id === farmId);
-      state.farm = f;
-      crumb.textContent = f.name.split(' ')[0] + ' Farm';
-      crumbB.classList.remove('hidden');
-      hint.classList.add('hidden');
+      // Generate the ~25 farmers belonging to this supervisor
+      const supCode = supervisorId.replace(/\D/g, '') || '100';
+      farmerFirstNames.forEach((name, i) => {
+        const fId = `FARM-${supCode}-${1001 + i}`;
+        const fCode = `FC-${1000 + i + 1}`;
+        const v = villages[i % villages.length];
+        const opt = document.createElement('option');
+        opt.value = fId;
+        opt.textContent = `${i + 1}. ${name} (${v}) [${fCode}]`;
+        opt.dataset.name = name;
+        opt.dataset.village = v;
+        opt.dataset.code = fCode;
+        fSel.appendChild(opt);
+      });
+
+      document.getElementById('farmerCountBadge').textContent = '25 Farmers Available';
+      
+      // Reset form view until a farmer is selected
+      state.farmer = null;
+      document.getElementById('formContainer').classList.add('hidden');
+      document.getElementById('selectPromptBanner').classList.remove('hidden');
+      document.getElementById('crumbFarmer').textContent = 'Select Farmer';
+      document.getElementById('crumbBatch').classList.add('hidden');
+    }
+
+    function handleBranchSelect(b) {
+      state.branch = b;
+      populateSupervisors(b);
+    }
+
+    function handleSupervisorSelect(supId) {
+      const sups = supervisorsByBranch[state.branch] || [];
+      state.supervisor = sups.find(s => s.id === supId) || null;
+      updateHeaderAndBanner();
+      populateFarmers(supId);
+    }
+
+    function handleFarmerSelect(fId) {
+      const form = document.getElementById('formContainer');
+      const banner = document.getElementById('selectPromptBanner');
+      const alertBox = document.getElementById('alreadyEnteredAlert');
+      const saveBtn = document.getElementById('saveBtn');
+
+      if (!fId) {
+        state.farmer = null;
+        form.classList.add('hidden');
+        banner.classList.remove('hidden');
+        document.getElementById('crumbFarmer').textContent = 'Select Farmer';
+        document.getElementById('crumbBatch').classList.add('hidden');
+        return;
+      }
+
+      const sel = document.getElementById('farmerSelect');
+      const opt = sel.options[sel.selectedIndex];
+      
+      state.farmer = {
+        id: fId,
+        name: opt.dataset.name,
+        village: opt.dataset.village,
+        code: opt.dataset.code
+      };
+
+      // Update screen displays
+      document.getElementById('crumbFarmer').textContent = state.farmer.name;
+      document.getElementById('crumbBatch').classList.remove('hidden');
+      document.getElementById('dispFarmerName').textContent = `${state.farmer.name} (${state.farmer.village})`;
+      document.getElementById('formFarmerTag').textContent = `Farmer: ${state.farmer.name}`;
+      document.getElementById('recordsFarmerTitle').textContent = `Farmer: ${state.farmer.name}`;
+
+      banner.classList.add('hidden');
       form.classList.remove('hidden');
-      document.getElementById('recordsFarmTitle').textContent = f.name;
+
+      // Check if already saved today for this specific farmer
+      if (state.savedFarmersToday.has(state.farmer.id)) {
+        alertBox.classList.remove('hidden');
+        saveBtn.disabled = true;
+        saveBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      } else {
+        alertBox.classList.add('hidden');
+        saveBtn.disabled = false;
+        saveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      }
+
+      updateCalculations();
+    }
+
+    function updateHeaderAndBanner() {
+      document.getElementById('metaBranch').textContent = state.branch;
+      document.getElementById('crumbBranch').textContent = state.branch;
+
+      const supText = state.supervisor ? `${state.supervisor.name}` : '';
+      const empText = state.supervisor ? `[${state.supervisor.emp}]` : '';
+      document.getElementById('metaEmp').textContent = empText;
+      document.getElementById('crumbSupervisor').textContent = supText;
+      document.getElementById('dispSupName').textContent = `${supText} ${empText}`;
+    }
+
+    function focusHierarchy() {
+      goToScreen('dailyTransactionScreen');
+      const el = document.getElementById('hierarchyFilterCard');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
 
     function addMortRow() {
@@ -645,7 +879,7 @@
           <option>Leg Problem</option>
           <option selected>Other</option>
         </select>
-        <input type="number" value="1" oninput="updateCalculations()" class="w-16 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold mort-qty">
+        <input type="number" value="1" oninput="updateCalculations()" class="w-20 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black mort-qty">
         <button onclick="removeMortRow(this)" class="w-8 h-9 text-red-500 font-bold hover:bg-red-50 rounded">✕</button>
       `;
       container.appendChild(div);
@@ -658,104 +892,295 @@
     }
 
     function updateCalculations() {
-      let sum = 0;
+      // 1. Mortality Calculation
+      let mortSum = 0;
       document.querySelectorAll('.mort-qty').forEach(el => {
-        sum += parseInt(el.value || 0, 10);
+        mortSum += parseInt(el.value || 0, 10);
       });
-      document.getElementById('sumTotal').textContent = sum;
-      document.getElementById('sumDist').textContent = sum;
-      document.getElementById('dispTodayMort').textContent = sum;
-      document.getElementById('dispFarmTotalMort').textContent = 37 + sum;
+      document.getElementById('sumTotal').textContent = mortSum;
+      document.getElementById('sumDist').textContent = mortSum;
+      document.getElementById('dispTodayMort').textContent = mortSum;
+      document.getElementById('dispFarmTotalMort').textContent = 37 + mortSum;
 
+      // 2. Culls & Bird Balance
       const culls = parseInt(document.getElementById('cullsInput').value || 0, 10);
-      document.getElementById('dispBirdBalance').textContent = (4500 - (37 + sum + culls)).toLocaleString();
+      document.getElementById('dispBirdBalance').textContent = (4500 - (37 + mortSum + culls)).toLocaleString();
 
-      const feedIn = parseInt(document.getElementById('feedConsumedInput').value || 0, 10);
-      document.getElementById('feedBalTag').textContent = `Bal: ${(2800 - (1320 + feedIn)).toLocaleString()} kg`;
+      // 3. Four Feeds Calculations (All kept separately)
+      const fPre = parseInt(document.getElementById('feedInput_pre_starter').value || 0, 10);
+      const fStarter = parseInt(document.getElementById('feedInput_starter').value || 0, 10);
+      const fFinisher = parseInt(document.getElementById('feedInput_finisher').value || 0, 10);
+      const fPost = parseInt(document.getElementById('feedInput_post_finisher').value || 0, 10);
+
+      // Balances for all 4 feeds: Total Supply - Total Consumed - Today Consumed
+      const balPre = Math.max(0, 800 - 800 - fPre);
+      const balStarter = Math.max(0, 2800 - 1320 - fStarter);
+      const balFinisher = Math.max(0, 3500 - 0 - fFinisher);
+      const balPost = Math.max(0, 1200 - 0 - fPost);
+
+      document.getElementById('feedBal_pre_starter').textContent = `Bal: ${balPre.toLocaleString()} kg`;
+      document.getElementById('feedBal_starter').textContent = `Bal: ${balStarter.toLocaleString()} kg`;
+      document.getElementById('feedBal_finisher').textContent = `Bal: ${balFinisher.toLocaleString()} kg`;
+      document.getElementById('feedBal_post_finisher').textContent = `Bal: ${balPost.toLocaleString()} kg`;
+
+      // Grand Total Today Feed Consumed across 4 feeds
+      const totalFeedToday = fPre + fStarter + fFinisher + fPost;
+      document.getElementById('grandFeedTotal').textContent = `${totalFeedToday} kg`;
+      document.getElementById('dispTotalFeedToday').textContent = `${totalFeedToday} kg`;
     }
 
     function handleSaveTransaction() {
-      if (state.hasSavedToday) {
-        alert("⚠️ Blocked: Already entered for this day. Only one transaction per farm per day is allowed.");
+      if (!state.farmer) {
+        alert("Please select a Farmer Name first.");
+        return;
+      }
+
+      if (state.savedFarmersToday.has(state.farmer.id)) {
+        alert("⚠️ Blocked: Already entered for this day. Only one transaction per farmer per day is allowed.");
         return;
       }
 
       const abw = document.getElementById('abwInput').value;
       if (!abw || Number(abw) <= 0) {
-        alert("Validation Error: Average body Weight is required and must be > 0.");
+        alert("Validation Error: Average body Weight (ABW) is required and must be greater than 0.");
         return;
       }
 
       const mort = parseInt(document.getElementById('dispTodayMort').textContent, 10);
+      const culls = parseInt(document.getElementById('cullsInput').value || 0, 10);
+      const totalFeedToday = parseInt(document.getElementById('grandFeedTotal').textContent, 10);
+
+      // Capture all 4 feeds breakdown
+      const feedsBreakdown = [
+        {
+          name: 'Pre-Starter',
+          supply: 800,
+          cumConsumed: 800,
+          todayConsumed: parseInt(document.getElementById('feedInput_pre_starter').value || 0, 10),
+          feederFeed: parseInt(document.getElementById('feederInput_pre_starter').value || 0, 10),
+          balance: document.getElementById('feedBal_pre_starter').textContent.replace('Bal: ', '')
+        },
+        {
+          name: 'Starter',
+          supply: 2800,
+          cumConsumed: 1320,
+          todayConsumed: parseInt(document.getElementById('feedInput_starter').value || 0, 10),
+          feederFeed: parseInt(document.getElementById('feederInput_starter').value || 0, 10),
+          balance: document.getElementById('feedBal_starter').textContent.replace('Bal: ', '')
+        },
+        {
+          name: 'Finisher',
+          supply: 3500,
+          cumConsumed: 0,
+          todayConsumed: parseInt(document.getElementById('feedInput_finisher').value || 0, 10),
+          feederFeed: parseInt(document.getElementById('feederInput_finisher').value || 0, 10),
+          balance: document.getElementById('feedBal_finisher').textContent.replace('Bal: ', '')
+        },
+        {
+          name: 'Post-Finisher',
+          supply: 1200,
+          cumConsumed: 0,
+          todayConsumed: parseInt(document.getElementById('feedInput_post_finisher').value || 0, 10),
+          feederFeed: parseInt(document.getElementById('feederInput_post_finisher').value || 0, 10),
+          balance: document.getElementById('feedBal_post_finisher').textContent.replace('Bal: ', '')
+        }
+      ];
+
+      // Capture Mortality reasons breakdown
+      const mortBreakdown = [];
+      document.querySelectorAll('#mortRowsContainer > div').forEach((row, idx) => {
+        const reason = row.querySelector('select').value;
+        const qty = parseInt(row.querySelector('.mort-qty').value || 0, 10);
+        mortBreakdown.push({ reason, qty });
+      });
 
       const newRecord = {
+        id: 'REC-' + Date.now(),
+        farmerId: state.farmer.id,
+        farmerName: state.farmer.name,
+        village: state.farmer.village,
+        branch: state.branch,
+        supervisor: state.supervisor.name,
+        empId: state.supervisor.emp,
         date: '19 Oct 2026',
         age: 20,
         abw: parseInt(abw, 10),
+        culls: culls,
         mort: mort,
         cumMort: 37 + mort,
-        feed: 180,
-        bal: 1300,
-        badge: 'SAVED'
+        feedToday: totalFeedToday,
+        birdBal: document.getElementById('dispBirdBalance').textContent,
+        feeds: feedsBreakdown,
+        mortReasons: mortBreakdown,
+        badge: 'SAVED TODAY'
       };
 
+      // Save to state
       state.savedRecords.unshift(newRecord);
-      state.hasSavedToday = true;
+      state.savedFarmersToday.add(state.farmer.id);
 
-      // Show alert with choice
-      if (confirm("✅ Saved Successfully! Daily transaction recorded for today.\n\nPress OK to view Broiler Record, or Cancel to stay.")) {
+      // Confirmation modal
+      if (confirm(`✅ Saved Successfully!\n\nDaily transaction for Farmer ${state.farmer.name} has been recorded for Today (19 Oct 2026).\n\nPress OK to view Broiler Record, or Cancel to stay.`)) {
         renderBroilerRecords();
         goToScreen('recordsScreen');
       } else {
         document.getElementById('alreadyEnteredAlert').classList.remove('hidden');
         document.getElementById('saveBtn').disabled = true;
-        document.getElementById('saveBtn').classList.add('opacity-50');
+        document.getElementById('saveBtn').classList.add('opacity-50', 'cursor-not-allowed');
       }
     }
 
     function renderBroilerRecords() {
       const c = document.getElementById('recordsList');
       c.innerHTML = '';
-      state.savedRecords.forEach((r, idx) => {
+
+      if (state.savedRecords.length === 0) {
+        c.innerHTML = `
+          <div class="bg-white border border-[#A4C2C5] rounded p-6 text-center text-slate-500 shadow-sm">
+            <div class="text-3xl mb-2">📋</div>
+            <div class="text-sm font-bold text-[#092F3D]">No Transactions Recorded for Today</div>
+            <div class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+              Only genuine daily transactions saved today are stored in Broiler Records. Please select a farmer from Daily Transaction, fill today's data, and click Save.
+            </div>
+            <button onclick="goToScreen('dailyTransactionScreen')" class="mt-4 px-4 py-2 bg-[#B8D4D6] hover:bg-[#A4C2C5] text-[#333333] font-bold text-xs rounded border border-[#A4C2C5] shadow">
+              Enter Today's Transaction
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      state.savedRecords.forEach((r) => {
         const div = document.createElement('div');
-        div.className = 'bg-white border border-[#A4C2C5] rounded p-3 shadow-sm';
+        div.className = 'bg-white border-2 border-[#34AADC] rounded p-3 shadow-sm';
         div.innerHTML = `
           <div class="flex justify-between items-center pb-2 border-b border-slate-100 mb-2">
-            <div class="flex items-center gap-2">
-              <strong class="text-sm text-black">${r.date}</strong>
-              <span class="bg-[#E8F4F5] text-[#092F3D] text-[10px] font-bold px-1.5 py-0.5 rounded">Age: ${r.age}d</span>
+            <div>
+              <strong class="text-sm text-black">${r.farmerName}</strong>
+              <div class="text-[10px] text-slate-500">${r.village} • Supervisor: ${r.supervisor} • Date: ${r.date}</div>
             </div>
-            <span class="${r.badge === 'SAVED' ? 'bg-blue-100 text-blue-800 border-blue-300' : 'bg-slate-100 text-slate-600 border-slate-300'} border text-[10px] font-bold px-2 py-0.5 rounded">${r.badge}</span>
+            <span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded">
+              ${r.badge}
+            </span>
           </div>
-          <div class="grid grid-cols-3 gap-1.5 text-xs mb-2">
-            <div class="bg-slate-50 p-1.5 rounded"><span class="text-[10px] text-slate-500 block">Actual Wt</span><strong>${r.abw} g</strong></div>
-            <div class="bg-slate-50 p-1.5 rounded"><span class="text-[10px] text-slate-500 block">Today Mort</span><strong class="${r.mort > 0 ? 'text-red-700' : ''}">${r.mort}</strong></div>
-            <div class="bg-slate-50 p-1.5 rounded"><span class="text-[10px] text-slate-500 block">Feed Balance</span><strong>${r.bal} kg</strong></div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-xs mb-2">
+            <div class="bg-slate-50 p-1.5 rounded"><span class="text-[10px] text-slate-500 block">ABW Weight</span><strong>${r.abw} g</strong></div>
+            <div class="bg-slate-50 p-1.5 rounded"><span class="text-[10px] text-slate-500 block">Today Mortality</span><strong class="text-red-700">${r.mort} birds</strong></div>
+            <div class="bg-slate-50 p-1.5 rounded"><span class="text-[10px] text-slate-500 block">Today Total Feed</span><strong class="text-sky-900">${r.feedToday} kg</strong></div>
+            <div class="bg-slate-50 p-1.5 rounded"><span class="text-[10px] text-slate-500 block">Bird Balance</span><strong class="text-emerald-800">${r.birdBal}</strong></div>
           </div>
-          <div class="text-right">
-            <button onclick="goToScreen('recordDetailScreen')" class="text-xs font-bold text-[#007AFF] hover:underline">View Details →</button>
+
+          <div class="text-right pt-1">
+            <button onclick="showRecordDetail('${r.id}')" class="text-xs font-bold text-[#007AFF] hover:underline flex items-center justify-end gap-1 ml-auto">
+              View Detailed Metrics & 4 Feeds →
+            </button>
           </div>
         `;
         c.appendChild(div);
       });
     }
 
-    function handleCancelEntry() {
-      if (confirm("Discard all entered changes and reset form?")) {
-        document.getElementById('abwInput').value = '';
-        document.getElementById('cullsInput').value = '0';
-        updateCalculations();
+    function showRecordDetail(recordId) {
+      const r = state.savedRecords.find(x => x.id === recordId);
+      if (!r) return;
+
+      document.getElementById('detailFarmerName').textContent = `${r.farmerName} (${r.village})`;
+      document.getElementById('detailSubMeta').textContent = `Branch: ${r.branch} • Batch: B-2026-01 • Age: ${r.age} days`;
+      document.getElementById('detailSupervisor').textContent = `${r.supervisor} [${r.empId}]`;
+
+      document.getElementById('detailABW').textContent = `${r.abw} g`;
+      document.getElementById('detailCulls').textContent = `${r.culls} birds`;
+      document.getElementById('detailMort').textContent = `${r.mort} birds`;
+      document.getElementById('detailCumMort').textContent = `${r.cumMort} birds`;
+      document.getElementById('detailFeedUsed').textContent = `${r.feedToday} kg`;
+      document.getElementById('detailBirdBal').textContent = r.birdBal;
+
+      // Populate 4 Feeds Table
+      const fTable = document.getElementById('detailFeedsTable');
+      fTable.innerHTML = '';
+      r.feeds.forEach(f => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50';
+        tr.innerHTML = `
+          <td class="p-1.5 font-bold text-[#092F3D]">${f.name}</td>
+          <td class="p-1.5">${f.supply} kg</td>
+          <td class="p-1.5">${f.cumConsumed} kg</td>
+          <td class="p-1.5 font-bold ${f.todayConsumed > 0 ? 'text-sky-800' : 'text-slate-400'}">${f.todayConsumed} kg</td>
+          <td class="p-1.5">${f.feederFeed} kg</td>
+          <td class="p-1.5 font-bold text-slate-800">${f.balance}</td>
+        `;
+        fTable.appendChild(tr);
+      });
+
+      // Populate Mortality Breakdown
+      const mList = document.getElementById('detailMortList');
+      mList.innerHTML = '';
+      r.mortReasons.forEach((m, idx) => {
+        const div = document.createElement('div');
+        div.className = 'flex justify-between py-1 border-b border-slate-100';
+        div.innerHTML = `
+          <span>${idx + 1}. ${m.reason}</span>
+          <strong>${m.qty} birds</strong>
+        `;
+        mList.appendChild(div);
+      });
+
+      const totalDiv = document.createElement('div');
+      totalDiv.className = 'flex justify-between pt-1 font-bold text-red-700';
+      totalDiv.innerHTML = `<span>Total Mortality:</span><span>${r.mort} birds</span>`;
+      mList.appendChild(totalDiv);
+
+      goToScreen('recordDetailScreen');
+    }
+
+    function goToScreen(screenId) {
+      document.querySelectorAll('.screen-content').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById(screenId);
+      if (target) target.classList.add('active');
+
+      const backBtn = document.getElementById('navBackBtn');
+      const title = document.getElementById('screenTitle');
+
+      if (screenId === 'loginScreen') {
+        backBtn.classList.add('hidden');
+        title.textContent = 'Supervisor Login';
+      } else if (screenId === 'dailyTransactionScreen') {
+        backBtn.classList.add('hidden');
+        title.textContent = 'Daily Transaction Portal';
+      } else if (screenId === 'recordsScreen') {
+        backBtn.classList.remove('hidden');
+        title.textContent = 'Broiler Records (Today)';
+      } else if (screenId === 'recordDetailScreen') {
+        backBtn.classList.remove('hidden');
+        title.textContent = 'Transaction Details';
       }
     }
 
-    function filterBranches() {
-      const q = document.getElementById('branchSearch').value.toLowerCase();
-      renderBranches(branchesData.filter(b => b.toLowerCase().includes(q)));
+    function goBack() {
+      if (state.currentScreen === 'recordDetailScreen') {
+        goToScreen('recordsScreen');
+      } else if (state.currentScreen === 'recordsScreen') {
+        goToScreen('dailyTransactionScreen');
+      } else {
+        goToScreen('dailyTransactionScreen');
+      }
     }
 
-    function filterSupervisors() {
-      const q = document.getElementById('supSearch').value.toLowerCase();
-      renderSupervisors(supervisorsData.filter(s => s.name.toLowerCase().includes(q) || s.emp.toLowerCase().includes(q)));
+    function handleLogin() {
+      goToScreen('dailyTransactionScreen');
+    }
+
+    function handleCancelEntry() {
+      if (confirm("Discard entered values and reset today's form?")) {
+        document.getElementById('abwInput').value = '850';
+        document.getElementById('cullsInput').value = '0';
+        document.getElementById('feedInput_pre_starter').value = '0';
+        document.getElementById('feedInput_starter').value = '180';
+        document.getElementById('feedInput_finisher').value = '0';
+        document.getElementById('feedInput_post_finisher').value = '0';
+        updateCalculations();
+      }
     }
 
     window.onload = init;
