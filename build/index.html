@@ -118,10 +118,6 @@
           <p class="text-xs text-slate-500 mb-6">PoultryFlo Supervisor Daily Transaction Portal</p>
 
           <div class="w-full max-w-md bg-white border border-[#A4C2C5] rounded p-5 shadow-sm">
-            <div class="bg-[#E6F3FA] border border-[#B3DCF2] p-2.5 rounded mb-4 text-[11px] text-[#004466]">
-              ℹ️ <strong>SUPERVISOR LOGIN</strong> — Enter credentials to access branch and farmer transactions.
-            </div>
-
             <div class="mb-3">
               <label class="block text-xs font-bold text-black mb-1">Username / Emp ID *</label>
               <input type="text" id="loginUser" value="demo" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded text-sm text-black font-medium">
@@ -178,8 +174,7 @@
 
           <!-- Prompt when no farmer is selected yet -->
           <div id="selectPromptBanner" class="bg-[#E7F2F5] border-t border-[#A4C2C5] px-3 py-2 text-[11px] text-[#004466] flex items-center justify-between">
-            <span>👉 <strong>Step:</strong> Select a <strong>Farmer Name</strong> from the dropdown above to load and fill today's daily transaction.</span>
-            <span id="farmerCountBadge" class="font-bold text-slate-700">25 Farmers Available</span>
+            <span>Select a <strong>Farmer Name</strong> from the dropdown above to open the daily transaction form.</span>
           </div>
         </div>
 
@@ -214,26 +209,25 @@
                 </div>
               </div>
 
-              <!-- Transaction Date (Locked to today read-only) -->
+              <!-- Transaction Date -->
               <div>
-                <label class="block font-bold text-black mb-1">Transaction Date (Locked to Today per Company Rules)</label>
-                <div class="h-9 px-3 bg-[#DCE1E2] border-2 border-[#34AADC] rounded flex items-center justify-between font-bold text-slate-900">
-                  <span id="dispDate">19/10/2026 (Today)</span>
-                  <span class="text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded uppercase">Strict Daily Entry</span>
+                <label class="block font-bold text-black mb-1">Transaction Date</label>
+                <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-slate-900">
+                  <span id="dispDate">19/10/2026</span>
                 </div>
               </div>
 
-              <!-- ABW & Total Culls (EDITABLE INPUTS) -->
+              <!-- ABW & Total Culls -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div>
-                  <label class="block font-bold text-black mb-1">Average body Weight (ABW) * <span class="text-xs font-normal text-slate-500">(Typed by supervisor)</span></label>
+                  <label class="block font-bold text-black mb-1">Average body Weight (ABW) *</label>
                   <div class="relative">
                     <input type="number" id="abwInput" value="850" class="w-full h-10 px-3 bg-[#FFFCF9] border-2 border-[#34AADC] rounded font-bold text-black text-sm focus:outline-none">
                     <span class="absolute right-3 top-2.5 text-slate-500 font-bold text-xs">grams</span>
                   </div>
                 </div>
                 <div>
-                  <label class="block font-bold text-black mb-1">Total Culls <span class="text-xs font-normal text-slate-500">(Typed by supervisor)</span></label>
+                  <label class="block font-bold text-black mb-1">Total Culls</label>
                   <div class="relative">
                     <input type="number" id="cullsInput" value="1" oninput="updateCalculations()" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm focus:outline-none">
                     <span class="absolute right-3 top-2.5 text-slate-500 font-bold text-xs">birds</span>
@@ -282,15 +276,10 @@
           <!-- SECTION 2: FEED CONSUMPTION (ALL 4 FEEDS KEPT SEPARATELY) -->
           <div class="bg-white border border-[#A4C2C5] rounded overflow-hidden shadow-sm">
             <div class="bg-[#D8DDDE] px-3 py-2 border-b border-[#A4C2C5] flex justify-between items-center">
-              <span class="text-xs font-bold text-[#092F3D]">Feed Consumption (4 Types of Feeds)</span>
-              <span class="text-[10px] bg-white border border-[#A4C2C5] text-[#092F3D] font-bold px-2 py-0.5 rounded">Pre-Starter • Starter • Finisher • Post-Finisher</span>
+              <span class="text-xs font-bold text-[#092F3D]">Feed Consumption</span>
             </div>
             
             <div class="p-3 text-xs space-y-3">
-              <div class="text-[11px] text-slate-600 bg-slate-50 border border-slate-200 p-2 rounded">
-                ℹ️ Each farmer manages all <strong>4 types of feeds</strong>. Total Supply, Feed In/Out, Total Consumed, Feed Balance, Feed Consumed (Today), and Feeder Feed are kept completely separately below:
-              </div>
-
               <!-- 4 Feeds Table Container (Responsive) -->
               <div class="space-y-3" id="feedsContainer">
                 
@@ -322,7 +311,7 @@
                   </div>
                   <div class="grid grid-cols-2 gap-2">
                     <div>
-                      <label class="block text-[11px] font-bold text-black mb-1">Feed Consumed Today (kg) *</label>
+                      <label class="block text-[11px] font-bold text-black mb-1">Feed Consumed (kg)</label>
                       <input type="number" id="feedInput_pre_starter" value="0" oninput="updateCalculations()" class="w-full h-9 px-2 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm focus:outline-none">
                     </div>
                     <div>
@@ -360,7 +349,7 @@
                   </div>
                   <div class="grid grid-cols-2 gap-2">
                     <div>
-                      <label class="block text-[11px] font-bold text-black mb-1">Feed Consumed Today (kg) *</label>
+                      <label class="block text-[11px] font-bold text-black mb-1">Feed Consumed (kg)</label>
                       <input type="number" id="feedInput_starter" value="180" oninput="updateCalculations()" class="w-full h-9 px-2 bg-[#FFFCF9] border-2 border-[#34AADC] rounded font-bold text-black text-sm focus:outline-none">
                     </div>
                     <div>
@@ -398,7 +387,7 @@
                   </div>
                   <div class="grid grid-cols-2 gap-2">
                     <div>
-                      <label class="block text-[11px] font-bold text-black mb-1">Feed Consumed Today (kg) *</label>
+                      <label class="block text-[11px] font-bold text-black mb-1">Feed Consumed (kg)</label>
                       <input type="number" id="feedInput_finisher" value="0" oninput="updateCalculations()" class="w-full h-9 px-2 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm focus:outline-none">
                     </div>
                     <div>
@@ -436,7 +425,7 @@
                   </div>
                   <div class="grid grid-cols-2 gap-2">
                     <div>
-                      <label class="block text-[11px] font-bold text-black mb-1">Feed Consumed Today (kg) *</label>
+                      <label class="block text-[11px] font-bold text-black mb-1">Feed Consumed (kg)</label>
                       <input type="number" id="feedInput_post_finisher" value="0" oninput="updateCalculations()" class="w-full h-9 px-2 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm focus:outline-none">
                     </div>
                     <div>
@@ -449,14 +438,9 @@
               </div>
 
               <!-- Combined Total Summary for 4 Feeds -->
-              <div class="bg-sky-50 border-2 border-[#34AADC] p-2.5 rounded flex justify-between items-center">
-                <span class="font-bold text-sky-900">Total Feed Consumed Today (All 4 Feeds):</span>
+              <div class="bg-sky-50 border border-[#34AADC] p-2.5 rounded flex justify-between items-center">
+                <span class="font-bold text-sky-900">Total Feed Consumed:</span>
                 <strong class="text-base text-sky-900" id="grandFeedTotal">180 kg</strong>
-              </div>
-
-              <!-- Orange Later Feed Excluded Hint -->
-              <div class="bg-amber-50 border border-amber-300 p-2.5 rounded text-[11px] text-amber-900 font-medium flex items-center gap-2">
-                <span>⚠️</span> <strong>Later Feed Excluded:</strong> Feed received after transaction date is excluded from balance per company rules.
               </div>
 
               <!-- Official Red Note -->
@@ -470,7 +454,6 @@
           <div class="bg-white border border-[#A4C2C5] rounded overflow-hidden shadow-sm">
             <div class="bg-[#D8DDDE] px-3 py-2 border-b border-[#A4C2C5] flex justify-between items-center">
               <span class="text-xs font-bold text-[#092F3D]">Daily Transaction Mortality</span>
-              <span class="text-[10px] text-slate-600 font-semibold">Supervisor daily reason entries</span>
             </div>
             
             <div class="p-3 text-xs">
@@ -555,14 +538,14 @@
         <div class="bg-white p-3 rounded border border-[#A4C2C5] mb-3 flex justify-between items-center">
           <div>
             <div class="text-sm font-bold text-[#092F3D]" id="recordsFarmerTitle">Farmer: Babasaheb Patil</div>
-            <div class="text-[11px] text-slate-500">Saved daily transactions (Only genuine entries made today)</div>
+            <div class="text-[11px] text-slate-500">Daily transaction records</div>
           </div>
           <span class="bg-[#E8F4F5] border border-[#A4C2C5] text-[#092F3D] px-2 py-0.5 rounded text-[11px] font-bold" id="recordsBatchBadge">B-2026-01</span>
         </div>
 
         <!-- Filter banner -->
         <div class="bg-sky-50 border border-sky-200 p-2 rounded mb-3 text-xs text-sky-800 flex justify-between items-center">
-          <span>Showing records for <strong>Today (19 Oct 2026)</strong></span>
+          <span>Date: <strong>19/10/2026</strong></span>
           <button onclick="goToScreen('dailyTransactionScreen')" class="text-[#007AFF] font-bold hover:underline">+ New Entry</button>
         </div>
 
@@ -580,7 +563,7 @@
               <div class="text-sm font-bold text-[#092F3D]" id="detailFarmerName">Babasaheb Patil (Farmer)</div>
               <div class="text-[11px] text-slate-500" id="detailSubMeta">Branch: Kolhapur • Batch: B-2026-01 • Age: 20 days</div>
             </div>
-            <span class="bg-emerald-100 border border-emerald-400 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">SAVED TODAY</span>
+            <span class="bg-emerald-100 border border-emerald-400 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">SAVED</span>
           </div>
           <div class="text-xs font-bold text-slate-700 mt-2 pt-2 border-t border-slate-100 flex justify-between">
             <span>Transaction Date: <strong>19 Oct 2026</strong></span>
@@ -1012,7 +995,7 @@
         birdBal: document.getElementById('dispBirdBalance').textContent,
         feeds: feedsBreakdown,
         mortReasons: mortBreakdown,
-        badge: 'SAVED TODAY'
+        badge: 'SAVED'
       };
 
       // Save to state
@@ -1020,7 +1003,7 @@
       state.savedFarmersToday.add(state.farmer.id);
 
       // Confirmation modal
-      if (confirm(`✅ Saved Successfully!\n\nDaily transaction for Farmer ${state.farmer.name} has been recorded for Today (19 Oct 2026).\n\nPress OK to view Broiler Record, or Cancel to stay.`)) {
+      if (confirm(`✅ Saved Successfully!\n\nDaily transaction for Farmer ${state.farmer.name} has been recorded.\n\nPress OK to view Broiler Record, or Cancel to stay.`)) {
         renderBroilerRecords();
         goToScreen('recordsScreen');
       } else {
@@ -1038,12 +1021,12 @@
         c.innerHTML = `
           <div class="bg-white border border-[#A4C2C5] rounded p-6 text-center text-slate-500 shadow-sm">
             <div class="text-3xl mb-2">📋</div>
-            <div class="text-sm font-bold text-[#092F3D]">No Transactions Recorded for Today</div>
+            <div class="text-sm font-bold text-[#092F3D]">No Records Found</div>
             <div class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
-              Only genuine daily transactions saved today are stored in Broiler Records. Please select a farmer from Daily Transaction, fill today's data, and click Save.
+              No daily transactions have been recorded yet.
             </div>
             <button onclick="goToScreen('dailyTransactionScreen')" class="mt-4 px-4 py-2 bg-[#B8D4D6] hover:bg-[#A4C2C5] text-[#333333] font-bold text-xs rounded border border-[#A4C2C5] shadow">
-              Enter Today's Transaction
+              Add Transaction
             </button>
           </div>
         `;
