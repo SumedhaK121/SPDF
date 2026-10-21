@@ -78,6 +78,52 @@ export default function MortalitySection({
           </View>
         )}
 
+        {/* Live Distribution Matching Box */}
+        <View
+          style={[
+            styles.summaryBox,
+            summary.totalMortality > 0 && summary.isBalanced
+              ? styles.summaryBoxValid
+              : summary.totalMortality > 0 && !summary.isBalanced
+              ? styles.summaryBoxInvalid
+              : null,
+          ]}
+        >
+          <View style={styles.summaryStats}>
+            <Text style={styles.summaryItem}>
+              Total mortality: <Text style={styles.summaryValue}>{summary.totalMortality}</Text>
+            </Text>
+            <Text style={styles.summaryItem}>
+              Distributed: <Text style={styles.summaryValue}>{summary.distributedMortality}</Text>
+            </Text>
+          </View>
+
+          {summary.totalMortality > 0 && (
+            <View style={styles.statusIndicator}>
+              {summary.isBalanced ? (
+                <View style={styles.balancedBadge}>
+                  <Ionicons name="checkmark-circle" size={18} color="#28A745" />
+                  <Text style={styles.balancedText}>✓ Balanced</Text>
+                </View>
+              ) : summary.distributedMortality < summary.totalMortality ? (
+                <View style={[styles.unbalancedBadge, { backgroundColor: '#FFFBEB', borderColor: '#F59E0B' }]}>
+                  <Ionicons name="alert-circle" size={18} color="#D97706" />
+                  <Text style={[styles.unbalancedText, { color: '#B45309' }]}>
+                    Remaining: {summary.remainingMortality}
+                  </Text>
+                </View>
+              ) : (
+                <View style={styles.unbalancedBadge}>
+                  <Ionicons name="alert-circle" size={18} color="#DC3545" />
+                  <Text style={styles.unbalancedText}>
+                    Exceeds by {summary.distributedMortality - summary.totalMortality}
+                  </Text>
+                </View>
+              )}
+            </View>
+          )}
+        </View>
+
         {/* Rows Table Header */}
         <View style={styles.tableHeader}>
           <Text style={[styles.headerCol, styles.colSr]}>Sr.</Text>

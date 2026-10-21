@@ -91,7 +91,6 @@
       </div>
       <div id="appBarMeta" class="text-right">
         <div id="metaBranch" class="text-[#DA8CFF] font-bold text-sm uppercase leading-tight tracking-wide">KOLHAPUR</div>
-        <div id="metaEmp" class="text-[#DA8CFF] text-xs font-semibold leading-tight">[E1870]</div>
       </div>
     </header>
 
@@ -138,13 +137,8 @@
       <!-- ================= 2. DAILY TRANSACTION SCREEN (WITH CASCADING DROPDOWNS) ================= -->
       <div id="dailyTransactionScreen" class="screen-content p-2 sm:p-4 pb-28">
 
-        <!-- CASCADING DROPDOWN FILTER SECTION: Branch -> Supervisor -> Farmer Name -->
+        <!-- DROPDOWNS: Branch -> Supervisor -> Farmer Name -->
         <div id="hierarchyFilterCard" class="bg-white border-2 border-[#A4C2C5] rounded mb-3 overflow-hidden shadow-sm">
-          <div class="bg-[#D8DDDE] px-3 py-2 border-b border-[#A4C2C5] flex justify-between items-center">
-            <span class="text-xs font-bold text-[#092F3D]">Filter by Branch, Supervisor & Farmer</span>
-            <span class="text-[10px] bg-sky-100 text-sky-800 border border-sky-300 font-bold px-2 py-0.5 rounded">25 Branches Active</span>
-          </div>
-          
           <div class="p-3 grid grid-cols-1 md:grid-cols-3 gap-3">
             <!-- 1. Branch Dropdown -->
             <div>
@@ -205,7 +199,7 @@
                 </div>
                 <div>
                   <label class="block font-bold text-black mb-1">Supervisor Name</label>
-                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-semibold text-slate-800" id="dispSupName">Ramesh Patil [E1870]</div>
+                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-semibold text-slate-800" id="dispSupName">Ramesh Patil</div>
                 </div>
               </div>
 
@@ -460,6 +454,15 @@
             </div>
             
             <div class="p-3 text-xs">
+              <!-- Live Distribution Matching Box -->
+              <div id="mortSummaryBox" class="border border-slate-300 bg-slate-50 rounded p-2.5 mb-3 flex items-center justify-between transition-colors">
+                <div>
+                  <span class="font-semibold text-slate-700">Total Mortality: <strong id="sumTotal" class="text-black">0</strong></span>
+                  <span class="ml-3 font-semibold text-slate-700">Distributed: <strong id="sumDist" class="text-black">0</strong></span>
+                </div>
+                <span id="mortStatusBadge" class="font-bold flex items-center gap-1 text-xs text-slate-500">No Mortality (0 birds)</span>
+              </div>
+
               <!-- Dynamic Rows -->
               <div id="mortRowsContainer" class="space-y-2">
                 <div class="flex items-center gap-1.5">
@@ -529,14 +532,14 @@
         <div class="bg-white border border-[#A4C2C5] rounded p-3 mb-3 shadow-sm">
           <div class="flex justify-between items-start">
             <div>
-              <div class="text-sm font-bold text-[#092F3D]" id="detailFarmerName">Babasaheb Patil (Farmer)</div>
+              <div class="text-sm font-bold text-[#092F3D]" id="detailFarmerName">Babasaheb Patil</div>
               <div class="text-[11px] text-slate-500" id="detailSubMeta">Branch: Kolhapur • Batch: B-2026-01 • Age: 20 days</div>
             </div>
             <span class="bg-emerald-100 border border-emerald-400 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">SAVED</span>
           </div>
           <div class="text-xs font-bold text-slate-700 mt-2 pt-2 border-t border-slate-100 flex justify-between">
-            <span>Transaction Date: <strong>19 Oct 2026</strong></span>
-            <span>Recorded By: <strong id="detailSupervisor">Ramesh Patil [E1870]</strong></span>
+            <span>Transaction Date: <strong id="detailDate">21 Oct 2026</strong></span>
+            <span>Recorded By: <strong id="detailSupervisor">Ramesh Patil</strong></span>
           </div>
         </div>
 
@@ -658,19 +661,81 @@
     ];
     const villages = ['Shirol', 'Hatkanangle', 'Karveer', 'Kagal', 'Gadhinglaj', 'Radhanagari', 'Panhala', 'Shahuwadi', 'Bavda', 'Ajara'];
 
-    // State Store (Starts empty of past fake records; only genuine today transactions)
+    // LocalStorage Keys for persistence across page refresh
+    const STORAGE_KEY_RECORDS = 'spbf_saved_records_v1';
+    const STORAGE_KEY_FARMERS_TODAY = 'spbf_saved_farmers_today_v1';
+    const STORAGE_KEY_DATE = 'spbf_active_date_v1';
+
+    function getFormattedTodayDate() {
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, '0');
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const month = monthNames[now.getMonth()];
+      const year = now.getFullYear();
+      return {
+        displayShort: `${day}/${String(now.getMonth() + 1).padStart(2, '0')}/${year}`,
+        displayMedium: `${day} ${month} ${year}`,
+        key: `${year}-${String(now.getMonth() + 1).padStart(2, '0')}-${day}`
+      };
+    }
+
+    // State Store (Survives page refreshes via localStorage)
     const state = {
       currentScreen: 'loginScreen',
       branch: 'KOLHAPUR',
       supervisor: supervisorsByBranch['KOLHAPUR'][0],
       farmer: null,
-      savedRecords: [], // Only stores records saved today!
+      savedRecords: [],
       savedFarmersToday: new Set(),
       todayRecordDetails: null
     };
 
+    function loadPersistedState() {
+      try {
+        const today = getFormattedTodayDate();
+        const storedDate = localStorage.getItem(STORAGE_KEY_DATE);
+
+        if (storedDate !== today.key) {
+          localStorage.setItem(STORAGE_KEY_DATE, today.key);
+          localStorage.setItem(STORAGE_KEY_FARMERS_TODAY, JSON.stringify([]));
+          state.savedFarmersToday = new Set();
+        } else {
+          const storedFarmers = localStorage.getItem(STORAGE_KEY_FARMERS_TODAY);
+          if (storedFarmers) {
+            state.savedFarmersToday = new Set(JSON.parse(storedFarmers));
+          }
+        }
+
+        const storedRecords = localStorage.getItem(STORAGE_KEY_RECORDS);
+        if (storedRecords) {
+          state.savedRecords = JSON.parse(storedRecords);
+        }
+      } catch (err) {
+        console.warn('LocalStorage load error:', err);
+      }
+    }
+
+    function persistState() {
+      try {
+        const today = getFormattedTodayDate();
+        localStorage.setItem(STORAGE_KEY_DATE, today.key);
+        localStorage.setItem(STORAGE_KEY_RECORDS, JSON.stringify(state.savedRecords));
+        localStorage.setItem(STORAGE_KEY_FARMERS_TODAY, JSON.stringify(Array.from(state.savedFarmersToday)));
+      } catch (err) {
+        console.warn('LocalStorage save error:', err);
+      }
+    }
+
     function init() {
-      // 1. Populate Branch Dropdown with all 25 branches
+      // 0. Update today's date from device/browser calendar
+      const today = getFormattedTodayDate();
+      const dispDateEl = document.getElementById('dispDate');
+      if (dispDateEl) dispDateEl.textContent = today.displayShort;
+
+      // 1. Load persisted data from localStorage
+      loadPersistedState();
+
+      // 2. Populate Branch Dropdown with all 25 branches
       const bSel = document.getElementById('branchSelect');
       bSel.innerHTML = '';
       branchesData.forEach(b => {
@@ -681,10 +746,10 @@
         bSel.appendChild(opt);
       });
 
-      // 2. Populate Supervisors for default branch
+      // 3. Populate Supervisors for default branch
       populateSupervisors(state.branch);
 
-      // 3. Render initial empty Broiler Records
+      // 4. Render Broiler Records from persisted state
       renderBroilerRecords();
     }
 
@@ -695,7 +760,7 @@
       sups.forEach((s, idx) => {
         const opt = document.createElement('option');
         opt.value = s.id;
-        opt.textContent = `${s.name} [${s.emp}]`;
+        opt.textContent = s.name; // Supervisor name only
         if (idx === 0) opt.selected = true;
         sSel.appendChild(opt);
       });
@@ -709,28 +774,18 @@
       const fSel = document.getElementById('farmerSelect');
       fSel.innerHTML = '<option value="">--select farmer--</option>';
 
-      if (!supervisorId) {
-        document.getElementById('farmerCountBadge').textContent = '0 Farmers';
-        return;
-      }
+      if (!supervisorId) return;
 
-      // Generate the ~25 farmers belonging to this supervisor
       const supCode = supervisorId.replace(/\D/g, '') || '100';
       farmerFirstNames.forEach((name, i) => {
         const fId = `FARM-${supCode}-${1001 + i}`;
-        const fCode = `FC-${1000 + i + 1}`;
-        const v = villages[i % villages.length];
         const opt = document.createElement('option');
         opt.value = fId;
-        opt.textContent = `${i + 1}. ${name} (${v}) [${fCode}]`;
+        opt.textContent = name; // Farmer name only (no numbers, no codes, no brackets)
         opt.dataset.name = name;
-        opt.dataset.village = v;
-        opt.dataset.code = fCode;
         fSel.appendChild(opt);
       });
 
-      document.getElementById('farmerCountBadge').textContent = '25 Farmers Available';
-      
       // Reset form view until a farmer is selected
       state.farmer = null;
       document.getElementById('formContainer').classList.add('hidden');
@@ -771,22 +826,20 @@
       
       state.farmer = {
         id: fId,
-        name: opt.dataset.name,
-        village: opt.dataset.village,
-        code: opt.dataset.code
+        name: opt.dataset.name
       };
 
       // Update screen displays
       document.getElementById('crumbFarmer').textContent = state.farmer.name;
       document.getElementById('crumbBatch').classList.remove('hidden');
-      document.getElementById('dispFarmerName').textContent = `${state.farmer.name} (${state.farmer.village})`;
+      document.getElementById('dispFarmerName').textContent = state.farmer.name;
       document.getElementById('formFarmerTag').textContent = `Farmer: ${state.farmer.name}`;
       document.getElementById('recordsFarmerTitle').textContent = `Farmer: ${state.farmer.name}`;
 
       banner.classList.add('hidden');
       form.classList.remove('hidden');
 
-      // Check if already saved today for this specific farmer
+      // Check if already saved today for this specific farmer (survives page refresh)
       if (state.savedFarmersToday.has(state.farmer.id)) {
         alertBox.classList.remove('hidden');
         saveBtn.disabled = true;
@@ -805,10 +858,8 @@
       document.getElementById('crumbBranch').textContent = state.branch;
 
       const supText = state.supervisor ? `${state.supervisor.name}` : '';
-      const empText = state.supervisor ? `[${state.supervisor.emp}]` : '';
-      document.getElementById('metaEmp').textContent = empText;
       document.getElementById('crumbSupervisor').textContent = supText;
-      document.getElementById('dispSupName').textContent = `${supText} ${empText}`;
+      document.getElementById('dispSupName').textContent = supText;
     }
 
     function focusHierarchy() {
@@ -822,16 +873,6 @@
     }
 
     function handleReasonQtyInput() {
-      // If todayMortInput is 0 or empty, sync with reason total for supervisor convenience
-      const mortInput = document.getElementById('todayMortInput');
-      let currentVal = parseInt(mortInput ? mortInput.value : 0, 10);
-      let distSum = 0;
-      document.querySelectorAll('.mort-qty').forEach(el => {
-        distSum += parseInt(el.value || 0, 10);
-      });
-      if ((isNaN(currentVal) || currentVal === 0) && distSum > 0) {
-        if (mortInput) mortInput.value = distSum;
-      }
       updateCalculations();
     }
 
@@ -885,7 +926,7 @@
     }
 
     function updateCalculations() {
-      // 1. Mortality Calculation: Supervisor typed Total vs Distributed Reasons
+      // 1. Mortality Matching Box Logic: Supervisor typed Total vs Distributed Reasons
       const mortInput = document.getElementById('todayMortInput');
       let totalMort = parseInt(mortInput ? mortInput.value : 0, 10);
       if (isNaN(totalMort) || totalMort < 0) totalMort = 0;
@@ -895,6 +936,49 @@
         const v = parseInt(el.value || 0, 10);
         if (!isNaN(v) && v > 0) distSum += v;
       });
+
+      const sumTotalEl = document.getElementById('sumTotal');
+      const sumDistEl = document.getElementById('sumDist');
+      if (sumTotalEl) sumTotalEl.textContent = totalMort;
+      if (sumDistEl) sumDistEl.textContent = distSum;
+
+      const box = document.getElementById('mortSummaryBox');
+      const badge = document.getElementById('mortStatusBadge');
+
+      if (box && badge) {
+        if (totalMort > 0) {
+          if (distSum === totalMort) {
+            // MATCHED / EQUAL: Green block displayed!
+            box.className = 'bg-emerald-50 border-2 border-emerald-500 rounded p-2.5 mb-3 flex items-center justify-between transition-colors shadow-sm';
+            badge.className = 'text-emerald-700 font-bold flex items-center gap-1';
+            badge.innerHTML = '✓ Balanced (Equal)';
+          } else if (distSum < totalMort) {
+            // NOT YET BALANCED: Amber block awaiting reasons
+            const rem = totalMort - distSum;
+            box.className = 'bg-amber-50 border-2 border-amber-500 rounded p-2.5 mb-3 flex items-center justify-between transition-colors shadow-sm';
+            badge.className = 'text-amber-800 font-bold flex items-center gap-1';
+            badge.innerHTML = `⚠️ Remaining: ${rem} to distribute`;
+          } else {
+            // EXCEEDED: Red block
+            const over = distSum - totalMort;
+            box.className = 'bg-rose-50 border-2 border-rose-500 rounded p-2.5 mb-3 flex items-center justify-between transition-colors shadow-sm';
+            badge.className = 'text-rose-700 font-bold flex items-center gap-1';
+            badge.innerHTML = `⚠️ Exceeds Total by ${over}`;
+          }
+        } else {
+          if (distSum === 0) {
+            // Both are 0
+            box.className = 'bg-slate-50 border border-slate-300 rounded p-2.5 mb-3 flex items-center justify-between text-slate-600 transition-colors';
+            badge.className = 'text-slate-500 font-semibold';
+            badge.innerHTML = 'No Mortality (0 birds)';
+          } else {
+            // Reasons entered but total is 0
+            box.className = 'bg-rose-50 border-2 border-rose-500 rounded p-2.5 mb-3 flex items-center justify-between transition-colors shadow-sm';
+            badge.className = 'text-rose-700 font-bold flex items-center gap-1';
+            badge.innerHTML = `⚠️ Exceeds Total by ${distSum}`;
+          }
+        }
+      }
 
       // Farm Total Mortality = Previous cumulative (37) + Today Total Mortality
       const farmTotalMortEl = document.getElementById('dispFarmTotalMort');
@@ -1006,15 +1090,15 @@
         mortBreakdown.push({ reason, qty });
       });
 
+      const today = getFormattedTodayDate();
       const newRecord = {
         id: 'REC-' + Date.now(),
         farmerId: state.farmer.id,
         farmerName: state.farmer.name,
-        village: state.farmer.village,
         branch: state.branch,
         supervisor: state.supervisor.name,
-        empId: state.supervisor.emp,
-        date: '19 Oct 2026',
+        date: today.displayMedium,
+        dateKey: today.key,
         age: 20,
         abw: parseInt(abw, 10),
         culls: culls,
@@ -1027,9 +1111,10 @@
         badge: 'SAVED'
       };
 
-      // Save to state
+      // Save to state & persist to localStorage (survives page refresh)
       state.savedRecords.unshift(newRecord);
       state.savedFarmersToday.add(state.farmer.id);
+      persistState();
 
       // Confirmation modal
       if (confirm(`✅ Saved Successfully!\n\nDaily transaction for Farmer ${state.farmer.name} has been recorded.\n\nPress OK to view Broiler Record, or Cancel to stay.`)) {
@@ -1069,7 +1154,7 @@
           <div class="flex justify-between items-center pb-2 border-b border-slate-100 mb-2">
             <div>
               <strong class="text-sm text-black">${r.farmerName}</strong>
-              <div class="text-[10px] text-slate-500">${r.village} • Supervisor: ${r.supervisor} • Date: ${r.date}</div>
+              <div class="text-[10px] text-slate-500">Supervisor: ${r.supervisor} • Date: ${r.date}</div>
             </div>
             <span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded">
               ${r.badge}
@@ -1097,9 +1182,11 @@
       const r = state.savedRecords.find(x => x.id === recordId);
       if (!r) return;
 
-      document.getElementById('detailFarmerName').textContent = `${r.farmerName} (${r.village})`;
+      document.getElementById('detailFarmerName').textContent = r.farmerName;
       document.getElementById('detailSubMeta').textContent = `Branch: ${r.branch} • Batch: B-2026-01 • Age: ${r.age} days`;
-      document.getElementById('detailSupervisor').textContent = `${r.supervisor} [${r.empId}]`;
+      document.getElementById('detailSupervisor').textContent = r.supervisor;
+      const detailDateEl = document.getElementById('detailDate');
+      if (detailDateEl) detailDateEl.textContent = r.date;
 
       document.getElementById('detailABW').textContent = `${r.abw} g`;
       document.getElementById('detailCulls').textContent = `${r.culls} birds`;
