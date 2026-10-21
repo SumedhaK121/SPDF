@@ -78,48 +78,6 @@ export default function MortalitySection({
           </View>
         )}
 
-        {/* Live Summary Box */}
-        <View
-          style={[
-            styles.summaryBox,
-            summary.isBalanced && summary.totalMortality > 0
-              ? styles.summaryBoxValid
-              : summary.totalMortality > 0 && !summary.isBalanced
-              ? styles.summaryBoxInvalid
-              : null,
-          ]}
-        >
-          <View style={styles.summaryStats}>
-            <Text style={styles.summaryItem}>
-              Total mortality: <Text style={styles.summaryValue}>{summary.totalMortality}</Text>
-            </Text>
-            <Text style={styles.summaryItem}>
-              Distributed: <Text style={styles.summaryValue}>{summary.distributedMortality}</Text>
-            </Text>
-            {mode === 'entered' && (
-              <Text style={styles.summaryItem}>
-                Remaining: <Text style={styles.summaryValue}>{summary.remainingMortality}</Text>
-              </Text>
-            )}
-          </View>
-
-          {summary.totalMortality > 0 && (
-            <View style={styles.statusIndicator}>
-              {summary.isBalanced ? (
-                <View style={styles.balancedBadge}>
-                  <Ionicons name="checkmark-circle" size={18} color="#28A745" />
-                  <Text style={styles.balancedText}>✓ Balanced</Text>
-                </View>
-              ) : (
-                <View style={styles.unbalancedBadge}>
-                  <Ionicons name="alert-circle" size={18} color="#DC3545" />
-                  <Text style={styles.unbalancedText}>Check Distribution</Text>
-                </View>
-              )}
-            </View>
-          )}
-        </View>
-
         {/* Rows Table Header */}
         <View style={styles.tableHeader}>
           <Text style={[styles.headerCol, styles.colSr]}>Sr.</Text>

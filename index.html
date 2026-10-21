@@ -460,15 +460,6 @@
             </div>
             
             <div class="p-3 text-xs">
-              <!-- Live Summary Box with Green Checkmark -->
-              <div id="mortSummaryBox" class="bg-emerald-50 border-2 border-emerald-500 rounded p-2 mb-3 flex items-center justify-between">
-                <div>
-                  <span class="font-semibold text-slate-700">Total Mortality: <strong id="sumTotal" class="text-black">0</strong></span>
-                  <span class="ml-2 font-semibold text-slate-700">Distributed: <strong id="sumDist" class="text-black">0</strong></span>
-                </div>
-                <span id="mortStatusBadge" class="text-emerald-700 font-bold flex items-center gap-1">✓ Balanced</span>
-              </div>
-
               <!-- Dynamic Rows -->
               <div id="mortRowsContainer" class="space-y-2">
                 <div class="flex items-center gap-1.5">
@@ -904,31 +895,6 @@
         const v = parseInt(el.value || 0, 10);
         if (!isNaN(v) && v > 0) distSum += v;
       });
-
-      const sumTotalEl = document.getElementById('sumTotal');
-      const sumDistEl = document.getElementById('sumDist');
-      if (sumTotalEl) sumTotalEl.textContent = totalMort;
-      if (sumDistEl) sumDistEl.textContent = distSum;
-
-      const box = document.getElementById('mortSummaryBox');
-      const badge = document.getElementById('mortStatusBadge');
-      if (box && badge) {
-        if (totalMort === distSum) {
-          box.className = 'bg-emerald-50 border-2 border-emerald-500 rounded p-2 mb-3 flex items-center justify-between';
-          badge.className = 'text-emerald-700 font-bold flex items-center gap-1';
-          badge.innerHTML = '✓ Balanced';
-        } else if (distSum < totalMort) {
-          const rem = totalMort - distSum;
-          box.className = 'bg-amber-50 border-2 border-amber-500 rounded p-2 mb-3 flex items-center justify-between';
-          badge.className = 'text-amber-700 font-bold flex items-center gap-1';
-          badge.innerHTML = `⚠️ Remaining: ${rem}`;
-        } else {
-          const over = distSum - totalMort;
-          box.className = 'bg-rose-50 border-2 border-rose-500 rounded p-2 mb-3 flex items-center justify-between';
-          badge.className = 'text-rose-700 font-bold flex items-center gap-1';
-          badge.innerHTML = `⚠️ Exceeds Total by ${over}`;
-        }
-      }
 
       // Farm Total Mortality = Previous cumulative (37) + Today Total Mortality
       const farmTotalMortEl = document.getElementById('dispFarmTotalMort');
