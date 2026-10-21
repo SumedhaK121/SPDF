@@ -55,11 +55,12 @@ function generateFictionalSampleData() {
   console.log('============================================================\n');
 
   const branchNames = [
-    'KOLHAPUR', 'SANGLI', 'SATARA', 'PUNE', 'SOLAPUR',
-    'NASHIK', 'AHMEDNAGAR', 'AURANGABAD', 'JALGAON', 'DHULE',
-    'RATNAGIRI', 'SINDHUDURG', 'BELAGAVI', 'NIPANI', 'BAGALKOT',
-    'VIJAYAPURA', 'DHARWAD', 'HUBBALLI', 'NANDED', 'LATUR',
-    'OSMANABAD', 'BEED', 'PARBHANI', 'JALNA', 'AMRAVATI'
+    'BHIGWAN', 'BHOR', 'CHAKAN', 'DHULE', 'HINJAWADI',
+    'ISHWARPUR', 'KALWAN', 'KAVATHE MAHANKAL', 'KOLHAPUR', 'NARAYANGAON',
+    'NASHIK', 'NIRA', 'PIMPALGAON', 'PIMPALNER', 'RAHATA',
+    'RAJGURUNAGAR', 'SANGAMNER', 'SASWAD', 'SATARA', 'SHIKRAPUR',
+    'SHIRUR', 'SINNER', 'SUPA', 'TALEGAON', 'URULI KANCHAN',
+    'WAI', 'YEOLA'
   ];
 
   const supervisorFirstNames = [

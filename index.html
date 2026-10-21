@@ -636,41 +636,152 @@
 
   <!-- JavaScript Simulator & Hierarchy Engine -->
   <script>
-    // 25 Active Branches
+    // 27 Active SPBF Branches
     const branchesData = [
-      'KOLHAPUR', 'SANGLI', 'SATARA', 'PUNE', 'SOLAPUR',
-      'NASHIK', 'AHMEDNAGAR', 'AURANGABAD', 'JALGAON', 'DHULE',
-      'RATNAGIRI', 'SINDHUDURG', 'BELAGAVI', 'NIPANI', 'BAGALKOT',
-      'VIJAYAPURA', 'DHARWAD', 'HUBBALLI', 'NANDED', 'LATUR',
-      'OSMANABAD', 'BEED', 'PARBHANI', 'JALNA', 'AMRAVATI'
+      'BHIGWAN', 'BHOR', 'CHAKAN', 'DHULE', 'HINJAWADI',
+      'ISHWARPUR', 'KALWAN', 'KAVATHE MAHANKAL', 'KOLHAPUR', 'NARAYANGAON',
+      'NASHIK', 'NIRA', 'PIMPALGAON', 'PIMPALNER', 'RAHATA',
+      'RAJGURUNAGAR', 'SANGAMNER', 'SASWAD', 'SATARA', 'SHIKRAPUR',
+      'SHIRUR', 'SINNER', 'SUPA', 'TALEGAON', 'URULI KANCHAN',
+      'WAI', 'YEOLA'
     ];
 
-    // Supervisors mapped per branch (each branch has its own supervisors)
+    // Supervisors mapped per branch (each branch has its own dedicated supervisors)
     const supervisorsByBranch = {
       'KOLHAPUR': [
         { id: 'E1870', name: 'SANDIP GUNDU PATIL', emp: 'E1870' },
         { id: 'E1871', name: 'Ramesh Patil', emp: 'E1871' },
         { id: 'E1872', name: 'Suresh Deshmukh', emp: 'E1872' }
       ],
-      'SANGLI': [
-        { id: 'E1873', name: 'Anil Kulkarni', emp: 'E1873' },
-        { id: 'E1874', name: 'Pravin Chavan', emp: 'E1874' },
-        { id: 'E1875', name: 'Mahesh Mane', emp: 'E1875' }
+      'BHIGWAN': [
+        { id: 'E1873', name: 'Santosh Shinde', emp: 'E1873' },
+        { id: 'E1874', name: 'Nitin Jadhav', emp: 'E1874' },
+        { id: 'E1875', name: 'Pravin Pawar', emp: 'E1875' }
+      ],
+      'BHOR': [
+        { id: 'E1876', name: 'Tanaji Jagtap', emp: 'E1876' },
+        { id: 'E1877', name: 'Ganesh Kadam', emp: 'E1877' },
+        { id: 'E1878', name: 'Rahul Malusare', emp: 'E1878' }
+      ],
+      'CHAKAN': [
+        { id: 'E1879', name: 'Sachin Thite', emp: 'E1879' },
+        { id: 'E1880', name: 'Amol More', emp: 'E1880' },
+        { id: 'E1881', name: 'Deepak Walunj', emp: 'E1881' }
+      ],
+      'DHULE': [
+        { id: 'E1882', name: 'Nilesh Patil', emp: 'E1882' },
+        { id: 'E1883', name: 'Bhushan Ahire', emp: 'E1883' },
+        { id: 'E1884', name: 'Chetan Sonawane', emp: 'E1884' }
+      ],
+      'HINJAWADI': [
+        { id: 'E1885', name: 'Vishal Sutar', emp: 'E1885' },
+        { id: 'E1886', name: 'Rohan Alhat', emp: 'E1886' },
+        { id: 'E1887', name: 'Sagar Gaikwad', emp: 'E1887' }
+      ],
+      'ISHWARPUR': [
+        { id: 'E1888', name: 'Mahesh Patil', emp: 'E1888' },
+        { id: 'E1889', name: 'Abhijit Sawant', emp: 'E1889' },
+        { id: 'E1890', name: 'Prashant Koli', emp: 'E1890' }
+      ],
+      'KALWAN': [
+        { id: 'E1891', name: 'Ravindra Deore', emp: 'E1891' },
+        { id: 'E1892', name: 'Pankaj Pagar', emp: 'E1892' },
+        { id: 'E1893', name: 'Hemant Gangurde', emp: 'E1893' }
+      ],
+      'KAVATHE MAHANKAL': [
+        { id: 'E1894', name: 'Sanjay Shinde', emp: 'E1894' },
+        { id: 'E1895', name: 'Vijay Shete', emp: 'E1895' },
+        { id: 'E1896', name: 'Kiran Salunkhe', emp: 'E1896' }
+      ],
+      'NARAYANGAON': [
+        { id: 'E1897', name: 'Balasaheb Kolhe', emp: 'E1897' },
+        { id: 'E1898', name: 'Dnyaneshwar Bhor', emp: 'E1898' },
+        { id: 'E1899', name: 'Santosh Meher', emp: 'E1899' }
+      ],
+      'NASHIK': [
+        { id: 'E1900', name: 'Vinod Borse', emp: 'E1900' },
+        { id: 'E1901', name: 'Sandeep Wagh', emp: 'E1901' },
+        { id: 'E1902', name: 'Pravin Jadhav', emp: 'E1902' }
+      ],
+      'NIRA': [
+        { id: 'E1903', name: 'Dattatray Jagtap', emp: 'E1903' },
+        { id: 'E1904', name: 'Anil Chavan', emp: 'E1904' },
+        { id: 'E1905', name: 'Sunil Mane', emp: 'E1905' }
+      ],
+      'PIMPALGAON': [
+        { id: 'E1906', name: 'Manoj More', emp: 'E1906' },
+        { id: 'E1907', name: 'Sachin Bankar', emp: 'E1907' },
+        { id: 'E1908', name: 'Kailas Shinde', emp: 'E1908' }
+      ],
+      'PIMPALNER': [
+        { id: 'E1909', name: 'Yogesh Chaure', emp: 'E1909' },
+        { id: 'E1910', name: 'Deepak Bagul', emp: 'E1910' },
+        { id: 'E1911', name: 'Sunil Bedse', emp: 'E1911' }
+      ],
+      'RAHATA': [
+        { id: 'E1912', name: 'Ganesh Vikhe', emp: 'E1912' },
+        { id: 'E1913', name: 'Sanjay Tambe', emp: 'E1913' },
+        { id: 'E1914', name: 'Nitin Shinde', emp: 'E1914' }
+      ],
+      'RAJGURUNAGAR': [
+        { id: 'E1915', name: 'Sagar Sandbhor', emp: 'E1915' },
+        { id: 'E1916', name: 'Rahul Daundkar', emp: 'E1916' },
+        { id: 'E1917', name: 'Mangesh Tiwate', emp: 'E1917' }
+      ],
+      'SANGAMNER': [
+        { id: 'E1918', name: 'Balasaheb Thorat', emp: 'E1918' },
+        { id: 'E1919', name: 'Pravin Navale', emp: 'E1919' },
+        { id: 'E1920', name: 'Amol Gunjal', emp: 'E1920' }
+      ],
+      'SASWAD': [
+        { id: 'E1921', name: 'Somnath Jagtap', emp: 'E1921' },
+        { id: 'E1922', name: 'Vijay Shivarkar', emp: 'E1922' },
+        { id: 'E1923', name: 'Sagar Memane', emp: 'E1923' }
       ],
       'SATARA': [
-        { id: 'E1876', name: 'Vikas Bhosale', emp: 'E1876' },
-        { id: 'E1877', name: 'Sachin Jagtap', emp: 'E1877' },
-        { id: 'E1878', name: 'Nitin Salunkhe', emp: 'E1878' }
+        { id: 'E1924', name: 'Vikas Bhosale', emp: 'E1924' },
+        { id: 'E1925', name: 'Sachin Jagtap', emp: 'E1925' },
+        { id: 'E1926', name: 'Nitin Salunkhe', emp: 'E1926' }
       ],
-      'PUNE': [
-        { id: 'E1879', name: 'Amol More', emp: 'E1879' },
-        { id: 'E1880', name: 'Ganesh Gaikwad', emp: 'E1880' },
-        { id: 'E1881', name: 'Rahul Thite', emp: 'E1881' }
+      'SHIKRAPUR': [
+        { id: 'E1927', name: 'Sandip Raut', emp: 'E1927' },
+        { id: 'E1928', name: 'Kailas Bhujbal', emp: 'E1928' },
+        { id: 'E1929', name: 'Ganesh Dhumal', emp: 'E1929' }
       ],
-      'SOLAPUR': [
-        { id: 'E1882', name: 'Kiran Kore', emp: 'E1882' },
-        { id: 'E1883', name: 'Sunil Swami', emp: 'E1883' },
-        { id: 'E1884', name: 'Vijay Raut', emp: 'E1884' }
+      'SHIRUR': [
+        { id: 'E1930', name: 'Atul Darekar', emp: 'E1930' },
+        { id: 'E1931', name: 'Nilesh Ghode', emp: 'E1931' },
+        { id: 'E1932', name: 'Swapnil Kute', emp: 'E1932' }
+      ],
+      'SINNER': [
+        { id: 'E1933', name: 'Somnath Kokate', emp: 'E1933' },
+        { id: 'E1934', name: 'Jitendra Avhad', emp: 'E1934' },
+        { id: 'E1935', name: 'Kiran Sanap', emp: 'E1935' }
+      ],
+      'SUPA': [
+        { id: 'E1936', name: 'Popat Pawar', emp: 'E1936' },
+        { id: 'E1937', name: 'Santosh Date', emp: 'E1937' },
+        { id: 'E1938', name: 'Rahul Gorde', emp: 'E1938' }
+      ],
+      'TALEGAON': [
+        { id: 'E1939', name: 'Swapnil Bhegade', emp: 'E1939' },
+        { id: 'E1940', name: 'Rohit Shinde', emp: 'E1940' },
+        { id: 'E1941', name: 'Amit Kadu', emp: 'E1941' }
+      ],
+      'URULI KANCHAN': [
+        { id: 'E1942', name: 'Amit Kanchan', emp: 'E1942' },
+        { id: 'E1943', name: 'Sachin Tupe', emp: 'E1943' },
+        { id: 'E1944', name: 'Rahul Choudhari', emp: 'E1944' }
+      ],
+      'WAI': [
+        { id: 'E1945', name: 'Prashant Pisal', emp: 'E1945' },
+        { id: 'E1946', name: 'Anil Shinde', emp: 'E1946' },
+        { id: 'E1947', name: 'Manoj Jadhav', emp: 'E1947' }
+      ],
+      'YEOLA': [
+        { id: 'E1948', name: 'Kishor Darade', emp: 'E1948' },
+        { id: 'E1949', name: 'Sanjay Shinde', emp: 'E1949' },
+        { id: 'E1950', name: 'Ravindra Jadhav', emp: 'E1950' }
       ]
     };
 

@@ -82,10 +82,10 @@ async function main() {
   // ---------------------------------------------------------
   console.log(bold('\n1. Master Data & Hierarchy Structure:'));
 
-  runTest('Master data counts: 25 branches, 75 supervisors (3/branch), 1,875 farms (25/sup)', () => {
-    assert.strictEqual(branches.length, 25, 'Should have exactly 25 branches');
-    assert.strictEqual(supervisors.length, 75, 'Should have 75 supervisors');
-    assert.strictEqual(farms.length, 1875, 'Should have 1,875 farms');
+  runTest('Master data counts: 27 branches, 81 supervisors (3/branch), 2,025 farms (25/sup)', () => {
+    assert.strictEqual(branches.length, 27, 'Should have exactly 27 branches');
+    assert.strictEqual(supervisors.length, 81, 'Should have 81 supervisors');
+    assert.strictEqual(farms.length, 2025, 'Should have 2,025 farms');
   });
 
   runTest('No orphaned records: every farm has a valid supervisor; every supervisor has a valid branch', () => {

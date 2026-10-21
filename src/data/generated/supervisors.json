@@ -4,7 +4,7 @@
     "employeeId": "E1870",
     "name": "Suresh Deshmukh",
     "branchId": "BR-01",
-    "branchName": "KOLHAPUR",
+    "branchName": "BHIGWAN",
     "phone": "+91 9810001871",
     "isSampleData": true
   },
@@ -13,7 +13,7 @@
     "employeeId": "E1871",
     "name": "Santosh Shinde",
     "branchId": "BR-01",
-    "branchName": "KOLHAPUR",
+    "branchName": "BHIGWAN",
     "phone": "+91 9810001872",
     "isSampleData": true
   },
@@ -22,7 +22,7 @@
     "employeeId": "E1872",
     "name": "Sachin Jadhav",
     "branchId": "BR-01",
-    "branchName": "KOLHAPUR",
+    "branchName": "BHIGWAN",
     "phone": "+91 9810001873",
     "isSampleData": true
   },
@@ -31,7 +31,7 @@
     "employeeId": "E1873",
     "name": "Anil Shinde",
     "branchId": "BR-02",
-    "branchName": "SANGLI",
+    "branchName": "BHOR",
     "phone": "+91 9810001874",
     "isSampleData": true
   },
@@ -40,7 +40,7 @@
     "employeeId": "E1874",
     "name": "Sunil Jadhav",
     "branchId": "BR-02",
-    "branchName": "SANGLI",
+    "branchName": "BHOR",
     "phone": "+91 9810001875",
     "isSampleData": true
   },
@@ -49,7 +49,7 @@
     "employeeId": "E1875",
     "name": "Vijay Kadam",
     "branchId": "BR-02",
-    "branchName": "SANGLI",
+    "branchName": "BHOR",
     "phone": "+91 9810001876",
     "isSampleData": true
   },
@@ -58,7 +58,7 @@
     "employeeId": "E1876",
     "name": "Pravin Jadhav",
     "branchId": "BR-03",
-    "branchName": "SATARA",
+    "branchName": "CHAKAN",
     "phone": "+91 9810001877",
     "isSampleData": true
   },
@@ -67,7 +67,7 @@
     "employeeId": "E1877",
     "name": "Ganesh Kadam",
     "branchId": "BR-03",
-    "branchName": "SATARA",
+    "branchName": "CHAKAN",
     "phone": "+91 9810001878",
     "isSampleData": true
   },
@@ -76,7 +76,7 @@
     "employeeId": "E1878",
     "name": "Mahesh Chavan",
     "branchId": "BR-03",
-    "branchName": "SATARA",
+    "branchName": "CHAKAN",
     "phone": "+91 9810001879",
     "isSampleData": true
   },
@@ -85,7 +85,7 @@
     "employeeId": "E1879",
     "name": "Rajesh Kadam",
     "branchId": "BR-04",
-    "branchName": "PUNE",
+    "branchName": "DHULE",
     "phone": "+91 9810001880",
     "isSampleData": true
   },
@@ -94,7 +94,7 @@
     "employeeId": "E1880",
     "name": "Vikas Chavan",
     "branchId": "BR-04",
-    "branchName": "PUNE",
+    "branchName": "DHULE",
     "phone": "+91 9810001881",
     "isSampleData": true
   },
@@ -103,7 +103,7 @@
     "employeeId": "E1881",
     "name": "Amol Pawar",
     "branchId": "BR-04",
-    "branchName": "PUNE",
+    "branchName": "DHULE",
     "phone": "+91 9810001882",
     "isSampleData": true
   },
@@ -112,7 +112,7 @@
     "employeeId": "E1882",
     "name": "Dinesh Chavan",
     "branchId": "BR-05",
-    "branchName": "SOLAPUR",
+    "branchName": "HINJAWADI",
     "phone": "+91 9810001883",
     "isSampleData": true
   },
@@ -121,7 +121,7 @@
     "employeeId": "E1883",
     "name": "Nitin Pawar",
     "branchId": "BR-05",
-    "branchName": "SOLAPUR",
+    "branchName": "HINJAWADI",
     "phone": "+91 9810001884",
     "isSampleData": true
   },
@@ -130,7 +130,7 @@
     "employeeId": "E1884",
     "name": "Rahul More",
     "branchId": "BR-05",
-    "branchName": "SOLAPUR",
+    "branchName": "HINJAWADI",
     "phone": "+91 9810001885",
     "isSampleData": true
   },
@@ -139,7 +139,7 @@
     "employeeId": "E1885",
     "name": "Prashant Pawar",
     "branchId": "BR-06",
-    "branchName": "NASHIK",
+    "branchName": "ISHWARPUR",
     "phone": "+91 9810001886",
     "isSampleData": true
   },
@@ -148,7 +148,7 @@
     "employeeId": "E1886",
     "name": "Deepak More",
     "branchId": "BR-06",
-    "branchName": "NASHIK",
+    "branchName": "ISHWARPUR",
     "phone": "+91 9810001887",
     "isSampleData": true
   },
@@ -157,7 +157,7 @@
     "employeeId": "E1887",
     "name": "Sanjay Gaikwad",
     "branchId": "BR-06",
-    "branchName": "NASHIK",
+    "branchName": "ISHWARPUR",
     "phone": "+91 9810001888",
     "isSampleData": true
   },
@@ -166,7 +166,7 @@
     "employeeId": "E1888",
     "name": "Manoj More",
     "branchId": "BR-07",
-    "branchName": "AHMEDNAGAR",
+    "branchName": "KALWAN",
     "phone": "+91 9810001889",
     "isSampleData": true
   },
@@ -175,7 +175,7 @@
     "employeeId": "E1889",
     "name": "Ramesh Gaikwad",
     "branchId": "BR-07",
-    "branchName": "AHMEDNAGAR",
+    "branchName": "KALWAN",
     "phone": "+91 9810001890",
     "isSampleData": true
   },
@@ -184,7 +184,7 @@
     "employeeId": "E1890",
     "name": "Suresh Bhosale",
     "branchId": "BR-07",
-    "branchName": "AHMEDNAGAR",
+    "branchName": "KALWAN",
     "phone": "+91 9810001891",
     "isSampleData": true
   },
@@ -193,7 +193,7 @@
     "employeeId": "E1891",
     "name": "Santosh Gaikwad",
     "branchId": "BR-08",
-    "branchName": "AURANGABAD",
+    "branchName": "KAVATHE MAHANKAL",
     "phone": "+91 9810001892",
     "isSampleData": true
   },
@@ -202,7 +202,7 @@
     "employeeId": "E1892",
     "name": "Sachin Bhosale",
     "branchId": "BR-08",
-    "branchName": "AURANGABAD",
+    "branchName": "KAVATHE MAHANKAL",
     "phone": "+91 9810001893",
     "isSampleData": true
   },
@@ -211,7 +211,7 @@
     "employeeId": "E1893",
     "name": "Anil Patil",
     "branchId": "BR-08",
-    "branchName": "AURANGABAD",
+    "branchName": "KAVATHE MAHANKAL",
     "phone": "+91 9810001894",
     "isSampleData": true
   },
@@ -220,7 +220,7 @@
     "employeeId": "E1894",
     "name": "Sunil Bhosale",
     "branchId": "BR-09",
-    "branchName": "JALGAON",
+    "branchName": "KOLHAPUR",
     "phone": "+91 9810001895",
     "isSampleData": true
   },
@@ -229,7 +229,7 @@
     "employeeId": "E1895",
     "name": "Vijay Patil",
     "branchId": "BR-09",
-    "branchName": "JALGAON",
+    "branchName": "KOLHAPUR",
     "phone": "+91 9810001896",
     "isSampleData": true
   },
@@ -238,7 +238,7 @@
     "employeeId": "E1896",
     "name": "Pravin Deshmukh",
     "branchId": "BR-09",
-    "branchName": "JALGAON",
+    "branchName": "KOLHAPUR",
     "phone": "+91 9810001897",
     "isSampleData": true
   },
@@ -247,7 +247,7 @@
     "employeeId": "E1897",
     "name": "Ganesh Patil",
     "branchId": "BR-10",
-    "branchName": "DHULE",
+    "branchName": "NARAYANGAON",
     "phone": "+91 9810001898",
     "isSampleData": true
   },
@@ -256,7 +256,7 @@
     "employeeId": "E1898",
     "name": "Mahesh Deshmukh",
     "branchId": "BR-10",
-    "branchName": "DHULE",
+    "branchName": "NARAYANGAON",
     "phone": "+91 9810001899",
     "isSampleData": true
   },
@@ -265,7 +265,7 @@
     "employeeId": "E1899",
     "name": "Rajesh Shinde",
     "branchId": "BR-10",
-    "branchName": "DHULE",
+    "branchName": "NARAYANGAON",
     "phone": "+91 9810001900",
     "isSampleData": true
   },
@@ -274,7 +274,7 @@
     "employeeId": "E1900",
     "name": "Vikas Deshmukh",
     "branchId": "BR-11",
-    "branchName": "RATNAGIRI",
+    "branchName": "NASHIK",
     "phone": "+91 9810001901",
     "isSampleData": true
   },
@@ -283,7 +283,7 @@
     "employeeId": "E1901",
     "name": "Amol Shinde",
     "branchId": "BR-11",
-    "branchName": "RATNAGIRI",
+    "branchName": "NASHIK",
     "phone": "+91 9810001902",
     "isSampleData": true
   },
@@ -292,7 +292,7 @@
     "employeeId": "E1902",
     "name": "Dinesh Jadhav",
     "branchId": "BR-11",
-    "branchName": "RATNAGIRI",
+    "branchName": "NASHIK",
     "phone": "+91 9810001903",
     "isSampleData": true
   },
@@ -301,7 +301,7 @@
     "employeeId": "E1903",
     "name": "Nitin Shinde",
     "branchId": "BR-12",
-    "branchName": "SINDHUDURG",
+    "branchName": "NIRA",
     "phone": "+91 9810001904",
     "isSampleData": true
   },
@@ -310,7 +310,7 @@
     "employeeId": "E1904",
     "name": "Rahul Jadhav",
     "branchId": "BR-12",
-    "branchName": "SINDHUDURG",
+    "branchName": "NIRA",
     "phone": "+91 9810001905",
     "isSampleData": true
   },
@@ -319,7 +319,7 @@
     "employeeId": "E1905",
     "name": "Prashant Kadam",
     "branchId": "BR-12",
-    "branchName": "SINDHUDURG",
+    "branchName": "NIRA",
     "phone": "+91 9810001906",
     "isSampleData": true
   },
@@ -328,7 +328,7 @@
     "employeeId": "E1906",
     "name": "Deepak Jadhav",
     "branchId": "BR-13",
-    "branchName": "BELAGAVI",
+    "branchName": "PIMPALGAON",
     "phone": "+91 9810001907",
     "isSampleData": true
   },
@@ -337,7 +337,7 @@
     "employeeId": "E1907",
     "name": "Sanjay Kadam",
     "branchId": "BR-13",
-    "branchName": "BELAGAVI",
+    "branchName": "PIMPALGAON",
     "phone": "+91 9810001908",
     "isSampleData": true
   },
@@ -346,7 +346,7 @@
     "employeeId": "E1908",
     "name": "Manoj Chavan",
     "branchId": "BR-13",
-    "branchName": "BELAGAVI",
+    "branchName": "PIMPALGAON",
     "phone": "+91 9810001909",
     "isSampleData": true
   },
@@ -355,7 +355,7 @@
     "employeeId": "E1909",
     "name": "Ramesh Kadam",
     "branchId": "BR-14",
-    "branchName": "NIPANI",
+    "branchName": "PIMPALNER",
     "phone": "+91 9810001910",
     "isSampleData": true
   },
@@ -364,7 +364,7 @@
     "employeeId": "E1910",
     "name": "Suresh Chavan",
     "branchId": "BR-14",
-    "branchName": "NIPANI",
+    "branchName": "PIMPALNER",
     "phone": "+91 9810001911",
     "isSampleData": true
   },
@@ -373,7 +373,7 @@
     "employeeId": "E1911",
     "name": "Santosh Pawar",
     "branchId": "BR-14",
-    "branchName": "NIPANI",
+    "branchName": "PIMPALNER",
     "phone": "+91 9810001912",
     "isSampleData": true
   },
@@ -382,7 +382,7 @@
     "employeeId": "E1912",
     "name": "Sachin Chavan",
     "branchId": "BR-15",
-    "branchName": "BAGALKOT",
+    "branchName": "RAHATA",
     "phone": "+91 9810001913",
     "isSampleData": true
   },
@@ -391,7 +391,7 @@
     "employeeId": "E1913",
     "name": "Anil Pawar",
     "branchId": "BR-15",
-    "branchName": "BAGALKOT",
+    "branchName": "RAHATA",
     "phone": "+91 9810001914",
     "isSampleData": true
   },
@@ -400,7 +400,7 @@
     "employeeId": "E1914",
     "name": "Sunil More",
     "branchId": "BR-15",
-    "branchName": "BAGALKOT",
+    "branchName": "RAHATA",
     "phone": "+91 9810001915",
     "isSampleData": true
   },
@@ -409,7 +409,7 @@
     "employeeId": "E1915",
     "name": "Vijay Pawar",
     "branchId": "BR-16",
-    "branchName": "VIJAYAPURA",
+    "branchName": "RAJGURUNAGAR",
     "phone": "+91 9810001916",
     "isSampleData": true
   },
@@ -418,7 +418,7 @@
     "employeeId": "E1916",
     "name": "Pravin More",
     "branchId": "BR-16",
-    "branchName": "VIJAYAPURA",
+    "branchName": "RAJGURUNAGAR",
     "phone": "+91 9810001917",
     "isSampleData": true
   },
@@ -427,7 +427,7 @@
     "employeeId": "E1917",
     "name": "Ganesh Gaikwad",
     "branchId": "BR-16",
-    "branchName": "VIJAYAPURA",
+    "branchName": "RAJGURUNAGAR",
     "phone": "+91 9810001918",
     "isSampleData": true
   },
@@ -436,7 +436,7 @@
     "employeeId": "E1918",
     "name": "Mahesh More",
     "branchId": "BR-17",
-    "branchName": "DHARWAD",
+    "branchName": "SANGAMNER",
     "phone": "+91 9810001919",
     "isSampleData": true
   },
@@ -445,7 +445,7 @@
     "employeeId": "E1919",
     "name": "Rajesh Gaikwad",
     "branchId": "BR-17",
-    "branchName": "DHARWAD",
+    "branchName": "SANGAMNER",
     "phone": "+91 9810001920",
     "isSampleData": true
   },
@@ -454,7 +454,7 @@
     "employeeId": "E1920",
     "name": "Vikas Bhosale",
     "branchId": "BR-17",
-    "branchName": "DHARWAD",
+    "branchName": "SANGAMNER",
     "phone": "+91 9810001921",
     "isSampleData": true
   },
@@ -463,7 +463,7 @@
     "employeeId": "E1921",
     "name": "Amol Gaikwad",
     "branchId": "BR-18",
-    "branchName": "HUBBALLI",
+    "branchName": "SASWAD",
     "phone": "+91 9810001922",
     "isSampleData": true
   },
@@ -472,7 +472,7 @@
     "employeeId": "E1922",
     "name": "Dinesh Bhosale",
     "branchId": "BR-18",
-    "branchName": "HUBBALLI",
+    "branchName": "SASWAD",
     "phone": "+91 9810001923",
     "isSampleData": true
   },
@@ -481,7 +481,7 @@
     "employeeId": "E1923",
     "name": "Nitin Patil",
     "branchId": "BR-18",
-    "branchName": "HUBBALLI",
+    "branchName": "SASWAD",
     "phone": "+91 9810001924",
     "isSampleData": true
   },
@@ -490,7 +490,7 @@
     "employeeId": "E1924",
     "name": "Rahul Bhosale",
     "branchId": "BR-19",
-    "branchName": "NANDED",
+    "branchName": "SATARA",
     "phone": "+91 9810001925",
     "isSampleData": true
   },
@@ -499,7 +499,7 @@
     "employeeId": "E1925",
     "name": "Prashant Patil",
     "branchId": "BR-19",
-    "branchName": "NANDED",
+    "branchName": "SATARA",
     "phone": "+91 9810001926",
     "isSampleData": true
   },
@@ -508,7 +508,7 @@
     "employeeId": "E1926",
     "name": "Deepak Deshmukh",
     "branchId": "BR-19",
-    "branchName": "NANDED",
+    "branchName": "SATARA",
     "phone": "+91 9810001927",
     "isSampleData": true
   },
@@ -517,7 +517,7 @@
     "employeeId": "E1927",
     "name": "Sanjay Patil",
     "branchId": "BR-20",
-    "branchName": "LATUR",
+    "branchName": "SHIKRAPUR",
     "phone": "+91 9810001928",
     "isSampleData": true
   },
@@ -526,7 +526,7 @@
     "employeeId": "E1928",
     "name": "Manoj Deshmukh",
     "branchId": "BR-20",
-    "branchName": "LATUR",
+    "branchName": "SHIKRAPUR",
     "phone": "+91 9810001929",
     "isSampleData": true
   },
@@ -535,7 +535,7 @@
     "employeeId": "E1929",
     "name": "Ramesh Shinde",
     "branchId": "BR-20",
-    "branchName": "LATUR",
+    "branchName": "SHIKRAPUR",
     "phone": "+91 9810001930",
     "isSampleData": true
   },
@@ -544,7 +544,7 @@
     "employeeId": "E1930",
     "name": "Suresh Deshmukh",
     "branchId": "BR-21",
-    "branchName": "OSMANABAD",
+    "branchName": "SHIRUR",
     "phone": "+91 9810001931",
     "isSampleData": true
   },
@@ -553,7 +553,7 @@
     "employeeId": "E1931",
     "name": "Santosh Shinde",
     "branchId": "BR-21",
-    "branchName": "OSMANABAD",
+    "branchName": "SHIRUR",
     "phone": "+91 9810001932",
     "isSampleData": true
   },
@@ -562,7 +562,7 @@
     "employeeId": "E1932",
     "name": "Sachin Jadhav",
     "branchId": "BR-21",
-    "branchName": "OSMANABAD",
+    "branchName": "SHIRUR",
     "phone": "+91 9810001933",
     "isSampleData": true
   },
@@ -571,7 +571,7 @@
     "employeeId": "E1933",
     "name": "Anil Shinde",
     "branchId": "BR-22",
-    "branchName": "BEED",
+    "branchName": "SINNER",
     "phone": "+91 9810001934",
     "isSampleData": true
   },
@@ -580,7 +580,7 @@
     "employeeId": "E1934",
     "name": "Sunil Jadhav",
     "branchId": "BR-22",
-    "branchName": "BEED",
+    "branchName": "SINNER",
     "phone": "+91 9810001935",
     "isSampleData": true
   },
@@ -589,7 +589,7 @@
     "employeeId": "E1935",
     "name": "Vijay Kadam",
     "branchId": "BR-22",
-    "branchName": "BEED",
+    "branchName": "SINNER",
     "phone": "+91 9810001936",
     "isSampleData": true
   },
@@ -598,7 +598,7 @@
     "employeeId": "E1936",
     "name": "Pravin Jadhav",
     "branchId": "BR-23",
-    "branchName": "PARBHANI",
+    "branchName": "SUPA",
     "phone": "+91 9810001937",
     "isSampleData": true
   },
@@ -607,7 +607,7 @@
     "employeeId": "E1937",
     "name": "Ganesh Kadam",
     "branchId": "BR-23",
-    "branchName": "PARBHANI",
+    "branchName": "SUPA",
     "phone": "+91 9810001938",
     "isSampleData": true
   },
@@ -616,7 +616,7 @@
     "employeeId": "E1938",
     "name": "Mahesh Chavan",
     "branchId": "BR-23",
-    "branchName": "PARBHANI",
+    "branchName": "SUPA",
     "phone": "+91 9810001939",
     "isSampleData": true
   },
@@ -625,7 +625,7 @@
     "employeeId": "E1939",
     "name": "Rajesh Kadam",
     "branchId": "BR-24",
-    "branchName": "JALNA",
+    "branchName": "TALEGAON",
     "phone": "+91 9810001940",
     "isSampleData": true
   },
@@ -634,7 +634,7 @@
     "employeeId": "E1940",
     "name": "Vikas Chavan",
     "branchId": "BR-24",
-    "branchName": "JALNA",
+    "branchName": "TALEGAON",
     "phone": "+91 9810001941",
     "isSampleData": true
   },
@@ -643,7 +643,7 @@
     "employeeId": "E1941",
     "name": "Amol Pawar",
     "branchId": "BR-24",
-    "branchName": "JALNA",
+    "branchName": "TALEGAON",
     "phone": "+91 9810001942",
     "isSampleData": true
   },
@@ -652,7 +652,7 @@
     "employeeId": "E1942",
     "name": "Dinesh Chavan",
     "branchId": "BR-25",
-    "branchName": "AMRAVATI",
+    "branchName": "URULI KANCHAN",
     "phone": "+91 9810001943",
     "isSampleData": true
   },
@@ -661,7 +661,7 @@
     "employeeId": "E1943",
     "name": "Nitin Pawar",
     "branchId": "BR-25",
-    "branchName": "AMRAVATI",
+    "branchName": "URULI KANCHAN",
     "phone": "+91 9810001944",
     "isSampleData": true
   },
@@ -670,8 +670,62 @@
     "employeeId": "E1944",
     "name": "Rahul More",
     "branchId": "BR-25",
-    "branchName": "AMRAVATI",
+    "branchName": "URULI KANCHAN",
     "phone": "+91 9810001945",
+    "isSampleData": true
+  },
+  {
+    "id": "SUP-E1945",
+    "employeeId": "E1945",
+    "name": "Prashant Pawar",
+    "branchId": "BR-26",
+    "branchName": "WAI",
+    "phone": "+91 9810001946",
+    "isSampleData": true
+  },
+  {
+    "id": "SUP-E1946",
+    "employeeId": "E1946",
+    "name": "Deepak More",
+    "branchId": "BR-26",
+    "branchName": "WAI",
+    "phone": "+91 9810001947",
+    "isSampleData": true
+  },
+  {
+    "id": "SUP-E1947",
+    "employeeId": "E1947",
+    "name": "Sanjay Gaikwad",
+    "branchId": "BR-26",
+    "branchName": "WAI",
+    "phone": "+91 9810001948",
+    "isSampleData": true
+  },
+  {
+    "id": "SUP-E1948",
+    "employeeId": "E1948",
+    "name": "Manoj More",
+    "branchId": "BR-27",
+    "branchName": "YEOLA",
+    "phone": "+91 9810001949",
+    "isSampleData": true
+  },
+  {
+    "id": "SUP-E1949",
+    "employeeId": "E1949",
+    "name": "Ramesh Gaikwad",
+    "branchId": "BR-27",
+    "branchName": "YEOLA",
+    "phone": "+91 9810001950",
+    "isSampleData": true
+  },
+  {
+    "id": "SUP-E1950",
+    "employeeId": "E1950",
+    "name": "Suresh Bhosale",
+    "branchId": "BR-27",
+    "branchName": "YEOLA",
+    "phone": "+91 9810001951",
     "isSampleData": true
   }
 ]

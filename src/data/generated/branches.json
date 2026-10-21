@@ -1,152 +1,164 @@
 [
   {
     "id": "BR-01",
-    "name": "KOLHAPUR",
-    "code": "KOL",
+    "name": "BHIGWAN",
+    "code": "BHI",
     "isSampleData": true
   },
   {
     "id": "BR-02",
-    "name": "SANGLI",
-    "code": "SAN",
+    "name": "BHOR",
+    "code": "BHO",
     "isSampleData": true
   },
   {
     "id": "BR-03",
-    "name": "SATARA",
-    "code": "SAT",
+    "name": "CHAKAN",
+    "code": "CHA",
     "isSampleData": true
   },
   {
     "id": "BR-04",
-    "name": "PUNE",
-    "code": "PUN",
-    "isSampleData": true
-  },
-  {
-    "id": "BR-05",
-    "name": "SOLAPUR",
-    "code": "SOL",
-    "isSampleData": true
-  },
-  {
-    "id": "BR-06",
-    "name": "NASHIK",
-    "code": "NAS",
-    "isSampleData": true
-  },
-  {
-    "id": "BR-07",
-    "name": "AHMEDNAGAR",
-    "code": "AHM",
-    "isSampleData": true
-  },
-  {
-    "id": "BR-08",
-    "name": "AURANGABAD",
-    "code": "AUR",
-    "isSampleData": true
-  },
-  {
-    "id": "BR-09",
-    "name": "JALGAON",
-    "code": "JAL",
-    "isSampleData": true
-  },
-  {
-    "id": "BR-10",
     "name": "DHULE",
     "code": "DHU",
     "isSampleData": true
   },
   {
+    "id": "BR-05",
+    "name": "HINJAWADI",
+    "code": "HIN",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-06",
+    "name": "ISHWARPUR",
+    "code": "ISH",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-07",
+    "name": "KALWAN",
+    "code": "KAL",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-08",
+    "name": "KAVATHE MAHANKAL",
+    "code": "KAV",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-09",
+    "name": "KOLHAPUR",
+    "code": "KOL",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-10",
+    "name": "NARAYANGAON",
+    "code": "NAR",
+    "isSampleData": true
+  },
+  {
     "id": "BR-11",
-    "name": "RATNAGIRI",
-    "code": "RAT",
+    "name": "NASHIK",
+    "code": "NAS",
     "isSampleData": true
   },
   {
     "id": "BR-12",
-    "name": "SINDHUDURG",
-    "code": "SIN",
+    "name": "NIRA",
+    "code": "NIR",
     "isSampleData": true
   },
   {
     "id": "BR-13",
-    "name": "BELAGAVI",
-    "code": "BEL",
+    "name": "PIMPALGAON",
+    "code": "PIM",
     "isSampleData": true
   },
   {
     "id": "BR-14",
-    "name": "NIPANI",
-    "code": "NIP",
+    "name": "PIMPALNER",
+    "code": "PIM",
     "isSampleData": true
   },
   {
     "id": "BR-15",
-    "name": "BAGALKOT",
-    "code": "BAG",
+    "name": "RAHATA",
+    "code": "RAH",
     "isSampleData": true
   },
   {
     "id": "BR-16",
-    "name": "VIJAYAPURA",
-    "code": "VIJ",
+    "name": "RAJGURUNAGAR",
+    "code": "RAJ",
     "isSampleData": true
   },
   {
     "id": "BR-17",
-    "name": "DHARWAD",
-    "code": "DHA",
+    "name": "SANGAMNER",
+    "code": "SAN",
     "isSampleData": true
   },
   {
     "id": "BR-18",
-    "name": "HUBBALLI",
-    "code": "HUB",
+    "name": "SASWAD",
+    "code": "SAS",
     "isSampleData": true
   },
   {
     "id": "BR-19",
-    "name": "NANDED",
-    "code": "NAN",
+    "name": "SATARA",
+    "code": "SAT",
     "isSampleData": true
   },
   {
     "id": "BR-20",
-    "name": "LATUR",
-    "code": "LAT",
+    "name": "SHIKRAPUR",
+    "code": "SHI",
     "isSampleData": true
   },
   {
     "id": "BR-21",
-    "name": "OSMANABAD",
-    "code": "OSM",
+    "name": "SHIRUR",
+    "code": "SHI",
     "isSampleData": true
   },
   {
     "id": "BR-22",
-    "name": "BEED",
-    "code": "BEE",
+    "name": "SINNER",
+    "code": "SIN",
     "isSampleData": true
   },
   {
     "id": "BR-23",
-    "name": "PARBHANI",
-    "code": "PAR",
+    "name": "SUPA",
+    "code": "SUP",
     "isSampleData": true
   },
   {
     "id": "BR-24",
-    "name": "JALNA",
-    "code": "JAL",
+    "name": "TALEGAON",
+    "code": "TAL",
     "isSampleData": true
   },
   {
     "id": "BR-25",
-    "name": "AMRAVATI",
-    "code": "AMR",
+    "name": "URULI KANCHAN",
+    "code": "URU",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-26",
+    "name": "WAI",
+    "code": "WAI",
+    "isSampleData": true
+  },
+  {
+    "id": "BR-27",
+    "name": "YEOLA",
+    "code": "YEO",
     "isSampleData": true
   }
 ]
