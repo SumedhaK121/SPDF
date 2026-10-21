@@ -229,7 +229,7 @@
                 <div>
                   <label class="block font-bold text-black mb-1">Total Culls</label>
                   <div class="relative">
-                    <input type="number" id="cullsInput" value="1" oninput="updateCalculations()" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm focus:outline-none">
+                    <input type="number" id="cullsInput" value="0" oninput="updateCalculations()" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm focus:outline-none">
                     <span class="absolute right-3 top-2.5 text-slate-500 font-bold text-xs">birds</span>
                   </div>
                 </div>
@@ -238,12 +238,15 @@
               <!-- Today & Cumulative Mortality -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div>
-                  <label class="block font-bold text-black mb-1">Today Total Mortality</label>
-                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispTodayMort">10</div>
+                  <label class="block font-bold text-black mb-1">Today Total Mortality *</label>
+                  <div class="relative">
+                    <input type="number" id="todayMortInput" value="0" min="0" placeholder="0" oninput="handleTodayMortInput(this.value)" class="w-full h-10 px-3 bg-[#FFFCF9] border-2 border-[#34AADC] rounded font-bold text-black text-sm focus:outline-none">
+                    <span class="absolute right-3 top-2.5 text-slate-500 font-bold text-xs">birds</span>
+                  </div>
                 </div>
                 <div>
                   <label class="block font-bold text-black mb-1">Farm Total Mortality</label>
-                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispFarmTotalMort">47</div>
+                  <div class="h-10 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispFarmTotalMort">37</div>
                 </div>
               </div>
 
@@ -251,11 +254,11 @@
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div>
                   <label class="block font-bold text-black mb-1">Bird Balance</label>
-                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#34AADC] rounded flex items-center font-bold text-emerald-800" id="dispBirdBalance">4,442</div>
+                  <div class="h-10 px-3 bg-[#DCE1E2] border border-[#34AADC] rounded flex items-center font-bold text-emerald-800" id="dispBirdBalance">4,462</div>
                 </div>
                 <div>
                   <label class="block font-bold text-black mb-1">No Of Chicks Placed</label>
-                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispChicks">4,500</div>
+                  <div class="h-10 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispChicks">4,500</div>
                 </div>
               </div>
 
@@ -460,51 +463,26 @@
               <!-- Live Summary Box with Green Checkmark -->
               <div id="mortSummaryBox" class="bg-emerald-50 border-2 border-emerald-500 rounded p-2 mb-3 flex items-center justify-between">
                 <div>
-                  <span class="font-semibold text-slate-700">Total Mortality: <strong id="sumTotal" class="text-black">10</strong></span>
-                  <span class="ml-2 font-semibold text-slate-700">Distributed: <strong id="sumDist" class="text-black">10</strong></span>
+                  <span class="font-semibold text-slate-700">Total Mortality: <strong id="sumTotal" class="text-black">0</strong></span>
+                  <span class="ml-2 font-semibold text-slate-700">Distributed: <strong id="sumDist" class="text-black">0</strong></span>
                 </div>
-                <span class="text-emerald-700 font-bold flex items-center gap-1">✓ Balanced</span>
+                <span id="mortStatusBadge" class="text-emerald-700 font-bold flex items-center gap-1">✓ Balanced</span>
               </div>
 
               <!-- Dynamic Rows -->
               <div id="mortRowsContainer" class="space-y-2">
                 <div class="flex items-center gap-1.5">
                   <span class="w-6 text-center font-bold text-slate-500">1</span>
-                  <select onchange="updateCalculations()" class="flex-1 h-9 bg-[#FFFCF9] border border-[#A4C2C5] rounded px-2 font-medium">
-                    <option selected>Attack</option>
+                  <select onchange="updateCalculations()" class="flex-1 h-9 bg-[#FFFCF9] border border-[#A4C2C5] rounded px-2 font-medium text-black">
+                    <option value="">--select reason--</option>
+                    <option>Attack</option>
                     <option>Disease</option>
                     <option>Heat Stress</option>
                     <option>Leg Problem</option>
                     <option>Other</option>
                   </select>
-                  <input type="number" value="5" oninput="updateCalculations()" class="w-20 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black mort-qty">
-                  <button class="w-8 h-9 text-slate-300 font-bold">-</button>
-                </div>
-                
-                <div class="flex items-center gap-1.5">
-                  <span class="w-6 text-center font-bold text-slate-500">2</span>
-                  <select onchange="updateCalculations()" class="flex-1 h-9 bg-[#FFFCF9] border border-[#A4C2C5] rounded px-2 font-medium">
-                    <option>Attack (used)</option>
-                    <option selected>Disease</option>
-                    <option>Heat Stress</option>
-                    <option>Leg Problem</option>
-                    <option>Other</option>
-                  </select>
-                  <input type="number" value="3" oninput="updateCalculations()" class="w-20 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black mort-qty">
-                  <button onclick="removeMortRow(this)" class="w-8 h-9 text-red-500 font-bold hover:bg-red-50 rounded">✕</button>
-                </div>
-
-                <div class="flex items-center gap-1.5">
-                  <span class="w-6 text-center font-bold text-slate-500">3</span>
-                  <select onchange="updateCalculations()" class="flex-1 h-9 bg-[#FFFCF9] border border-[#A4C2C5] rounded px-2 font-medium">
-                    <option>Attack (used)</option>
-                    <option>Disease (used)</option>
-                    <option>Heat Stress</option>
-                    <option>Leg Problem</option>
-                    <option selected>Other</option>
-                  </select>
-                  <input type="number" value="2" oninput="updateCalculations()" class="w-20 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black mort-qty">
-                  <button onclick="removeMortRow(this)" class="w-8 h-9 text-red-500 font-bold hover:bg-red-50 rounded">✕</button>
+                  <input type="number" value="0" min="0" oninput="handleReasonQtyInput()" class="w-20 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black mort-qty focus:outline-none">
+                  <button class="w-8 h-9 text-slate-300 font-bold cursor-default">-</button>
                 </div>
               </div>
 
@@ -848,6 +826,24 @@
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
 
+    function handleTodayMortInput(val) {
+      updateCalculations();
+    }
+
+    function handleReasonQtyInput() {
+      // If todayMortInput is 0 or empty, sync with reason total for supervisor convenience
+      const mortInput = document.getElementById('todayMortInput');
+      let currentVal = parseInt(mortInput ? mortInput.value : 0, 10);
+      let distSum = 0;
+      document.querySelectorAll('.mort-qty').forEach(el => {
+        distSum += parseInt(el.value || 0, 10);
+      });
+      if ((isNaN(currentVal) || currentVal === 0) && distSum > 0) {
+        if (mortInput) mortInput.value = distSum;
+      }
+      updateCalculations();
+    }
+
     function addMortRow() {
       const container = document.getElementById('mortRowsContainer');
       const count = container.children.length + 1;
@@ -855,39 +851,96 @@
       div.className = 'flex items-center gap-1.5';
       div.innerHTML = `
         <span class="w-6 text-center font-bold text-slate-500">${count}</span>
-        <select onchange="updateCalculations()" class="flex-1 h-9 bg-[#FFFCF9] border border-[#A4C2C5] rounded px-2 font-medium">
+        <select onchange="updateCalculations()" class="flex-1 h-9 bg-[#FFFCF9] border border-[#A4C2C5] rounded px-2 font-medium text-black">
+          <option value="">--select reason--</option>
           <option>Attack</option>
           <option>Disease</option>
           <option>Heat Stress</option>
           <option>Leg Problem</option>
-          <option selected>Other</option>
+          <option>Other</option>
         </select>
-        <input type="number" value="1" oninput="updateCalculations()" class="w-20 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black mort-qty">
+        <input type="number" value="0" min="0" oninput="handleReasonQtyInput()" class="w-20 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black mort-qty focus:outline-none">
         <button onclick="removeMortRow(this)" class="w-8 h-9 text-red-500 font-bold hover:bg-red-50 rounded">✕</button>
       `;
       container.appendChild(div);
+      renumberMortRows();
       updateCalculations();
     }
 
     function removeMortRow(btn) {
       btn.parentElement.remove();
+      renumberMortRows();
       updateCalculations();
     }
 
-    function updateCalculations() {
-      // 1. Mortality Calculation
-      let mortSum = 0;
-      document.querySelectorAll('.mort-qty').forEach(el => {
-        mortSum += parseInt(el.value || 0, 10);
+    function renumberMortRows() {
+      const rows = document.querySelectorAll('#mortRowsContainer > div');
+      rows.forEach((r, idx) => {
+        const sr = r.querySelector('span');
+        if (sr) sr.textContent = idx + 1;
+        const btn = r.querySelector('button');
+        if (btn) {
+          if (rows.length === 1) {
+            btn.textContent = '-';
+            btn.className = 'w-8 h-9 text-slate-300 font-bold cursor-default';
+            btn.onclick = null;
+          } else {
+            btn.textContent = '✕';
+            btn.className = 'w-8 h-9 text-red-500 font-bold hover:bg-red-50 rounded';
+            btn.onclick = function() { removeMortRow(this); };
+          }
+        }
       });
-      document.getElementById('sumTotal').textContent = mortSum;
-      document.getElementById('sumDist').textContent = mortSum;
-      document.getElementById('dispTodayMort').textContent = mortSum;
-      document.getElementById('dispFarmTotalMort').textContent = 37 + mortSum;
+    }
+
+    function updateCalculations() {
+      // 1. Mortality Calculation: Supervisor typed Total vs Distributed Reasons
+      const mortInput = document.getElementById('todayMortInput');
+      let totalMort = parseInt(mortInput ? mortInput.value : 0, 10);
+      if (isNaN(totalMort) || totalMort < 0) totalMort = 0;
+
+      let distSum = 0;
+      document.querySelectorAll('.mort-qty').forEach(el => {
+        const v = parseInt(el.value || 0, 10);
+        if (!isNaN(v) && v > 0) distSum += v;
+      });
+
+      const sumTotalEl = document.getElementById('sumTotal');
+      const sumDistEl = document.getElementById('sumDist');
+      if (sumTotalEl) sumTotalEl.textContent = totalMort;
+      if (sumDistEl) sumDistEl.textContent = distSum;
+
+      const box = document.getElementById('mortSummaryBox');
+      const badge = document.getElementById('mortStatusBadge');
+      if (box && badge) {
+        if (totalMort === distSum) {
+          box.className = 'bg-emerald-50 border-2 border-emerald-500 rounded p-2 mb-3 flex items-center justify-between';
+          badge.className = 'text-emerald-700 font-bold flex items-center gap-1';
+          badge.innerHTML = '✓ Balanced';
+        } else if (distSum < totalMort) {
+          const rem = totalMort - distSum;
+          box.className = 'bg-amber-50 border-2 border-amber-500 rounded p-2 mb-3 flex items-center justify-between';
+          badge.className = 'text-amber-700 font-bold flex items-center gap-1';
+          badge.innerHTML = `⚠️ Remaining: ${rem}`;
+        } else {
+          const over = distSum - totalMort;
+          box.className = 'bg-rose-50 border-2 border-rose-500 rounded p-2 mb-3 flex items-center justify-between';
+          badge.className = 'text-rose-700 font-bold flex items-center gap-1';
+          badge.innerHTML = `⚠️ Exceeds Total by ${over}`;
+        }
+      }
+
+      // Farm Total Mortality = Previous cumulative (37) + Today Total Mortality
+      const farmTotalMortEl = document.getElementById('dispFarmTotalMort');
+      if (farmTotalMortEl) farmTotalMortEl.textContent = 37 + totalMort;
 
       // 2. Culls & Bird Balance
       const culls = parseInt(document.getElementById('cullsInput').value || 0, 10);
-      document.getElementById('dispBirdBalance').textContent = (4500 - (37 + mortSum + culls)).toLocaleString();
+      const birdBalEl = document.getElementById('dispBirdBalance');
+      if (birdBalEl) {
+        const bal = Math.max(0, 4500 - (37 + totalMort + culls));
+        birdBalEl.textContent = bal.toLocaleString();
+      }
 
       // 3. Four Feeds Calculations (All kept separately)
       const fPre = parseInt(document.getElementById('feedInput_pre_starter').value || 0, 10);
@@ -929,7 +982,17 @@
         return;
       }
 
-      const mort = parseInt(document.getElementById('dispTodayMort').textContent, 10);
+      const mort = parseInt(document.getElementById('todayMortInput').value || 0, 10);
+      let distSum = 0;
+      document.querySelectorAll('.mort-qty').forEach(el => {
+        distSum += parseInt(el.value || 0, 10);
+      });
+
+      if (mort !== distSum) {
+        alert(`⚠️ Mortality Validation Error:\n\nToday Total Mortality is ${mort}, but Distributed Reasons total is ${distSum}.\n\nPlease ensure the distributed reason quantities equal the Total Mortality (✓ Balanced) before saving.`);
+        return;
+      }
+
       const culls = parseInt(document.getElementById('cullsInput').value || 0, 10);
       const totalFeedToday = parseInt(document.getElementById('grandFeedTotal').textContent, 10);
 
@@ -1158,10 +1221,34 @@
       if (confirm("Discard entered values and reset today's form?")) {
         document.getElementById('abwInput').value = '850';
         document.getElementById('cullsInput').value = '0';
+        document.getElementById('todayMortInput').value = '0';
+
+        // Reset mortality rows to 1 single clean row
+        const container = document.getElementById('mortRowsContainer');
+        container.innerHTML = `
+          <div class="flex items-center gap-1.5">
+            <span class="w-6 text-center font-bold text-slate-500">1</span>
+            <select onchange="updateCalculations()" class="flex-1 h-9 bg-[#FFFCF9] border border-[#A4C2C5] rounded px-2 font-medium text-black">
+              <option value="">--select reason--</option>
+              <option>Attack</option>
+              <option>Disease</option>
+              <option>Heat Stress</option>
+              <option>Leg Problem</option>
+              <option>Other</option>
+            </select>
+            <input type="number" value="0" min="0" oninput="handleReasonQtyInput()" class="w-20 h-9 text-center bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black mort-qty focus:outline-none">
+            <button class="w-8 h-9 text-slate-300 font-bold cursor-default">-</button>
+          </div>
+        `;
+
         document.getElementById('feedInput_pre_starter').value = '0';
-        document.getElementById('feedInput_starter').value = '180';
+        document.getElementById('feedInput_starter').value = '0';
         document.getElementById('feedInput_finisher').value = '0';
         document.getElementById('feedInput_post_finisher').value = '0';
+        document.getElementById('feederInput_pre_starter').value = '0';
+        document.getElementById('feederInput_starter').value = '0';
+        document.getElementById('feederInput_finisher').value = '0';
+        document.getElementById('feederInput_post_finisher').value = '0';
         updateCalculations();
       }
     }

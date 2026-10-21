@@ -22,7 +22,8 @@ export function calculateMortalitySummary(rows = [], enteredTotal = 0, mode = 'd
   });
 
   if (mode === 'entered') {
-    const total = parseSafeNumber(enteredTotal, 0);
+    const hasEntered = enteredTotal !== undefined && enteredTotal !== null && String(enteredTotal).trim() !== '';
+    const total = hasEntered ? parseSafeNumber(enteredTotal, 0) : distributed;
     const remaining = total - distributed;
     const isBalanced = total >= 0 && remaining === 0;
     return {
@@ -51,7 +52,7 @@ export function calculateMortalitySummary(rows = [], enteredTotal = 0, mode = 'd
  * 5. In 'entered' mode: sum must equal enteredTotal exactly.
  * 6. Total mortality + culls must not exceed available birds.
  */
-export function validateMortality(rows = [], enteredTotal = 0, mode = 'derived', availableBirds = Infinity, culls = 0) {
+export function validateMortality(rows = [], enteredTotal = null, mode = 'derived', availableBirds = Infinity, culls = 0) {
   const errors = [];
   const rowErrors = {};
   const seenReasons = new Set();
@@ -89,18 +90,22 @@ export function validateMortality(rows = [], enteredTotal = 0, mode = 'derived',
 
   // Mode-specific validation
   let finalTotal = totalDistributed;
-  if (mode === 'entered') {
+  const hasEntered = enteredTotal !== null && enteredTotal !== undefined && String(enteredTotal).trim() !== '';
+
+  if (mode === 'entered' && hasEntered) {
     const parsedEntered = parseSafeNumber(enteredTotal, 0);
     if (!Number.isInteger(parsedEntered) || parsedEntered < 0) {
       errors.push('Total mortality must be a non-negative whole number.');
     } else {
       finalTotal = parsedEntered;
-      if (parsedEntered > 0 && totalDistributed !== parsedEntered) {
+      if (totalDistributed !== parsedEntered) {
         errors.push(
           `Mortality reasons sum (${totalDistributed}) must exactly equal total mortality (${parsedEntered}). Remaining: ${parsedEntered - totalDistributed}.`
         );
       }
     }
+  } else {
+    finalTotal = totalDistributed;
   }
 
   // Bird Balance check

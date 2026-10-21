@@ -9,9 +9,9 @@ export const formConfig = {
   ALLOW_BACKDATED_ENTRY: false,
 
   // Mortality total mode:
-  // 'derived': Total mortality is calculated as sum of reason rows (default, matches website)
-  // 'entered': User enters total mortality, and rows must sum up to that exact total
-  MORTALITY_TOTAL_MODE: 'derived',
+  // 'derived': Total mortality is calculated as sum of reason rows
+  // 'entered': Supervisor enters total mortality, and rows must sum up to that exact total (matches website)
+  MORTALITY_TOTAL_MODE: 'entered',
 
   // Whether reason rows are required if mortality > 0
   REQUIRE_MORTALITY_REASONS: true,

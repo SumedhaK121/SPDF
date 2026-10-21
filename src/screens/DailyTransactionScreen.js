@@ -519,10 +519,14 @@ export default function DailyTransactionScreen({ navigation }) {
                   {/* Two-Column Grid for Metrics */}
                   <View style={styles.twoColRow}>
                     <View style={styles.col}>
-                      <ReadOnlyField
+                      <FormInput
                         label="Today Total Mortality"
-                        value={todayMortality}
+                        value={enteredMortalityTotal}
+                        onChangeText={setEnteredMortalityTotal}
+                        keyboardType="numeric"
+                        placeholder="0"
                         suffix="birds"
+                        error={formErrors.mortality}
                       />
                     </View>
                     <View style={styles.col}>
