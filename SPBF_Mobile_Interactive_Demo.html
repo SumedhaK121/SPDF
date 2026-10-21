@@ -86,29 +86,28 @@
         <button id="navBackBtn" onclick="goBack()" class="text-white hover:text-slate-200 hidden p-1.5 rounded hover:bg-white/10" title="Go Back">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
         </button>
-        <span class="text-[#FFBF96] font-bold text-2xl tracking-wider cursor-pointer" onclick="handleLogoClick()">SPBF</span>
-        <span id="screenTitle" class="text-white text-sm font-medium ml-2 hidden sm:inline">Supervisor Login</span>
+        <span class="text-[#FFBF96] font-bold text-2xl tracking-wider cursor-pointer" onclick="goToScreen('dailyTransactionScreen')">SPBF</span>
+        <span id="screenTitle" class="text-white text-sm font-medium ml-2 hidden sm:inline">Daily Transaction Portal</span>
       </div>
-      <div id="appBarMeta" style="display: none;" class="text-right items-center gap-2">
+      <div id="appBarMeta" class="text-right">
         <div id="metaBranch" class="text-[#DA8CFF] font-bold text-sm uppercase leading-tight tracking-wide">KOLHAPUR</div>
-        <button onclick="handleLogout()" class="text-xs text-white/70 hover:text-white underline ml-2 cursor-pointer" title="Logout">Logout</button>
       </div>
     </header>
 
-    <!-- Breadcrumb Banner (Hidden on login page, visible once logged in) -->
-    <div id="breadCrumbBanner" style="display: none;" class="w-full bg-[#EEF3F4] px-4 sm:px-8 py-2 border-b border-[#A4C2C5] flex items-center text-xs flex-wrap gap-1 sticky top-14 z-20">
+    <!-- Breadcrumb Banner -->
+    <div id="breadCrumbBanner" class="w-full bg-[#EEF3F4] px-4 sm:px-8 py-2 border-b border-[#A4C2C5] flex items-center text-xs flex-wrap gap-1 sticky top-14 z-20">
       <span id="crumbBranch" class="text-[#007AFF] font-bold cursor-pointer hover:underline" onclick="focusHierarchy()">KOLHAPUR</span>
       <span class="text-slate-400">›</span>
-      <span id="crumbSupervisor" class="text-[#007AFF] font-bold cursor-pointer hover:underline" onclick="focusHierarchy()">Ramesh Patil</span>
+      <span id="crumbSupervisor" class="text-[#007AFF] font-bold cursor-pointer hover:underline" onclick="focusHierarchy()">SANDIP GUNDU PATIL</span>
       <span class="text-slate-400">›</span>
-      <span id="crumbFarmer" class="text-[#092F3D] font-bold">Select Farmer</span>
+      <span id="crumbFarmer" class="text-[#092F3D] font-bold">RADHIKA KRISHNA DHADAM</span>
     </div>
 
     <!-- Main Screens Container -->
     <main class="main-content-wrapper">
 
       <!-- ================= 1. LOGIN SCREEN ================= -->
-      <div id="loginScreen" class="screen-content active p-4">
+      <div id="loginScreen" class="screen-content p-4">
         <div class="flex flex-col items-center justify-center my-auto py-8">
           <div class="bg-[#394A59] border border-[#A4C2C5] px-6 py-2.5 rounded-lg mb-4 shadow">
             <span class="text-[#FFBF96] text-3xl font-extrabold tracking-widest">SPBF</span>
@@ -135,7 +134,7 @@
       </div>
 
       <!-- ================= 2. DAILY TRANSACTION SCREEN (WITH CASCADING DROPDOWNS) ================= -->
-      <div id="dailyTransactionScreen" class="screen-content p-2 sm:p-4 pb-28">
+      <div id="dailyTransactionScreen" class="screen-content active p-2 sm:p-4 pb-28">
 
         <!-- DROPDOWNS: Branch -> Supervisor -> Farmer Name -->
         <div id="hierarchyFilterCard" class="bg-white border-2 border-[#A4C2C5] rounded mb-3 overflow-hidden shadow-sm">
@@ -526,14 +525,11 @@
 
         <!-- FIXED BOTTOM ACTION BAR -->
         <div id="bottomBar" class="fixed bottom-0 left-0 right-0 bg-white border-t border-[#A4C2C5] py-2.5 px-4 shadow-xl z-30 flex justify-center">
-          <div class="max-w-3xl w-full flex items-center justify-between gap-3">
-            <button onclick="goToScreen('recordsScreen')" class="flex-1 h-11 bg-[#B8D4D6] hover:bg-[#A4C2C5] border-2 border-[#4CD964] text-[#333333] font-bold text-xs sm:text-sm rounded shadow flex items-center justify-center transition">
+          <div class="max-w-3xl w-full flex items-center justify-between gap-4">
+            <button onclick="goToScreen('recordsScreen')" class="flex-1 h-11 bg-[#B8D4D6] hover:bg-[#A4C2C5] border-2 border-[#4CD964] text-[#333333] font-bold text-xs sm:text-sm rounded shadow flex items-center justify-center transition cursor-pointer">
               Broiler Record
             </button>
-            <button onclick="handleCancelEntry()" class="flex-1 h-11 bg-[#B8D4D6] hover:bg-[#A4C2C5] border-2 border-[#A4C2C5] text-[#333333] font-bold text-xs sm:text-sm rounded shadow flex items-center justify-center transition">
-              Cancel Entry
-            </button>
-            <button id="saveBtn" onclick="handleSaveTransaction()" class="flex-1 h-11 bg-[#C5DFE2] hover:bg-[#A4C2C5] border-2 border-[#A4C2C5] text-[#333333] font-bold text-xs sm:text-sm rounded shadow flex items-center justify-center transition">
+            <button id="saveBtn" onclick="handleSaveTransaction()" class="flex-1 h-11 bg-[#C5DFE2] hover:bg-[#A4C2C5] border-2 border-[#A4C2C5] text-[#333333] font-bold text-xs sm:text-sm rounded shadow flex items-center justify-center transition cursor-pointer">
               Save
             </button>
           </div>
@@ -828,8 +824,8 @@
 
     // State Store (Survives page refreshes via localStorage)
     const state = {
-      isLoggedIn: false,
-      currentScreen: 'loginScreen',
+      isLoggedIn: true,
+      currentScreen: 'dailyTransactionScreen',
       branch: 'KOLHAPUR',
       supervisor: supervisorsByBranch['KOLHAPUR'][0],
       farmer: null,
@@ -883,7 +879,7 @@
       // 1. Load persisted data from localStorage
       loadPersistedState();
 
-      // 2. Populate Branch Dropdown with all 25 branches
+      // 2. Populate Branch Dropdown with all 27 branches, defaulting to KOLHAPUR
       const bSel = document.getElementById('branchSelect');
       bSel.innerHTML = '';
       branchesData.forEach(b => {
@@ -894,38 +890,50 @@
         bSel.appendChild(opt);
       });
 
-      // 3. Populate Supervisors for default branch
-      populateSupervisors(state.branch);
+      // 3. Directly login as KOLHAPUR branch with its supervisor and farmer auto-selected
+      populateSupervisors(state.branch, true);
 
       // 4. Render Broiler Records from persisted state
       renderBroilerRecords();
 
-      // 5. Ensure clean initial view on Login Screen (hide breadcrumbs and branch header)
-      goToScreen('loginScreen');
+      // 5. Direct login to Daily Transaction Portal
+      goToScreen('dailyTransactionScreen');
     }
 
-    function populateSupervisors(branch) {
+    function populateSupervisors(branch, autoSelectFirst = false) {
       const sups = supervisorsByBranch[branch] || [];
       const sSel = document.getElementById('supervisorSelect');
-      sSel.innerHTML = '';
+      sSel.innerHTML = '<option value="">--select supervisor--</option>';
       sups.forEach((s, idx) => {
         const opt = document.createElement('option');
         opt.value = s.id;
         opt.textContent = s.name; // Supervisor name only
-        if (idx === 0) opt.selected = true;
+        if (autoSelectFirst && idx === 0) opt.selected = true;
         sSel.appendChild(opt);
       });
 
-      state.supervisor = sups[0] || null;
-      updateHeaderAndBanner();
-      populateFarmers(state.supervisor ? state.supervisor.id : null);
+      if (autoSelectFirst && sups.length > 0) {
+        state.supervisor = sups[0];
+        updateHeaderAndBanner();
+        populateFarmers(state.supervisor.id, true);
+      } else {
+        state.supervisor = null;
+        updateHeaderAndBanner();
+        populateFarmers(null, false);
+      }
     }
 
-    function populateFarmers(supervisorId) {
+    function populateFarmers(supervisorId, autoSelectFirst = false) {
       const fSel = document.getElementById('farmerSelect');
       fSel.innerHTML = '<option value="">--select farmer--</option>';
 
-      if (!supervisorId) return;
+      if (!supervisorId) {
+        state.farmer = null;
+        document.getElementById('formContainer').classList.add('hidden');
+        document.getElementById('selectPromptBanner').classList.remove('hidden');
+        document.getElementById('crumbFarmer').textContent = 'Select Farmer';
+        return;
+      }
 
       const supCode = supervisorId.replace(/\D/g, '') || '100';
       farmerFirstNames.forEach((name, i) => {
@@ -934,11 +942,11 @@
         opt.value = fId;
         opt.textContent = name; // Farmer name only (no numbers, no codes, no brackets)
         opt.dataset.name = name;
+        if (autoSelectFirst && i === 0) opt.selected = true;
         fSel.appendChild(opt);
       });
 
-      // Auto-select primary demo farmer (RADHIKA KRISHNA DHADAM) so demo form shows demo numbers right away
-      if (fSel.options.length > 1) {
+      if (autoSelectFirst && fSel.options.length > 1) {
         fSel.selectedIndex = 1;
         handleFarmerSelect(fSel.options[1].value);
       } else {
@@ -951,14 +959,17 @@
 
     function handleBranchSelect(b) {
       state.branch = b;
-      populateSupervisors(b);
+      updateHeaderAndBanner();
+      // After selecting branch, show only the supervisors that are under that branch
+      populateSupervisors(b, false);
     }
 
     function handleSupervisorSelect(supId) {
       const sups = supervisorsByBranch[state.branch] || [];
       state.supervisor = sups.find(s => s.id === supId) || null;
       updateHeaderAndBanner();
-      populateFarmers(supId);
+      // After selecting supervisor, show only the farmers that are under that supervisor
+      populateFarmers(supId, false);
     }
 
     function handleFarmerSelect(fId) {
