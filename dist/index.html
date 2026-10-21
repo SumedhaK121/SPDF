@@ -86,16 +86,17 @@
         <button id="navBackBtn" onclick="goBack()" class="text-white hover:text-slate-200 hidden p-1.5 rounded hover:bg-white/10" title="Go Back">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
         </button>
-        <span class="text-[#FFBF96] font-bold text-2xl tracking-wider cursor-pointer" onclick="goToScreen('dailyTransactionScreen')">SPBF</span>
-        <span id="screenTitle" class="text-white text-sm font-medium ml-2 hidden sm:inline">Daily Transaction Portal</span>
+        <span class="text-[#FFBF96] font-bold text-2xl tracking-wider cursor-pointer" onclick="handleLogoClick()">SPBF</span>
+        <span id="screenTitle" class="text-white text-sm font-medium ml-2 hidden sm:inline">Supervisor Login</span>
       </div>
-      <div id="appBarMeta" class="text-right">
+      <div id="appBarMeta" style="display: none;" class="text-right items-center gap-2">
         <div id="metaBranch" class="text-[#DA8CFF] font-bold text-sm uppercase leading-tight tracking-wide">KOLHAPUR</div>
+        <button onclick="handleLogout()" class="text-xs text-white/70 hover:text-white underline ml-2 cursor-pointer" title="Logout">Logout</button>
       </div>
     </header>
 
-    <!-- Breadcrumb Banner -->
-    <div id="breadCrumbBanner" class="w-full bg-[#EEF3F4] px-4 sm:px-8 py-2 border-b border-[#A4C2C5] flex items-center text-xs flex-wrap gap-1 sticky top-14 z-20">
+    <!-- Breadcrumb Banner (Hidden on login page, visible once logged in) -->
+    <div id="breadCrumbBanner" style="display: none;" class="w-full bg-[#EEF3F4] px-4 sm:px-8 py-2 border-b border-[#A4C2C5] flex items-center text-xs flex-wrap gap-1 sticky top-14 z-20">
       <span id="crumbBranch" class="text-[#007AFF] font-bold cursor-pointer hover:underline" onclick="focusHierarchy()">KOLHAPUR</span>
       <span class="text-slate-400">›</span>
       <span id="crumbSupervisor" class="text-[#007AFF] font-bold cursor-pointer hover:underline" onclick="focusHierarchy()">Ramesh Patil</span>
@@ -716,6 +717,7 @@
 
     // State Store (Survives page refreshes via localStorage)
     const state = {
+      isLoggedIn: false,
       currentScreen: 'loginScreen',
       branch: 'KOLHAPUR',
       supervisor: supervisorsByBranch['KOLHAPUR'][0],
@@ -786,6 +788,9 @@
 
       // 4. Render Broiler Records from persisted state
       renderBroilerRecords();
+
+      // 5. Ensure clean initial view on Login Screen (hide breadcrumbs and branch header)
+      goToScreen('loginScreen');
     }
 
     function populateSupervisors(branch) {
@@ -1277,25 +1282,45 @@
     }
 
     function goToScreen(screenId) {
+      state.currentScreen = screenId;
       document.querySelectorAll('.screen-content').forEach(el => el.classList.remove('active'));
       const target = document.getElementById(screenId);
       if (target) target.classList.add('active');
 
       const backBtn = document.getElementById('navBackBtn');
       const title = document.getElementById('screenTitle');
+      const breadcrumb = document.getElementById('breadCrumbBanner');
+      const appBarMeta = document.getElementById('appBarMeta');
 
       if (screenId === 'loginScreen') {
+        state.isLoggedIn = false;
         backBtn.classList.add('hidden');
         title.textContent = 'Supervisor Login';
-      } else if (screenId === 'dailyTransactionScreen') {
-        backBtn.classList.add('hidden');
-        title.textContent = 'Daily Transaction Portal';
-      } else if (screenId === 'recordsScreen') {
-        backBtn.classList.remove('hidden');
-        title.textContent = 'Broiler Records (Today)';
-      } else if (screenId === 'recordDetailScreen') {
-        backBtn.classList.remove('hidden');
-        title.textContent = 'Transaction Details';
+        if (breadcrumb) breadcrumb.style.display = 'none';
+        if (appBarMeta) appBarMeta.style.display = 'none';
+      } else {
+        state.isLoggedIn = true;
+        if (breadcrumb) breadcrumb.style.display = 'flex';
+        if (appBarMeta) appBarMeta.style.display = 'flex';
+
+        if (screenId === 'dailyTransactionScreen') {
+          backBtn.classList.add('hidden');
+          title.textContent = 'Daily Transaction Portal';
+        } else if (screenId === 'recordsScreen') {
+          backBtn.classList.remove('hidden');
+          title.textContent = 'Broiler Records (Today)';
+        } else if (screenId === 'recordDetailScreen') {
+          backBtn.classList.remove('hidden');
+          title.textContent = 'Transaction Details';
+        }
+      }
+    }
+
+    function handleLogoClick() {
+      if (state.isLoggedIn) {
+        goToScreen('dailyTransactionScreen');
+      } else {
+        goToScreen('loginScreen');
       }
     }
 
@@ -1310,7 +1335,13 @@
     }
 
     function handleLogin() {
+      state.isLoggedIn = true;
       goToScreen('dailyTransactionScreen');
+    }
+
+    function handleLogout() {
+      state.isLoggedIn = false;
+      goToScreen('loginScreen');
     }
 
     function handleCancelEntry() {
