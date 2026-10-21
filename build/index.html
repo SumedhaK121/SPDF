@@ -182,89 +182,125 @@
             </div>
           </div>
 
-          <!-- SECTION 1: GENERAL TRANSACTION INFORMATION -->
+          <!-- SECTION 1: DAILY TRANSACTION (EXACT 16 FIELDS FROM PORTAL SCREENSHOT) -->
           <div class="bg-white border border-[#A4C2C5] rounded overflow-hidden shadow-sm">
             <div class="bg-[#D8DDDE] px-3 py-2 border-b border-[#A4C2C5] flex justify-between items-center">
               <span class="text-xs font-bold text-[#092F3D]">Daily Transaction</span>
-              <span class="text-[11px] font-bold text-[#092F3D]" id="formFarmerTag">Farmer: Babasaheb Patil</span>
+              <span class="text-[11px] font-bold text-[#092F3D]" id="formFarmerTag">Farmer: RADHIKA KRISHNA DHADAM</span>
             </div>
             
-            <div class="p-3 text-xs space-y-3">
-              <!-- Farmer & Supervisor Display -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div class="p-3 text-xs">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                
+                <!-- ROW 1 -->
+                <!-- 1. Farm Name * -->
                 <div>
-                  <label class="block font-bold text-black mb-1">Farmer Name</label>
-                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-slate-900" id="dispFarmerName">Babasaheb Patil</div>
+                  <label class="block font-bold text-black mb-1 text-[11px]">Farm Name *</label>
+                  <div class="h-9 px-2.5 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-slate-900 truncate" id="dispFarmerName">RADHIKA KRISHNA DHADAM</div>
                 </div>
-                <div>
-                  <label class="block font-bold text-black mb-1">Supervisor Name</label>
-                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-semibold text-slate-800" id="dispSupName">Ramesh Patil</div>
-                </div>
-              </div>
 
-              <!-- Transaction Date -->
-              <div>
-                <label class="block font-bold text-black mb-1">Transaction Date</label>
-                <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-slate-900">
-                  <span id="dispDate">19/10/2026</span>
-                </div>
-              </div>
-
-              <!-- ABW & Total Culls -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <!-- 2. Supervisor Name -->
                 <div>
-                  <label class="block font-bold text-black mb-1">Average body Weight (ABW) *</label>
+                  <label class="block font-bold text-black mb-1 text-[11px]">Supervisor Name</label>
+                  <div class="h-9 px-2.5 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-semibold text-slate-800 truncate" id="dispSupName">SANDIP GUNDU PATIL</div>
+                </div>
+
+                <!-- 3. Farm Total Feed Consumed -->
+                <div>
+                  <label class="block font-bold text-black mb-1 text-[11px]">Farm Total Feed Consumed</label>
+                  <div class="h-9 px-2.5 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispFarmTotalFeedConsumed">353</div>
+                </div>
+
+                <!-- 4. Transaction Date -->
+                <div>
+                  <label class="block font-bold text-black mb-1 text-[11px]">Transaction Date</label>
+                  <div class="h-9 px-2.5 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-slate-900" id="dispDate">20/10/2026</div>
+                </div>
+
+                <!-- ROW 2 -->
+                <!-- 5. Average body Weight* -->
+                <div>
+                  <label class="block font-bold text-black mb-1 text-[11px]">Average body Weight*</label>
                   <div class="relative">
-                    <input type="number" id="abwInput" value="850" class="w-full h-10 px-3 bg-[#FFFCF9] border-2 border-[#34AADC] rounded font-bold text-black text-sm focus:outline-none">
-                    <span class="absolute right-3 top-2.5 text-slate-500 font-bold text-xs">grams</span>
+                    <input type="number" id="abwInput" value="1800" placeholder="1800" class="w-full h-9 px-2.5 bg-[#FFFCF9] border-2 border-[#34AADC] rounded font-bold text-black text-xs focus:outline-none shadow-sm">
+                    <span class="absolute right-2 top-2 text-slate-400 font-bold text-[10px]">g</span>
                   </div>
                 </div>
+
+                <!-- 6. Today Total Mortality -->
                 <div>
-                  <label class="block font-bold text-black mb-1">Total Culls</label>
+                  <label class="block font-bold text-black mb-1 text-[11px]">Today Total Mortality</label>
                   <div class="relative">
-                    <input type="number" id="cullsInput" value="0" oninput="updateCalculations()" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-sm focus:outline-none">
-                    <span class="absolute right-3 top-2.5 text-slate-500 font-bold text-xs">birds</span>
+                    <input type="number" id="todayMortInput" value="0" min="0" placeholder="0" oninput="handleTodayMortInput(this.value)" class="w-full h-9 px-2.5 bg-[#FFFCF9] border-2 border-[#34AADC] rounded font-bold text-black text-xs focus:outline-none shadow-sm">
+                    <span class="absolute right-2 top-2 text-slate-400 font-bold text-[10px]">birds</span>
                   </div>
                 </div>
-              </div>
 
-              <!-- Today & Cumulative Mortality -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <!-- 7. Farm Total Feed Supply -->
                 <div>
-                  <label class="block font-bold text-black mb-1">Today Total Mortality *</label>
+                  <label class="block font-bold text-black mb-1 text-[11px]">Farm Total Feed Supply</label>
+                  <div class="h-9 px-2.5 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispFarmTotalFeedSupply">395</div>
+                </div>
+
+                <!-- 8. Total Culls -->
+                <div>
+                  <label class="block font-bold text-black mb-1 text-[11px]">Total Culls</label>
                   <div class="relative">
-                    <input type="number" id="todayMortInput" value="0" min="0" placeholder="0" oninput="handleTodayMortInput(this.value)" class="w-full h-10 px-3 bg-[#FFFCF9] border-2 border-[#34AADC] rounded font-bold text-black text-sm focus:outline-none">
-                    <span class="absolute right-3 top-2.5 text-slate-500 font-bold text-xs">birds</span>
+                    <input type="number" id="cullsInput" value="0" min="0" placeholder="0" oninput="updateCalculations()" class="w-full h-9 px-2.5 bg-[#FFFCF9] border border-[#A4C2C5] rounded font-bold text-black text-xs focus:outline-none">
+                    <span class="absolute right-2 top-2 text-slate-400 font-bold text-[10px]">birds</span>
                   </div>
                 </div>
-                <div>
-                  <label class="block font-bold text-black mb-1">Farm Total Mortality</label>
-                  <div class="h-10 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispFarmTotalMort">37</div>
-                </div>
-              </div>
 
-              <!-- Bird Balance & Chicks Placed -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <!-- ROW 3 -->
+                <!-- 9. Farm Total Mortality -->
                 <div>
-                  <label class="block font-bold text-black mb-1">Bird Balance</label>
-                  <div class="h-10 px-3 bg-[#DCE1E2] border border-[#34AADC] rounded flex items-center font-bold text-emerald-800" id="dispBirdBalance">4,462</div>
+                  <label class="block font-bold text-black mb-1 text-[11px]">Farm Total Mortality</label>
+                  <div class="h-9 px-2.5 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispFarmTotalMort">260</div>
                 </div>
-                <div>
-                  <label class="block font-bold text-black mb-1">No Of Chicks Placed</label>
-                  <div class="h-10 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispChicks">4,500</div>
-                </div>
-              </div>
 
-              <!-- Flock Age & Farm Total Feed Consumed -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <!-- 10. Farm Total Culls -->
                 <div>
-                  <label class="block font-bold text-black mb-1">Flock Age</label>
-                  <div class="h-9 px-3 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-slate-800" id="dispAge">20 days</div>
+                  <label class="block font-bold text-black mb-1 text-[11px]">Farm Total Culls</label>
+                  <div class="h-9 px-2.5 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispFarmTotalCulls">0</div>
                 </div>
+
+                <!-- 11. No Of Chicks -->
                 <div>
-                  <label class="block font-bold text-black mb-1">Farm Total Feed Consumed (Today)</label>
-                  <div class="h-9 px-3 bg-[#DCE1E2] border-2 border-[#34AADC] rounded flex items-center font-extrabold text-sky-900" id="dispTotalFeedToday">180 kg</div>
+                  <label class="block font-bold text-black mb-1 text-[11px]">No Of Chicks</label>
+                  <div class="h-9 px-2.5 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispChicks">4028</div>
                 </div>
+
+                <!-- 12. Bird Balance -->
+                <div>
+                  <label class="block font-bold text-black mb-1 text-[11px]">Bird Balance</label>
+                  <div class="h-9 px-2.5 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispBirdBalance">0</div>
+                </div>
+
+                <!-- ROW 4 -->
+                <!-- 13. Medicin Amount -->
+                <div>
+                  <label class="block font-bold text-black mb-1 text-[11px]">Medicin Amount</label>
+                  <div class="h-9 px-2.5 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispMedicinAmount">4229.61</div>
+                </div>
+
+                <!-- 14. Total Bird Sale / Total Sale Weight -->
+                <div>
+                  <label class="block font-bold text-black mb-1 text-[11px]">Total Bird Sale / Total Sale Weight</label>
+                  <div class="h-9 px-2.5 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispSaleWeight">3768 / 10815.9</div>
+                </div>
+
+                <!-- 15. Yesterday ABW -->
+                <div>
+                  <label class="block font-bold text-black mb-1 text-[11px]">Yesterday ABW</label>
+                  <div class="h-9 px-2.5 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispYesterdayABW">1800</div>
+                </div>
+
+                <!-- 16. Yesterday Mortality -->
+                <div>
+                  <label class="block font-bold text-black mb-1 text-[11px]">Yesterday Mortality</label>
+                  <div class="h-9 px-2.5 bg-[#DCE1E2] border border-[#A4C2C5] rounded flex items-center font-bold text-black" id="dispYesterdayMort">20</div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -611,9 +647,9 @@
     // Supervisors mapped per branch (each branch has its own supervisors)
     const supervisorsByBranch = {
       'KOLHAPUR': [
-        { id: 'E1870', name: 'Ramesh Patil', emp: 'E1870' },
-        { id: 'E1871', name: 'Suresh Deshmukh', emp: 'E1871' },
-        { id: 'E1872', name: 'Santosh Shinde', emp: 'E1872' }
+        { id: 'E1870', name: 'SANDIP GUNDU PATIL', emp: 'E1870' },
+        { id: 'E1871', name: 'Ramesh Patil', emp: 'E1871' },
+        { id: 'E1872', name: 'Suresh Deshmukh', emp: 'E1872' }
       ],
       'SANGLI': [
         { id: 'E1873', name: 'Anil Kulkarni', emp: 'E1873' },
@@ -650,6 +686,7 @@
 
     // 25 Farmers per supervisor (Real farmer names, village & farm codes)
     const farmerFirstNames = [
+      'RADHIKA KRISHNA DHADAM',
       'Babasaheb Patil', 'Dnyandev Deshmukh', 'Balasaheb Shinde', 'Pandurang Jadhav',
       'Tanaji Kadam', 'Dattatray Chavan', 'Tukaram Pawar', 'Shivaji More',
       'Ananda Mohite', 'Sambhajirao Mane', 'Rajaram Bhosale', 'Vishwasrao Jagtap',
@@ -784,11 +821,16 @@
         fSel.appendChild(opt);
       });
 
-      // Reset form view until a farmer is selected
-      state.farmer = null;
-      document.getElementById('formContainer').classList.add('hidden');
-      document.getElementById('selectPromptBanner').classList.remove('hidden');
-      document.getElementById('crumbFarmer').textContent = 'Select Farmer';
+      // Auto-select primary demo farmer (RADHIKA KRISHNA DHADAM) so demo form shows demo numbers right away
+      if (fSel.options.length > 1) {
+        fSel.selectedIndex = 1;
+        handleFarmerSelect(fSel.options[1].value);
+      } else {
+        state.farmer = null;
+        document.getElementById('formContainer').classList.add('hidden');
+        document.getElementById('selectPromptBanner').classList.remove('hidden');
+        document.getElementById('crumbFarmer').textContent = 'Select Farmer';
+      }
     }
 
     function handleBranchSelect(b) {
@@ -828,6 +870,9 @@
       // Update screen displays
       document.getElementById('crumbFarmer').textContent = state.farmer.name;
       document.getElementById('dispFarmerName').textContent = state.farmer.name;
+      if (document.getElementById('dispSupName') && state.supervisor) {
+        document.getElementById('dispSupName').textContent = state.supervisor.name;
+      }
       document.getElementById('formFarmerTag').textContent = `Farmer: ${state.farmer.name}`;
       document.getElementById('recordsFarmerTitle').textContent = `Farmer: ${state.farmer.name}`;
 
@@ -975,15 +1020,16 @@
         }
       }
 
-      // Farm Total Mortality = Previous cumulative (37) + Today Total Mortality
+      // Farm Total Mortality = Previous cumulative (260) + Today Total Mortality
       const farmTotalMortEl = document.getElementById('dispFarmTotalMort');
-      if (farmTotalMortEl) farmTotalMortEl.textContent = 37 + totalMort;
+      if (farmTotalMortEl) farmTotalMortEl.textContent = 260 + totalMort;
 
       // 2. Culls & Bird Balance
-      const culls = parseInt(document.getElementById('cullsInput').value || 0, 10);
+      const culls = parseInt(document.getElementById('cullsInput')?.value || 0, 10);
       const birdBalEl = document.getElementById('dispBirdBalance');
       if (birdBalEl) {
-        const bal = Math.max(0, 4500 - (37 + totalMort + culls));
+        // Chicks (4028) - Mortality (260 + totalMort) - Culls (culls) - Sold (3768)
+        const bal = Math.max(0, 4028 - (260 + totalMort + culls + 3768));
         birdBalEl.textContent = bal.toLocaleString();
       }
 
@@ -1006,8 +1052,10 @@
 
       // Grand Total Today Feed Consumed across 4 feeds
       const totalFeedToday = fPre + fStarter + fFinisher + fPost;
-      document.getElementById('grandFeedTotal').textContent = `${totalFeedToday} kg`;
-      document.getElementById('dispTotalFeedToday').textContent = `${totalFeedToday} kg`;
+      const gFeedEl = document.getElementById('grandFeedTotal');
+      if (gFeedEl) gFeedEl.textContent = `${totalFeedToday} kg`;
+      const dispTotalFeedEl = document.getElementById('dispTotalFeedToday');
+      if (dispTotalFeedEl) dispTotalFeedEl.textContent = `${totalFeedToday} kg`;
     }
 
     function handleSaveTransaction() {
@@ -1098,7 +1146,7 @@
         abw: parseInt(abw, 10),
         culls: culls,
         mort: mort,
-        cumMort: 37 + mort,
+        cumMort: 260 + mort,
         feedToday: totalFeedToday,
         birdBal: document.getElementById('dispBirdBalance').textContent,
         feeds: feedsBreakdown,
@@ -1267,7 +1315,7 @@
 
     function handleCancelEntry() {
       if (confirm("Discard entered values and reset today's form?")) {
-        document.getElementById('abwInput').value = '850';
+        document.getElementById('abwInput').value = '1800';
         document.getElementById('cullsInput').value = '0';
         document.getElementById('todayMortInput').value = '0';
 
