@@ -101,7 +101,6 @@
       <span id="crumbSupervisor" class="text-[#007AFF] font-bold cursor-pointer hover:underline" onclick="focusHierarchy()">Ramesh Patil</span>
       <span class="text-slate-400">›</span>
       <span id="crumbFarmer" class="text-[#092F3D] font-bold">Select Farmer</span>
-      <span id="crumbBatch" class="bg-[#D8DDDE] text-[#092F3D] px-2 py-0.5 rounded text-[11px] font-bold ml-1 hidden">B-2026-01</span>
     </div>
 
     <!-- Main Screens Container -->
@@ -512,12 +511,11 @@
             <div class="text-sm font-bold text-[#092F3D]" id="recordsFarmerTitle">Farmer: Babasaheb Patil</div>
             <div class="text-[11px] text-slate-500">Daily transaction records</div>
           </div>
-          <span class="bg-[#E8F4F5] border border-[#A4C2C5] text-[#092F3D] px-2 py-0.5 rounded text-[11px] font-bold" id="recordsBatchBadge">B-2026-01</span>
         </div>
 
         <!-- Filter banner -->
         <div class="bg-sky-50 border border-sky-200 p-2 rounded mb-3 text-xs text-sky-800 flex justify-between items-center">
-          <span>Date: <strong>19/10/2026</strong></span>
+          <span id="recordsFilterDateText">Date: <strong>Today</strong></span>
           <button onclick="goToScreen('dailyTransactionScreen')" class="text-[#007AFF] font-bold hover:underline">+ New Entry</button>
         </div>
 
@@ -533,7 +531,7 @@
           <div class="flex justify-between items-start">
             <div>
               <div class="text-sm font-bold text-[#092F3D]" id="detailFarmerName">Babasaheb Patil</div>
-              <div class="text-[11px] text-slate-500" id="detailSubMeta">Branch: Kolhapur • Batch: B-2026-01 • Age: 20 days</div>
+              <div class="text-[11px] text-slate-500" id="detailSubMeta">Branch: Kolhapur • Age: 20 days</div>
             </div>
             <span class="bg-emerald-100 border border-emerald-400 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">SAVED</span>
           </div>
@@ -791,7 +789,6 @@
       document.getElementById('formContainer').classList.add('hidden');
       document.getElementById('selectPromptBanner').classList.remove('hidden');
       document.getElementById('crumbFarmer').textContent = 'Select Farmer';
-      document.getElementById('crumbBatch').classList.add('hidden');
     }
 
     function handleBranchSelect(b) {
@@ -817,7 +814,6 @@
         form.classList.add('hidden');
         banner.classList.remove('hidden');
         document.getElementById('crumbFarmer').textContent = 'Select Farmer';
-        document.getElementById('crumbBatch').classList.add('hidden');
         return;
       }
 
@@ -831,7 +827,6 @@
 
       // Update screen displays
       document.getElementById('crumbFarmer').textContent = state.farmer.name;
-      document.getElementById('crumbBatch').classList.remove('hidden');
       document.getElementById('dispFarmerName').textContent = state.farmer.name;
       document.getElementById('formFarmerTag').textContent = `Farmer: ${state.farmer.name}`;
       document.getElementById('recordsFarmerTitle').textContent = `Farmer: ${state.farmer.name}`;
@@ -1183,7 +1178,7 @@
       if (!r) return;
 
       document.getElementById('detailFarmerName').textContent = r.farmerName;
-      document.getElementById('detailSubMeta').textContent = `Branch: ${r.branch} • Batch: B-2026-01 • Age: ${r.age} days`;
+      document.getElementById('detailSubMeta').textContent = `Branch: ${r.branch} • Age: ${r.age} days`;
       document.getElementById('detailSupervisor').textContent = r.supervisor;
       const detailDateEl = document.getElementById('detailDate');
       if (detailDateEl) detailDateEl.textContent = r.date;
