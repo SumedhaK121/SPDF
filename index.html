@@ -90,18 +90,18 @@
         <span id="screenTitle" class="text-white text-sm font-medium ml-2 hidden sm:inline">Supervisor Login</span>
       </div>
       <div id="appBarMeta" style="display: none;" class="text-right items-center gap-2">
-        <div id="metaBranch" class="text-[#DA8CFF] font-bold text-sm uppercase leading-tight tracking-wide">KOLHAPUR</div>
+        <div id="metaBranch" class="text-[#DA8CFF] font-bold text-sm uppercase leading-tight tracking-wide">SPBF</div>
         <button onclick="handleLogout()" class="text-xs text-white/70 hover:text-white underline ml-2 cursor-pointer" title="Logout">Logout</button>
       </div>
     </header>
 
     <!-- Breadcrumb Banner (Hidden on login page, visible once logged in) -->
     <div id="breadCrumbBanner" style="display: none;" class="w-full bg-[#EEF3F4] px-4 sm:px-8 py-2 border-b border-[#A4C2C5] flex items-center text-xs flex-wrap gap-1 sticky top-14 z-20">
-      <span id="crumbBranch" class="text-[#007AFF] font-bold cursor-pointer hover:underline" onclick="focusHierarchy()">KOLHAPUR</span>
+      <span id="crumbBranch" class="text-[#007AFF] font-bold cursor-pointer hover:underline" onclick="focusHierarchy()">Select Branch</span>
       <span class="text-slate-400">›</span>
-      <span id="crumbSupervisor" class="text-[#007AFF] font-bold cursor-pointer hover:underline" onclick="focusHierarchy()">SANDIP GUNDU PATIL</span>
+      <span id="crumbSupervisor" class="text-[#007AFF] font-bold cursor-pointer hover:underline" onclick="focusHierarchy()">Select Supervisor</span>
       <span class="text-slate-400">›</span>
-      <span id="crumbFarmer" class="text-[#092F3D] font-bold">RADHIKA KRISHNA DHADAM</span>
+      <span id="crumbFarmer" class="text-[#092F3D] font-bold">Select Farmer</span>
     </div>
 
     <!-- Main Screens Container -->
@@ -168,7 +168,7 @@
 
           <!-- Prompt when no farmer is selected yet -->
           <div id="selectPromptBanner" class="bg-[#E7F2F5] border-t border-[#A4C2C5] px-3 py-2 text-[11px] text-[#004466] flex items-center justify-between">
-            <span>Select a <strong>Farmer Name</strong> from the dropdown above to open the daily transaction form.</span>
+            <span>Please select a <strong>Branch</strong>, then <strong>Supervisor</strong>, and <strong>Farmer Name</strong> from the dropdowns above to open the daily transaction form.</span>
           </div>
         </div>
 
@@ -827,8 +827,8 @@
     const state = {
       isLoggedIn: false,
       currentScreen: 'loginScreen',
-      branch: 'KOLHAPUR',
-      supervisor: supervisorsByBranch['KOLHAPUR'][0],
+      branch: null,
+      supervisor: null,
       farmer: null,
       savedRecords: [],
       savedFarmersToday: new Set(),
@@ -871,6 +871,41 @@
       }
     }
 
+    function resetHierarchyDropdowns() {
+      state.branch = null;
+      state.supervisor = null;
+      state.farmer = null;
+
+      // 1. Branch Dropdown: starts with '--select branch--'
+      const bSel = document.getElementById('branchSelect');
+      bSel.innerHTML = '<option value="">--select branch--</option>';
+      branchesData.forEach(b => {
+        const opt = document.createElement('option');
+        opt.value = b;
+        opt.textContent = b;
+        bSel.appendChild(opt);
+      });
+      bSel.value = '';
+
+      // 2. Supervisor Dropdown: starts with '--select supervisor--'
+      const sSel = document.getElementById('supervisorSelect');
+      sSel.innerHTML = '<option value="">--select supervisor--</option>';
+      sSel.value = '';
+
+      // 3. Farmer Dropdown: starts with '--select farmer--'
+      const fSel = document.getElementById('farmerSelect');
+      fSel.innerHTML = '<option value="">--select farmer--</option>';
+      fSel.value = '';
+
+      // Hide form container and show prompt banner
+      const form = document.getElementById('formContainer');
+      const banner = document.getElementById('selectPromptBanner');
+      if (form) form.classList.add('hidden');
+      if (banner) banner.classList.remove('hidden');
+
+      updateHeaderAndBanner();
+    }
+
     function init() {
       // 0. Update today's date from device/browser calendar
       const today = getFormattedTodayDate();
@@ -880,97 +915,87 @@
       // 1. Load persisted data from localStorage
       loadPersistedState();
 
-      // 2. Populate Branch Dropdown with all 27 branches, defaulting to KOLHAPUR
-      const bSel = document.getElementById('branchSelect');
-      bSel.innerHTML = '';
-      branchesData.forEach(b => {
-        const opt = document.createElement('option');
-        opt.value = b;
-        opt.textContent = b;
-        if (b === state.branch) opt.selected = true;
-        bSel.appendChild(opt);
-      });
+      // 2. Initialize hierarchy dropdowns with '--select--' options
+      resetHierarchyDropdowns();
 
-      // 3. Pre-load Kolhapur branch supervisors and farmer
-      populateSupervisors('KOLHAPUR', true);
-
-      // 4. Render Broiler Records from persisted state
+      // 3. Render Broiler Records from persisted state
       renderBroilerRecords();
 
-      // 5. Start on clean Login Screen (breadcrumbs and branch badge hidden)
+      // 4. Start on clean Login Screen (breadcrumbs and branch badge hidden)
       goToScreen('loginScreen');
     }
 
-    function populateSupervisors(branch, autoSelectFirst = false) {
-      const sups = supervisorsByBranch[branch] || [];
-      const sSel = document.getElementById('supervisorSelect');
-      sSel.innerHTML = '<option value="">--select supervisor--</option>';
-      sups.forEach((s, idx) => {
-        const opt = document.createElement('option');
-        opt.value = s.id;
-        opt.textContent = s.name; // Supervisor name only
-        if (autoSelectFirst && idx === 0) opt.selected = true;
-        sSel.appendChild(opt);
-      });
-
-      if (autoSelectFirst && sups.length > 0) {
-        state.supervisor = sups[0];
-        updateHeaderAndBanner();
-        populateFarmers(state.supervisor.id, true);
-      } else {
-        state.supervisor = null;
-        updateHeaderAndBanner();
-        populateFarmers(null, false);
-      }
-    }
-
-    function populateFarmers(supervisorId, autoSelectFirst = false) {
-      const fSel = document.getElementById('farmerSelect');
-      fSel.innerHTML = '<option value="">--select farmer--</option>';
-
-      if (!supervisorId) {
-        state.farmer = null;
-        document.getElementById('formContainer').classList.add('hidden');
-        document.getElementById('selectPromptBanner').classList.remove('hidden');
-        document.getElementById('crumbFarmer').textContent = 'Select Farmer';
+    function handleBranchSelect(b) {
+      if (!b) {
+        resetHierarchyDropdowns();
         return;
       }
 
-      const supCode = supervisorId.replace(/\D/g, '') || '100';
+      state.branch = b;
+      state.supervisor = null;
+      state.farmer = null;
+      updateHeaderAndBanner();
+
+      // After selecting branch, show only the supervisors that are under that branch
+      const sups = supervisorsByBranch[b] || [];
+      const sSel = document.getElementById('supervisorSelect');
+      sSel.innerHTML = '<option value="">--select supervisor--</option>';
+      sups.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.id;
+        opt.textContent = s.name;
+        sSel.appendChild(opt);
+      });
+      sSel.value = '';
+
+      // Reset farmer dropdown
+      const fSel = document.getElementById('farmerSelect');
+      fSel.innerHTML = '<option value="">--select farmer--</option>';
+      fSel.value = '';
+
+      // Keep form hidden until farmer is selected
+      document.getElementById('formContainer').classList.add('hidden');
+      document.getElementById('selectPromptBanner').classList.remove('hidden');
+    }
+
+    function handleSupervisorSelect(supId) {
+      if (!supId) {
+        state.supervisor = null;
+        state.farmer = null;
+        updateHeaderAndBanner();
+
+        const fSel = document.getElementById('farmerSelect');
+        fSel.innerHTML = '<option value="">--select farmer--</option>';
+        fSel.value = '';
+
+        document.getElementById('formContainer').classList.add('hidden');
+        document.getElementById('selectPromptBanner').classList.remove('hidden');
+        return;
+      }
+
+      const sups = supervisorsByBranch[state.branch] || [];
+      state.supervisor = sups.find(s => s.id === supId) || null;
+      state.farmer = null;
+      updateHeaderAndBanner();
+
+      // After selecting supervisor, show only the farmers that are under that supervisor
+      const fSel = document.getElementById('farmerSelect');
+      fSel.innerHTML = '<option value="">--select farmer--</option>';
+
+      const supCode = supId.replace(/\D/g, '') || '100';
       farmerFirstNames.forEach((name, i) => {
         const fId = `FARM-${supCode}-${1001 + i}`;
         const opt = document.createElement('option');
         opt.value = fId;
-        opt.textContent = name; // Farmer name only (no numbers, no codes, no brackets)
+        opt.textContent = name;
         opt.dataset.name = name;
-        if (autoSelectFirst && i === 0) opt.selected = true;
         fSel.appendChild(opt);
       });
+      fSel.value = '';
 
-      if (autoSelectFirst && fSel.options.length > 1) {
-        fSel.selectedIndex = 1;
-        handleFarmerSelect(fSel.options[1].value);
-      } else {
-        state.farmer = null;
-        document.getElementById('formContainer').classList.add('hidden');
-        document.getElementById('selectPromptBanner').classList.remove('hidden');
-        document.getElementById('crumbFarmer').textContent = 'Select Farmer';
-      }
-    }
-
-    function handleBranchSelect(b) {
-      state.branch = b;
-      updateHeaderAndBanner();
-      // After selecting branch, show only the supervisors that are under that branch
-      populateSupervisors(b, false);
-    }
-
-    function handleSupervisorSelect(supId) {
-      const sups = supervisorsByBranch[state.branch] || [];
-      state.supervisor = sups.find(s => s.id === supId) || null;
-      updateHeaderAndBanner();
-      // After selecting supervisor, show only the farmers that are under that supervisor
-      populateFarmers(supId, false);
+      // Keep form hidden until farmer is selected
+      document.getElementById('formContainer').classList.add('hidden');
+      document.getElementById('selectPromptBanner').classList.remove('hidden');
     }
 
     function handleFarmerSelect(fId) {
@@ -983,20 +1008,24 @@
         state.farmer = null;
         form.classList.add('hidden');
         banner.classList.remove('hidden');
-        document.getElementById('crumbFarmer').textContent = 'Select Farmer';
+        updateHeaderAndBanner();
         return;
       }
 
       const sel = document.getElementById('farmerSelect');
       const opt = sel.options[sel.selectedIndex];
-      
+      const farmerName = opt ? (opt.dataset.name || opt.textContent) : 'Farmer';
+
       state.farmer = {
         id: fId,
-        name: opt.dataset.name
+        name: farmerName,
+        branch: state.branch,
+        supervisorId: state.supervisor ? state.supervisor.id : ''
       };
 
+      updateHeaderAndBanner();
+
       // Update screen displays
-      document.getElementById('crumbFarmer').textContent = state.farmer.name;
       document.getElementById('dispFarmerName').textContent = state.farmer.name;
       if (document.getElementById('dispSupName') && state.supervisor) {
         document.getElementById('dispSupName').textContent = state.supervisor.name;
@@ -1022,12 +1051,21 @@
     }
 
     function updateHeaderAndBanner() {
-      document.getElementById('metaBranch').textContent = state.branch;
-      document.getElementById('crumbBranch').textContent = state.branch;
+      const metaBranch = document.getElementById('metaBranch');
+      const crumbBranch = document.getElementById('crumbBranch');
+      const crumbSupervisor = document.getElementById('crumbSupervisor');
+      const dispSupName = document.getElementById('dispSupName');
+      const crumbFarmer = document.getElementById('crumbFarmer');
 
-      const supText = state.supervisor ? `${state.supervisor.name}` : '';
-      document.getElementById('crumbSupervisor').textContent = supText;
-      document.getElementById('dispSupName').textContent = supText;
+      if (metaBranch) metaBranch.textContent = state.branch || 'SPBF';
+      if (crumbBranch) crumbBranch.textContent = state.branch || 'Select Branch';
+
+      const supText = state.supervisor ? state.supervisor.name : 'Select Supervisor';
+      if (crumbSupervisor) crumbSupervisor.textContent = supText;
+      if (dispSupName) dispSupName.textContent = state.supervisor ? state.supervisor.name : '';
+
+      const farmerText = state.farmer ? state.farmer.name : 'Select Farmer';
+      if (crumbFarmer) crumbFarmer.textContent = farmerText;
     }
 
     function focusHierarchy() {
@@ -1459,15 +1497,13 @@
 
     function handleLogin() {
       state.isLoggedIn = true;
-      state.branch = 'KOLHAPUR';
-      const bSel = document.getElementById('branchSelect');
-      if (bSel) bSel.value = 'KOLHAPUR';
-      populateSupervisors('KOLHAPUR', true);
+      resetHierarchyDropdowns();
       goToScreen('dailyTransactionScreen');
     }
 
     function handleLogout() {
       state.isLoggedIn = false;
+      resetHierarchyDropdowns();
       goToScreen('loginScreen');
     }
 
