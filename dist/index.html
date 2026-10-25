@@ -862,22 +862,22 @@
       };
     }
 
-    // Supervisor Accounts Configuration
+    // Supervisor Accounts Configuration (Easy Usernames: sup1 for 1 branch, sup2 for 2 branches)
     const supervisorAccounts = {
       // 1. Single Branch Supervisor (KOLHAPUR)
-      'spbf_sup01': {
+      'sup1': {
         id: 'E1870',
-        username: 'spbf_sup01',
-        password: 'Spbf@2026',
+        username: 'sup1',
+        password: '123',
         name: 'SANDIP GUNDU PATIL',
         emp: 'E1870',
         branches: ['KOLHAPUR'],
         label: 'Supervisor (KOLHAPUR)'
       },
-      'spbf_kolhapur': {
+      'spbf_sup01': {
         id: 'E1870',
-        username: 'spbf_kolhapur',
-        password: 'Spbf@2026',
+        username: 'spbf_sup01',
+        password: '123',
         name: 'SANDIP GUNDU PATIL',
         emp: 'E1870',
         branches: ['KOLHAPUR'],
@@ -886,7 +886,7 @@
       'demo': {
         id: 'E1870',
         username: 'demo',
-        password: 'Spbf@2026',
+        password: '123',
         name: 'SANDIP GUNDU PATIL',
         emp: 'E1870',
         branches: ['KOLHAPUR'],
@@ -895,7 +895,7 @@
       'demo1': {
         id: 'E1870',
         username: 'demo1',
-        password: 'Spbf@2026',
+        password: '123',
         name: 'SANDIP GUNDU PATIL',
         emp: 'E1870',
         branches: ['KOLHAPUR'],
@@ -904,16 +904,7 @@
       'sandip': {
         id: 'E1870',
         username: 'sandip',
-        password: 'Spbf@2026',
-        name: 'SANDIP GUNDU PATIL',
-        emp: 'E1870',
-        branches: ['KOLHAPUR'],
-        label: 'Supervisor (KOLHAPUR)'
-      },
-      'e1870': {
-        id: 'E1870',
-        username: 'e1870',
-        password: 'Spbf@2026',
+        password: '123',
         name: 'SANDIP GUNDU PATIL',
         emp: 'E1870',
         branches: ['KOLHAPUR'],
@@ -921,19 +912,19 @@
       },
 
       // 2. Dual Branch Supervisor (KOLHAPUR & SATARA)
-      'spbf_sup02': {
+      'sup2': {
         id: 'E1871',
-        username: 'spbf_sup02',
-        password: 'Spbf@2026',
+        username: 'sup2',
+        password: '123',
         name: 'RAMESH PATIL',
         emp: 'E1871',
         branches: ['KOLHAPUR', 'SATARA'],
         label: 'Supervisor (KOLHAPUR & SATARA)'
       },
-      'spbf_dual': {
+      'spbf_sup02': {
         id: 'E1871',
-        username: 'spbf_dual',
-        password: 'Spbf@2026',
+        username: 'spbf_sup02',
+        password: '123',
         name: 'RAMESH PATIL',
         emp: 'E1871',
         branches: ['KOLHAPUR', 'SATARA'],
@@ -942,7 +933,7 @@
       'demo2': {
         id: 'E1871',
         username: 'demo2',
-        password: 'Spbf@2026',
+        password: '123',
         name: 'RAMESH PATIL',
         emp: 'E1871',
         branches: ['KOLHAPUR', 'SATARA'],
@@ -951,16 +942,7 @@
       'ramesh': {
         id: 'E1871',
         username: 'ramesh',
-        password: 'Spbf@2026',
-        name: 'RAMESH PATIL',
-        emp: 'E1871',
-        branches: ['KOLHAPUR', 'SATARA'],
-        label: 'Supervisor (KOLHAPUR & SATARA)'
-      },
-      'e1871': {
-        id: 'E1871',
-        username: 'e1871',
-        password: 'Spbf@2026',
+        password: '123',
         name: 'RAMESH PATIL',
         emp: 'E1871',
         branches: ['KOLHAPUR', 'SATARA'],
@@ -1662,7 +1644,7 @@
         return;
       }
 
-      const validPasswords = ['Spbf@2026', 'Password@123', 'Demo@123', account.password];
+      const validPasswords = ['123', '1234', '123456', 'pass123', 'Spbf@2026', 'Password@123', 'Demo@123', account.password];
       if (!validPasswords.includes(password)) {
         alert("Invalid username or password. Please check your credentials and try again.");
         return;
