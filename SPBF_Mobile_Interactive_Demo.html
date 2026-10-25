@@ -109,57 +109,126 @@
 
       <!-- ================= 1. LOGIN SCREEN ================= -->
       <div id="loginScreen" class="screen-content active p-4">
-        <div class="flex flex-col items-center justify-center my-auto py-8">
-          <div class="bg-[#394A59] border border-[#A4C2C5] px-6 py-2.5 rounded-lg mb-4 shadow">
+        <div class="flex flex-col items-center justify-center my-auto py-6">
+          <div class="bg-[#394A59] border border-[#A4C2C5] px-6 py-2.5 rounded-lg mb-3 shadow">
             <span class="text-[#FFBF96] text-3xl font-extrabold tracking-widest">SPBF</span>
           </div>
           <h2 class="text-xl font-bold text-[#092F3D]">SPBF Broiler Management</h2>
-          <p class="text-xs text-slate-500 mb-6">PoultryFlo Supervisor Daily Transaction Portal</p>
+          <p class="text-xs text-slate-500 mb-5">PoultryFlo Supervisor Daily Transaction Portal</p>
 
-          <div class="w-full max-w-md bg-white border border-[#A4C2C5] rounded p-5 shadow-sm">
+          <div class="w-full max-w-md bg-white border border-[#A4C2C5] rounded-xl p-5 shadow-sm">
             <div class="mb-3">
               <label class="block text-xs font-bold text-black mb-1">Username / Emp ID *</label>
-              <input type="text" id="loginUser" value="demo" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded text-sm text-black font-medium">
+              <input type="text" id="loginUser" value="demo" onkeydown="if(event.key==='Enter') handleLogin()" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded text-sm text-black font-medium focus:outline-none focus:border-[#34AADC]">
             </div>
 
             <div class="mb-4">
               <label class="block text-xs font-bold text-black mb-1">Password *</label>
-              <input type="password" id="loginPass" value="Demo@123" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded text-sm text-black font-medium">
+              <input type="password" id="loginPass" value="Demo@123" onkeydown="if(event.key==='Enter') handleLogin()" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded text-sm text-black font-medium focus:outline-none focus:border-[#34AADC]">
             </div>
 
-            <button onclick="handleLogin()" class="w-full h-11 bg-[#B8D4D6] hover:bg-[#A4C2C5] border-2 border-[#A4C2C5] text-[#333333] font-bold text-sm rounded shadow flex items-center justify-center transition">
+            <button onclick="handleLogin()" class="w-full h-11 bg-[#B8D4D6] hover:bg-[#A4C2C5] border-2 border-[#A4C2C5] text-[#333333] font-bold text-sm rounded shadow flex items-center justify-center transition cursor-pointer">
               Login to Portal
             </button>
+
+            <!-- Quick Demo Selectors & Credentials Guide -->
+            <div class="mt-5 pt-4 border-t border-slate-200">
+              <div class="text-[11px] font-bold text-slate-700 mb-2">⚡ Quick Demo Login (Click to Test):</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+                <button type="button" onclick="quickDemoLogin('demo')" class="p-2.5 bg-[#EEF3F4] hover:bg-[#DCE7E9] border border-[#34AADC] rounded-lg text-left transition cursor-pointer shadow-xs">
+                  <div class="flex items-center justify-between mb-0.5">
+                    <span class="text-xs font-bold text-blue-700">Demo 1 (Single)</span>
+                    <span class="text-[10px] bg-blue-100 text-blue-800 font-extrabold px-1.5 py-0.5 rounded">1 Branch</span>
+                  </div>
+                  <div class="text-[11px] text-slate-800 font-semibold truncate">SANDIP GUNDU PATIL</div>
+                  <div class="text-[10px] text-slate-500 font-medium">KOLHAPUR • Opens Directly</div>
+                </button>
+                <button type="button" onclick="quickDemoLogin('demo2')" class="p-2.5 bg-[#EEF3F4] hover:bg-[#DCE7E9] border border-[#9b51e0] rounded-lg text-left transition cursor-pointer shadow-xs">
+                  <div class="flex items-center justify-between mb-0.5">
+                    <span class="text-xs font-bold text-purple-700">Demo 2 (Dual)</span>
+                    <span class="text-[10px] bg-purple-100 text-purple-800 font-extrabold px-1.5 py-0.5 rounded">2 Branches</span>
+                  </div>
+                  <div class="text-[11px] text-slate-800 font-semibold truncate">RAMESH PATIL</div>
+                  <div class="text-[10px] text-slate-500 font-medium">KOLHAPUR & SATARA (Popup)</div>
+                </button>
+              </div>
+
+              <div class="bg-amber-50 border border-amber-200 p-2.5 rounded-lg text-[11px] text-amber-900 leading-snug">
+                <span class="font-bold">🔑 Demo Credentials:</span><br>
+                • <strong>Demo 1:</strong> User: <code class="bg-white px-1 py-0.5 rounded border border-amber-300 font-bold">demo</code> | Pass: <code class="bg-white px-1 py-0.5 rounded border border-amber-300 font-bold">Demo@123</code> (Allotted to 1 Branch)<br>
+                • <strong>Demo 2:</strong> User: <code class="bg-white px-1 py-0.5 rounded border border-amber-300 font-bold">demo2</code> | Pass: <code class="bg-white px-1 py-0.5 rounded border border-amber-300 font-bold">Demo@123</code> (Allotted to 2 Branches)
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- ================= 2. DAILY TRANSACTION SCREEN (WITH CASCADING DROPDOWNS) ================= -->
+      <!-- ================= POPUP MODAL: BRANCH SELECTION (For Multi-Branch Supervisors) ================= -->
+      <div id="branchModal" style="display: none;" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-xl shadow-2xl border-2 border-[#34AADC] overflow-hidden">
+          <!-- Modal Header -->
+          <div class="bg-[#394A59] px-4 py-3.5 border-b border-[#A4C2C5] flex items-center justify-between text-white">
+            <div class="flex items-center gap-2.5">
+              <span class="text-2xl">🏢</span>
+              <div>
+                <h3 class="font-bold text-sm text-[#FFBF96]">Select Branch for Daily Entry</h3>
+                <p class="text-[10px] text-slate-300">Multi-Branch Supervisor Allotment</p>
+              </div>
+            </div>
+            <span id="modalSupBadge" class="bg-[#B8D4D6] text-[#092F3D] text-[10px] font-extrabold px-2.5 py-0.5 rounded shadow">E1871</span>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="p-4 sm:p-5">
+            <div class="mb-4 text-xs text-slate-700 leading-relaxed bg-[#EEF3F4] p-3 rounded-lg border border-[#A4C2C5]">
+              Supervisor <strong id="modalSupName" class="text-[#092F3D]">RAMESH PATIL</strong> is allotted to <strong class="text-blue-700">2 branches</strong>. Please select which branch's daily transaction entry you are submitting right now:
+            </div>
+
+            <!-- Dynamic Branch Buttons -->
+            <div id="modalBranchOptions" class="space-y-2.5">
+              <!-- Populated dynamically via JS -->
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-200 flex justify-between items-center text-[11px] text-slate-500">
+              <span>You can switch branches anytime from the form header.</span>
+              <button onclick="handleLogout()" class="text-red-600 hover:underline font-bold cursor-pointer">Logout</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 2. DAILY TRANSACTION SCREEN ================= -->
       <div id="dailyTransactionScreen" class="screen-content p-2 sm:p-4 pb-28">
 
-        <!-- DROPDOWNS: Branch -> Supervisor -> Farmer Name -->
+        <!-- CONTEXT CARD: Branch -> Supervisor Name (Readonly) -> Farmer Name Dropdown -->
         <div id="hierarchyFilterCard" class="bg-white border-2 border-[#A4C2C5] rounded mb-3 overflow-hidden shadow-sm">
           <div class="p-3 grid grid-cols-1 md:grid-cols-3 gap-3">
-            <!-- 1. Branch Dropdown -->
+            <!-- 1. Branch Card -->
             <div>
               <label class="block text-xs font-bold text-black mb-1">Branch <span class="text-red-600">*</span></label>
-              <select id="branchSelect" onchange="handleBranchSelect(this.value)" class="w-full h-10 px-3 bg-[#FFFCF9] border-2 border-[#34AADC] rounded text-xs sm:text-sm text-black font-bold focus:outline-none">
-                <!-- Populated dynamically with all 25 branches -->
-              </select>
+              <div class="h-10 px-3 bg-[#EEF3F4] border-2 border-[#34AADC] rounded flex items-center justify-between text-xs sm:text-sm text-black font-bold">
+                <div class="flex items-center gap-1.5 truncate">
+                  <span>🏢</span>
+                  <span id="dispActiveBranch" class="text-[#092F3D] font-extrabold truncate">KOLHAPUR</span>
+                </div>
+                <button id="switchBranchBtn" onclick="openBranchModal()" class="hidden text-[10px] bg-[#34AADC] hover:bg-blue-600 text-white font-bold px-2 py-1 rounded shadow cursor-pointer transition whitespace-nowrap ml-1" title="Switch between your allotted branches">
+                  Switch ⇄
+                </button>
+              </div>
             </div>
 
-            <!-- 2. Supervisor Dropdown -->
+            <!-- 2. Supervisor Name (Readonly, Logged-in User) -->
             <div>
               <label class="block text-xs font-bold text-black mb-1">Supervisor Name <span class="text-red-600">*</span></label>
-              <select id="supervisorSelect" onchange="handleSupervisorSelect(this.value)" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded text-xs sm:text-sm text-black font-semibold focus:outline-none">
-                <!-- Populated based on selected branch -->
-              </select>
+              <div class="h-10 px-3 bg-[#EEF3F4] border border-[#A4C2C5] rounded flex items-center text-xs sm:text-sm font-bold text-slate-800 truncate" id="dispLoggedInSupervisor">
+                SANDIP GUNDU PATIL (E1870)
+              </div>
             </div>
 
-            <!-- 3. Farmer Name Dropdown (Corrected from Farm Name) -->
+            <!-- 3. Farmer Name Dropdown -->
             <div>
               <label class="block text-xs font-bold text-black mb-1">Farmer Name <span class="text-red-600">*</span></label>
-              <select id="farmerSelect" onchange="handleFarmerSelect(this.value)" class="w-full h-10 px-3 bg-[#FFFCF9] border-2 border-[#4CD964] rounded text-xs sm:text-sm text-black font-bold focus:outline-none">
+              <select id="farmerSelect" onchange="handleFarmerSelect(this.value)" class="w-full h-10 px-3 bg-[#FFFCF9] border-2 border-[#4CD964] rounded text-xs sm:text-sm text-black font-bold focus:outline-none cursor-pointer">
                 <option value="">--select farmer--</option>
                 <!-- Populated with ~25 farmers of selected supervisor -->
               </select>
@@ -167,8 +236,8 @@
           </div>
 
           <!-- Prompt when no farmer is selected yet -->
-          <div id="selectPromptBanner" class="bg-[#E7F2F5] border-t border-[#A4C2C5] px-3 py-2 text-[11px] text-[#004466] flex items-center justify-between">
-            <span>Please select a <strong>Branch</strong>, then <strong>Supervisor</strong>, and <strong>Farmer Name</strong> from the dropdowns above to open the daily transaction form.</span>
+          <div id="selectPromptBanner" class="hidden bg-[#E7F2F5] border-t border-[#A4C2C5] px-3 py-2 text-[11px] text-[#004466] flex items-center justify-between">
+            <span>Please select a <strong>Farmer Name</strong> from the dropdown above to open the daily transaction form.</span>
           </div>
         </div>
 
@@ -736,6 +805,7 @@
         { id: 'E1923', name: 'Sagar Memane', emp: 'E1923' }
       ],
       'SATARA': [
+        { id: 'E1871', name: 'RAMESH PATIL', emp: 'E1871' },
         { id: 'E1924', name: 'Vikas Bhosale', emp: 'E1924' },
         { id: 'E1925', name: 'Sachin Jagtap', emp: 'E1925' },
         { id: 'E1926', name: 'Nitin Salunkhe', emp: 'E1926' }
@@ -823,10 +893,78 @@
       };
     }
 
+    // Demo Supervisor Accounts (Demo 1: Single Branch, Demo 2: Dual Branch)
+    const supervisorAccounts = {
+      'demo': {
+        id: 'E1870',
+        username: 'demo',
+        password: 'Demo@123',
+        name: 'SANDIP GUNDU PATIL',
+        emp: 'E1870',
+        branches: ['KOLHAPUR'],
+        label: 'Demo 1: Single Branch (KOLHAPUR)'
+      },
+      'demo1': {
+        id: 'E1870',
+        username: 'demo1',
+        password: 'Demo@123',
+        name: 'SANDIP GUNDU PATIL',
+        emp: 'E1870',
+        branches: ['KOLHAPUR'],
+        label: 'Demo 1: Single Branch (KOLHAPUR)'
+      },
+      'sandip': {
+        id: 'E1870',
+        username: 'sandip',
+        password: 'Demo@123',
+        name: 'SANDIP GUNDU PATIL',
+        emp: 'E1870',
+        branches: ['KOLHAPUR'],
+        label: 'Demo 1: Single Branch (KOLHAPUR)'
+      },
+      'e1870': {
+        id: 'E1870',
+        username: 'e1870',
+        password: 'Demo@123',
+        name: 'SANDIP GUNDU PATIL',
+        emp: 'E1870',
+        branches: ['KOLHAPUR'],
+        label: 'Demo 1: Single Branch (KOLHAPUR)'
+      },
+      'demo2': {
+        id: 'E1871',
+        username: 'demo2',
+        password: 'Demo@123',
+        name: 'RAMESH PATIL',
+        emp: 'E1871',
+        branches: ['KOLHAPUR', 'SATARA'],
+        label: 'Demo 2: Dual Branch (KOLHAPUR & SATARA)'
+      },
+      'ramesh': {
+        id: 'E1871',
+        username: 'ramesh',
+        password: 'Demo@123',
+        name: 'RAMESH PATIL',
+        emp: 'E1871',
+        branches: ['KOLHAPUR', 'SATARA'],
+        label: 'Demo 2: Dual Branch (KOLHAPUR & SATARA)'
+      },
+      'e1871': {
+        id: 'E1871',
+        username: 'e1871',
+        password: 'Demo@123',
+        name: 'RAMESH PATIL',
+        emp: 'E1871',
+        branches: ['KOLHAPUR', 'SATARA'],
+        label: 'Demo 2: Dual Branch (KOLHAPUR & SATARA)'
+      }
+    };
+
     // State Store (Survives page refreshes via localStorage)
     const state = {
       isLoggedIn: false,
       currentScreen: 'loginScreen',
+      currentUser: null,
       branch: null,
       supervisor: null,
       farmer: null,
@@ -876,26 +1014,11 @@
       state.supervisor = null;
       state.farmer = null;
 
-      // 1. Branch Dropdown: starts with '--select branch--'
-      const bSel = document.getElementById('branchSelect');
-      bSel.innerHTML = '<option value="">--select branch--</option>';
-      branchesData.forEach(b => {
-        const opt = document.createElement('option');
-        opt.value = b;
-        opt.textContent = b;
-        bSel.appendChild(opt);
-      });
-      bSel.value = '';
-
-      // 2. Supervisor Dropdown: starts with '--select supervisor--'
-      const sSel = document.getElementById('supervisorSelect');
-      sSel.innerHTML = '<option value="">--select supervisor--</option>';
-      sSel.value = '';
-
-      // 3. Farmer Dropdown: starts with '--select farmer--'
       const fSel = document.getElementById('farmerSelect');
-      fSel.innerHTML = '<option value="">--select farmer--</option>';
-      fSel.value = '';
+      if (fSel) {
+        fSel.innerHTML = '<option value="">--select farmer--</option>';
+        fSel.value = '';
+      }
 
       // Hide form container and show prompt banner
       const form = document.getElementById('formContainer');
@@ -915,7 +1038,7 @@
       // 1. Load persisted data from localStorage
       loadPersistedState();
 
-      // 2. Initialize hierarchy dropdowns with '--select--' options
+      // 2. Initialize hierarchy
       resetHierarchyDropdowns();
 
       // 3. Render Broiler Records from persisted state
@@ -925,77 +1048,122 @@
       goToScreen('loginScreen');
     }
 
-    function handleBranchSelect(b) {
-      if (!b) {
-        resetHierarchyDropdowns();
-        return;
-      }
-
-      state.branch = b;
-      state.supervisor = null;
-      state.farmer = null;
-      updateHeaderAndBanner();
-
-      // After selecting branch, show only the supervisors that are under that branch
-      const sups = supervisorsByBranch[b] || [];
-      const sSel = document.getElementById('supervisorSelect');
-      sSel.innerHTML = '<option value="">--select supervisor--</option>';
-      sups.forEach(s => {
-        const opt = document.createElement('option');
-        opt.value = s.id;
-        opt.textContent = s.name;
-        sSel.appendChild(opt);
-      });
-      sSel.value = '';
-
-      // Reset farmer dropdown
-      const fSel = document.getElementById('farmerSelect');
-      fSel.innerHTML = '<option value="">--select farmer--</option>';
-      fSel.value = '';
-
-      // Keep form hidden until farmer is selected
-      document.getElementById('formContainer').classList.add('hidden');
-      document.getElementById('selectPromptBanner').classList.remove('hidden');
+    function quickDemoLogin(userKey) {
+      const uInput = document.getElementById('loginUser');
+      const pInput = document.getElementById('loginPass');
+      if (uInput) uInput.value = userKey;
+      if (pInput) pInput.value = 'Demo@123';
+      handleLogin();
     }
 
-    function handleSupervisorSelect(supId) {
-      if (!supId) {
-        state.supervisor = null;
-        state.farmer = null;
-        updateHeaderAndBanner();
+    function openBranchModal(account) {
+      account = account || state.currentUser;
+      if (!account || !account.branches) return;
 
-        const fSel = document.getElementById('farmerSelect');
-        fSel.innerHTML = '<option value="">--select farmer--</option>';
-        fSel.value = '';
+      const modalSupName = document.getElementById('modalSupName');
+      const modalSupBadge = document.getElementById('modalSupBadge');
+      if (modalSupName) modalSupName.textContent = account.name;
+      if (modalSupBadge) modalSupBadge.textContent = account.emp;
 
-        document.getElementById('formContainer').classList.add('hidden');
-        document.getElementById('selectPromptBanner').classList.remove('hidden');
-        return;
+      const container = document.getElementById('modalBranchOptions');
+      if (container) {
+        container.innerHTML = '';
+        account.branches.forEach((b, idx) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'w-full p-3.5 border-2 border-[#34AADC] hover:border-blue-600 hover:bg-[#EBF7FD] rounded-xl text-left flex items-center justify-between transition group shadow-xs bg-white cursor-pointer';
+          btn.onclick = () => selectBranchFromModal(b);
+          btn.innerHTML = `
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">🏢</span>
+              <div>
+                <div class="font-bold text-sm text-[#092F3D] group-hover:text-blue-700">${b} Branch</div>
+                <div class="text-[11px] text-slate-500 font-medium">Allotted Branch ${idx + 1} • 25 Active Farmers</div>
+              </div>
+            </div>
+            <span class="bg-[#34AADC] group-hover:bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow flex items-center gap-1 transition">
+              Select <span>→</span>
+            </span>
+          `;
+          container.appendChild(btn);
+        });
       }
 
-      const sups = supervisorsByBranch[state.branch] || [];
-      state.supervisor = sups.find(s => s.id === supId) || null;
-      state.farmer = null;
-      updateHeaderAndBanner();
+      const modal = document.getElementById('branchModal');
+      if (modal) modal.style.display = 'flex';
+    }
 
-      // After selecting supervisor, show only the farmers that are under that supervisor
+    function selectBranchFromModal(branch) {
+      const modal = document.getElementById('branchModal');
+      if (modal) modal.style.display = 'none';
+
+      selectBranch(branch);
+      goToScreen('dailyTransactionScreen');
+    }
+
+    function selectBranch(branch) {
+      state.branch = branch;
+
+      // Update active branch card
+      const dispActiveBranch = document.getElementById('dispActiveBranch');
+      if (dispActiveBranch) dispActiveBranch.textContent = branch;
+
+      // Show Switch Branch button only if supervisor has > 1 branch
+      const switchBtn = document.getElementById('switchBranchBtn');
+      if (switchBtn) {
+        if (state.currentUser && state.currentUser.branches && state.currentUser.branches.length > 1) {
+          switchBtn.classList.remove('hidden');
+        } else {
+          switchBtn.classList.add('hidden');
+        }
+      }
+
+      // Update logged-in supervisor name
+      const dispLoggedInSup = document.getElementById('dispLoggedInSupervisor');
+      if (dispLoggedInSup && state.supervisor) {
+        dispLoggedInSup.textContent = `${state.supervisor.name} (${state.supervisor.emp})`;
+      }
+
+      // Populate farmers dropdown for this branch and supervisor
+      populateFarmersForCurrentSupervisor();
+
+      // Pre-select first farmer so form directly opens
       const fSel = document.getElementById('farmerSelect');
+      if (fSel && fSel.options.length > 1) {
+        fSel.selectedIndex = 1;
+        const firstVal = fSel.options[1].value || fSel.value;
+        fSel.value = firstVal;
+        handleFarmerSelect(firstVal);
+      }
+
+      updateHeaderAndBanner();
+    }
+
+    function populateFarmersForCurrentSupervisor() {
+      const fSel = document.getElementById('farmerSelect');
+      if (!fSel) return;
+
       fSel.innerHTML = '<option value="">--select farmer--</option>';
 
-      const supCode = supId.replace(/\D/g, '') || '100';
+      const supCode = state.supervisor ? (state.supervisor.emp.replace(/\D/g, '') || '100') : '100';
+      const branchCode = (state.branch || 'KOL').substring(0, 3).toUpperCase();
+
       farmerFirstNames.forEach((name, i) => {
-        const fId = `FARM-${supCode}-${1001 + i}`;
+        const fId = `FARM-${branchCode}-${supCode}-${1001 + i}`;
         const opt = document.createElement('option');
         opt.value = fId;
         opt.textContent = name;
         opt.dataset.name = name;
         fSel.appendChild(opt);
       });
-      fSel.value = '';
+    }
 
-      // Keep form hidden until farmer is selected
-      document.getElementById('formContainer').classList.add('hidden');
-      document.getElementById('selectPromptBanner').classList.remove('hidden');
+    function handleBranchSelect(b) {
+      if (b) selectBranch(b);
+    }
+
+    function handleSupervisorSelect(supId) {
+      // Not needed because supervisor is the logged-in user
     }
 
     function handleFarmerSelect(fId) {
@@ -1058,20 +1226,24 @@
       const crumbFarmer = document.getElementById('crumbFarmer');
 
       if (metaBranch) metaBranch.textContent = state.branch || 'SPBF';
-      if (crumbBranch) crumbBranch.textContent = state.branch || 'Select Branch';
+      if (crumbBranch) crumbBranch.textContent = state.branch ? `Branch: ${state.branch}` : 'Select Branch';
 
-      const supText = state.supervisor ? state.supervisor.name : 'Select Supervisor';
+      const supText = state.supervisor ? `Supervisor: ${state.supervisor.name}` : 'Supervisor Login';
       if (crumbSupervisor) crumbSupervisor.textContent = supText;
       if (dispSupName) dispSupName.textContent = state.supervisor ? state.supervisor.name : '';
 
-      const farmerText = state.farmer ? state.farmer.name : 'Select Farmer';
+      const farmerText = state.farmer ? `Farmer: ${state.farmer.name}` : 'Select Farmer';
       if (crumbFarmer) crumbFarmer.textContent = farmerText;
     }
 
     function focusHierarchy() {
       goToScreen('dailyTransactionScreen');
-      const el = document.getElementById('hierarchyFilterCard');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      if (state.currentUser && state.currentUser.branches && state.currentUser.branches.length > 1) {
+        openBranchModal();
+      } else {
+        const el = document.getElementById('hierarchyFilterCard');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
     }
 
     function handleTodayMortInput(val) {
@@ -1496,14 +1668,61 @@
     }
 
     function handleLogin() {
+      const uInput = document.getElementById('loginUser');
+      const pInput = document.getElementById('loginPass');
+      const username = (uInput ? uInput.value : '').trim().toLowerCase();
+      const password = (pInput ? pInput.value : '').trim();
+
+      let account = supervisorAccounts[username];
+
+      if (!account) {
+        if (!username || username === 'demo') {
+          account = supervisorAccounts['demo'];
+        } else if (username === 'demo2') {
+          account = supervisorAccounts['demo2'];
+        } else {
+          alert("Invalid username! Please use one of the demo logins:\n\n• Demo 1 (Single Branch): username 'demo', password 'Demo@123'\n• Demo 2 (Dual Branch): username 'demo2', password 'Demo@123'");
+          return;
+        }
+      }
+
+      if (password !== account.password && password !== 'Demo@123') {
+        alert("Invalid password! Please use 'Demo@123'");
+        return;
+      }
+
       state.isLoggedIn = true;
-      resetHierarchyDropdowns();
-      goToScreen('dailyTransactionScreen');
+      state.currentUser = account;
+      state.supervisor = {
+        id: account.id,
+        name: account.name,
+        emp: account.emp
+      };
+
+      // Check number of branches allotted to this supervisor
+      if (account.branches && account.branches.length > 1) {
+        // Multi-branch supervisor: open the Branch Selection popup modal!
+        openBranchModal(account);
+      } else {
+        // Single branch supervisor: select their branch and open form directly!
+        selectBranch(account.branches[0]);
+        goToScreen('dailyTransactionScreen');
+      }
     }
 
     function handleLogout() {
       state.isLoggedIn = false;
-      resetHierarchyDropdowns();
+      state.currentUser = null;
+      state.branch = null;
+      state.supervisor = null;
+      state.farmer = null;
+
+      const modal = document.getElementById('branchModal');
+      if (modal) modal.style.display = 'none';
+
+      const form = document.getElementById('formContainer');
+      if (form) form.classList.add('hidden');
+
       goToScreen('loginScreen');
     }
 
