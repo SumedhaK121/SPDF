@@ -109,56 +109,27 @@
 
       <!-- ================= 1. LOGIN SCREEN ================= -->
       <div id="loginScreen" class="screen-content active p-4">
-        <div class="flex flex-col items-center justify-center my-auto py-6">
+        <div class="flex flex-col items-center justify-center my-auto py-8">
           <div class="bg-[#394A59] border border-[#A4C2C5] px-6 py-2.5 rounded-lg mb-3 shadow">
             <span class="text-[#FFBF96] text-3xl font-extrabold tracking-widest">SPBF</span>
           </div>
           <h2 class="text-xl font-bold text-[#092F3D]">SPBF Broiler Management</h2>
-          <p class="text-xs text-slate-500 mb-5">PoultryFlo Supervisor Daily Transaction Portal</p>
+          <p class="text-xs text-slate-500 mb-6">PoultryFlo Supervisor Daily Transaction Portal</p>
 
-          <div class="w-full max-w-md bg-white border border-[#A4C2C5] rounded-xl p-5 shadow-sm">
-            <div class="mb-3">
-              <label class="block text-xs font-bold text-black mb-1">Username / Emp ID *</label>
-              <input type="text" id="loginUser" value="demo" onkeydown="if(event.key==='Enter') handleLogin()" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded text-sm text-black font-medium focus:outline-none focus:border-[#34AADC]">
-            </div>
-
+          <div class="w-full max-w-md bg-white border border-[#A4C2C5] rounded-xl p-6 shadow-sm">
             <div class="mb-4">
-              <label class="block text-xs font-bold text-black mb-1">Password *</label>
-              <input type="password" id="loginPass" value="Demo@123" onkeydown="if(event.key==='Enter') handleLogin()" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded text-sm text-black font-medium focus:outline-none focus:border-[#34AADC]">
+              <label class="block text-xs font-bold text-black mb-1.5">Username / Emp ID *</label>
+              <input type="text" id="loginUser" placeholder="Enter Username / Emp ID" onkeydown="if(event.key==='Enter') handleLogin()" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded text-sm text-black font-medium focus:outline-none focus:border-[#34AADC]">
             </div>
 
-            <button onclick="handleLogin()" class="w-full h-11 bg-[#B8D4D6] hover:bg-[#A4C2C5] border-2 border-[#A4C2C5] text-[#333333] font-bold text-sm rounded shadow flex items-center justify-center transition cursor-pointer">
+            <div class="mb-5">
+              <label class="block text-xs font-bold text-black mb-1.5">Password *</label>
+              <input type="password" id="loginPass" placeholder="Enter Password" onkeydown="if(event.key==='Enter') handleLogin()" class="w-full h-10 px-3 bg-[#FFFCF9] border border-[#A4C2C5] rounded text-sm text-black font-medium focus:outline-none focus:border-[#34AADC]">
+            </div>
+
+            <button onclick="handleLogin()" class="w-full h-11 bg-[#B8D4D6] hover:bg-[#A4C2C5] border-2 border-[#A4C2C5] text-[#333333] font-bold text-sm rounded-lg shadow flex items-center justify-center transition cursor-pointer">
               Login to Portal
             </button>
-
-            <!-- Quick Demo Selectors & Credentials Guide -->
-            <div class="mt-5 pt-4 border-t border-slate-200">
-              <div class="text-[11px] font-bold text-slate-700 mb-2">⚡ Quick Demo Login (Click to Test):</div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
-                <button type="button" onclick="quickDemoLogin('demo')" class="p-2.5 bg-[#EEF3F4] hover:bg-[#DCE7E9] border border-[#34AADC] rounded-lg text-left transition cursor-pointer shadow-xs">
-                  <div class="flex items-center justify-between mb-0.5">
-                    <span class="text-xs font-bold text-blue-700">Demo 1 (Single)</span>
-                    <span class="text-[10px] bg-blue-100 text-blue-800 font-extrabold px-1.5 py-0.5 rounded">1 Branch</span>
-                  </div>
-                  <div class="text-[11px] text-slate-800 font-semibold truncate">SANDIP GUNDU PATIL</div>
-                  <div class="text-[10px] text-slate-500 font-medium">KOLHAPUR • Opens Directly</div>
-                </button>
-                <button type="button" onclick="quickDemoLogin('demo2')" class="p-2.5 bg-[#EEF3F4] hover:bg-[#DCE7E9] border border-[#9b51e0] rounded-lg text-left transition cursor-pointer shadow-xs">
-                  <div class="flex items-center justify-between mb-0.5">
-                    <span class="text-xs font-bold text-purple-700">Demo 2 (Dual)</span>
-                    <span class="text-[10px] bg-purple-100 text-purple-800 font-extrabold px-1.5 py-0.5 rounded">2 Branches</span>
-                  </div>
-                  <div class="text-[11px] text-slate-800 font-semibold truncate">RAMESH PATIL</div>
-                  <div class="text-[10px] text-slate-500 font-medium">KOLHAPUR & SATARA (Popup)</div>
-                </button>
-              </div>
-
-              <div class="bg-amber-50 border border-amber-200 p-2.5 rounded-lg text-[11px] text-amber-900 leading-snug">
-                <span class="font-bold">🔑 Demo Credentials:</span><br>
-                • <strong>Demo 1:</strong> User: <code class="bg-white px-1 py-0.5 rounded border border-amber-300 font-bold">demo</code> | Pass: <code class="bg-white px-1 py-0.5 rounded border border-amber-300 font-bold">Demo@123</code> (Allotted to 1 Branch)<br>
-                • <strong>Demo 2:</strong> User: <code class="bg-white px-1 py-0.5 rounded border border-amber-300 font-bold">demo2</code> | Pass: <code class="bg-white px-1 py-0.5 rounded border border-amber-300 font-bold">Demo@123</code> (Allotted to 2 Branches)
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -297,12 +268,12 @@
                   </div>
                 </div>
 
-                <!-- 6. Today Total Mortality -->
+                <!-- 6. Today Total Mortality (Read-only, automatically reflects quantities from below) -->
                 <div>
                   <label class="block font-bold text-black mb-1 text-[11px]">Today Total Mortality</label>
                   <div class="relative">
-                    <input type="number" id="todayMortInput" value="0" min="0" placeholder="0" oninput="handleTodayMortInput(this.value)" class="w-full h-9 px-2.5 bg-[#FFFCF9] border-2 border-[#34AADC] rounded font-bold text-black text-xs focus:outline-none shadow-sm">
-                    <span class="absolute right-2 top-2 text-slate-400 font-bold text-[10px]">birds</span>
+                    <input type="number" id="todayMortInput" value="0" readonly class="w-full h-9 px-2.5 bg-[#DCE1E2] border border-[#A4C2C5] rounded font-bold text-black text-xs cursor-default select-none focus:outline-none">
+                    <span class="absolute right-2 top-2 text-slate-500 font-bold text-[10px]">birds</span>
                   </div>
                 </div>
 
@@ -559,13 +530,11 @@
             </div>
             
             <div class="p-3 text-xs">
-              <!-- Live Distribution Matching Box -->
-              <div id="mortSummaryBox" class="border border-slate-300 bg-slate-50 rounded p-2.5 mb-3 flex items-center justify-between transition-colors">
+              <!-- Live Mortality Total Display -->
+              <div id="mortSummaryBox" class="border border-[#A4C2C5] bg-[#EEF3F4] rounded p-2.5 mb-3 flex items-center justify-between">
                 <div>
-                  <span class="font-semibold text-slate-700">Total Mortality: <strong id="sumTotal" class="text-black">0</strong></span>
-                  <span class="ml-3 font-semibold text-slate-700">Distributed: <strong id="sumDist" class="text-black">0</strong></span>
+                  <span class="font-bold text-slate-800 text-xs">Total Mortality: <strong id="sumTotal" class="text-[#092F3D] text-sm">0</strong></span>
                 </div>
-                <span id="mortStatusBadge" class="font-bold flex items-center gap-1 text-xs text-slate-500">No Mortality (0 birds)</span>
               </div>
 
               <!-- Dynamic Rows -->
@@ -893,70 +862,109 @@
       };
     }
 
-    // Demo Supervisor Accounts (Demo 1: Single Branch, Demo 2: Dual Branch)
+    // Supervisor Accounts Configuration
     const supervisorAccounts = {
-      'demo': {
+      // 1. Single Branch Supervisor (KOLHAPUR)
+      'spbf_sup01': {
         id: 'E1870',
-        username: 'demo',
-        password: 'Demo@123',
+        username: 'spbf_sup01',
+        password: 'Spbf@2026',
         name: 'SANDIP GUNDU PATIL',
         emp: 'E1870',
         branches: ['KOLHAPUR'],
-        label: 'Demo 1: Single Branch (KOLHAPUR)'
+        label: 'Supervisor (KOLHAPUR)'
+      },
+      'spbf_kolhapur': {
+        id: 'E1870',
+        username: 'spbf_kolhapur',
+        password: 'Spbf@2026',
+        name: 'SANDIP GUNDU PATIL',
+        emp: 'E1870',
+        branches: ['KOLHAPUR'],
+        label: 'Supervisor (KOLHAPUR)'
+      },
+      'demo': {
+        id: 'E1870',
+        username: 'demo',
+        password: 'Spbf@2026',
+        name: 'SANDIP GUNDU PATIL',
+        emp: 'E1870',
+        branches: ['KOLHAPUR'],
+        label: 'Supervisor (KOLHAPUR)'
       },
       'demo1': {
         id: 'E1870',
         username: 'demo1',
-        password: 'Demo@123',
+        password: 'Spbf@2026',
         name: 'SANDIP GUNDU PATIL',
         emp: 'E1870',
         branches: ['KOLHAPUR'],
-        label: 'Demo 1: Single Branch (KOLHAPUR)'
+        label: 'Supervisor (KOLHAPUR)'
       },
       'sandip': {
         id: 'E1870',
         username: 'sandip',
-        password: 'Demo@123',
+        password: 'Spbf@2026',
         name: 'SANDIP GUNDU PATIL',
         emp: 'E1870',
         branches: ['KOLHAPUR'],
-        label: 'Demo 1: Single Branch (KOLHAPUR)'
+        label: 'Supervisor (KOLHAPUR)'
       },
       'e1870': {
         id: 'E1870',
         username: 'e1870',
-        password: 'Demo@123',
+        password: 'Spbf@2026',
         name: 'SANDIP GUNDU PATIL',
         emp: 'E1870',
         branches: ['KOLHAPUR'],
-        label: 'Demo 1: Single Branch (KOLHAPUR)'
+        label: 'Supervisor (KOLHAPUR)'
+      },
+
+      // 2. Dual Branch Supervisor (KOLHAPUR & SATARA)
+      'spbf_sup02': {
+        id: 'E1871',
+        username: 'spbf_sup02',
+        password: 'Spbf@2026',
+        name: 'RAMESH PATIL',
+        emp: 'E1871',
+        branches: ['KOLHAPUR', 'SATARA'],
+        label: 'Supervisor (KOLHAPUR & SATARA)'
+      },
+      'spbf_dual': {
+        id: 'E1871',
+        username: 'spbf_dual',
+        password: 'Spbf@2026',
+        name: 'RAMESH PATIL',
+        emp: 'E1871',
+        branches: ['KOLHAPUR', 'SATARA'],
+        label: 'Supervisor (KOLHAPUR & SATARA)'
       },
       'demo2': {
         id: 'E1871',
         username: 'demo2',
-        password: 'Demo@123',
+        password: 'Spbf@2026',
         name: 'RAMESH PATIL',
         emp: 'E1871',
         branches: ['KOLHAPUR', 'SATARA'],
-        label: 'Demo 2: Dual Branch (KOLHAPUR & SATARA)'
+        label: 'Supervisor (KOLHAPUR & SATARA)'
       },
       'ramesh': {
         id: 'E1871',
         username: 'ramesh',
-        password: 'Demo@123',
+        password: 'Spbf@2026',
         name: 'RAMESH PATIL',
         emp: 'E1871',
         branches: ['KOLHAPUR', 'SATARA'],
-        label: 'Demo 2: Dual Branch (KOLHAPUR & SATARA)'
+        label: 'Supervisor (KOLHAPUR & SATARA)'
       },
       'e1871': {
         id: 'E1871',
         username: 'e1871',
-        password: 'Demo@123',
+        password: 'Spbf@2026',
         name: 'RAMESH PATIL',
         emp: 'E1871',
         branches: ['KOLHAPUR', 'SATARA'],
-        label: 'Demo 2: Dual Branch (KOLHAPUR & SATARA)'
+        label: 'Supervisor (KOLHAPUR & SATARA)'
       }
     };
 
@@ -1304,59 +1312,20 @@
     }
 
     function updateCalculations() {
-      // 1. Mortality Matching Box Logic: Supervisor typed Total vs Distributed Reasons
-      const mortInput = document.getElementById('todayMortInput');
-      let totalMort = parseInt(mortInput ? mortInput.value : 0, 10);
-      if (isNaN(totalMort) || totalMort < 0) totalMort = 0;
-
-      let distSum = 0;
+      // 1. Calculate Total Mortality dynamically from reason rows below
+      let totalMort = 0;
       document.querySelectorAll('.mort-qty').forEach(el => {
         const v = parseInt(el.value || 0, 10);
-        if (!isNaN(v) && v > 0) distSum += v;
+        if (!isNaN(v) && v > 0) totalMort += v;
       });
 
+      // Update Section 3: Daily Transaction Mortality (only "Total Mortality: X")
       const sumTotalEl = document.getElementById('sumTotal');
-      const sumDistEl = document.getElementById('sumDist');
       if (sumTotalEl) sumTotalEl.textContent = totalMort;
-      if (sumDistEl) sumDistEl.textContent = distSum;
 
-      const box = document.getElementById('mortSummaryBox');
-      const badge = document.getElementById('mortStatusBadge');
-
-      if (box && badge) {
-        if (totalMort > 0) {
-          if (distSum === totalMort) {
-            // MATCHED / EQUAL: Green block displayed!
-            box.className = 'bg-emerald-50 border-2 border-emerald-500 rounded p-2.5 mb-3 flex items-center justify-between transition-colors shadow-sm';
-            badge.className = 'text-emerald-700 font-bold flex items-center gap-1';
-            badge.innerHTML = '✓ Balanced (Equal)';
-          } else if (distSum < totalMort) {
-            // NOT YET BALANCED: Amber block awaiting reasons
-            const rem = totalMort - distSum;
-            box.className = 'bg-amber-50 border-2 border-amber-500 rounded p-2.5 mb-3 flex items-center justify-between transition-colors shadow-sm';
-            badge.className = 'text-amber-800 font-bold flex items-center gap-1';
-            badge.innerHTML = `⚠️ Remaining: ${rem} to distribute`;
-          } else {
-            // EXCEEDED: Red block
-            const over = distSum - totalMort;
-            box.className = 'bg-rose-50 border-2 border-rose-500 rounded p-2.5 mb-3 flex items-center justify-between transition-colors shadow-sm';
-            badge.className = 'text-rose-700 font-bold flex items-center gap-1';
-            badge.innerHTML = `⚠️ Exceeds Total by ${over}`;
-          }
-        } else {
-          if (distSum === 0) {
-            // Both are 0
-            box.className = 'bg-slate-50 border border-slate-300 rounded p-2.5 mb-3 flex items-center justify-between text-slate-600 transition-colors';
-            badge.className = 'text-slate-500 font-semibold';
-            badge.innerHTML = 'No Mortality (0 birds)';
-          } else {
-            // Reasons entered but total is 0
-            box.className = 'bg-rose-50 border-2 border-rose-500 rounded p-2.5 mb-3 flex items-center justify-between transition-colors shadow-sm';
-            badge.className = 'text-rose-700 font-bold flex items-center gap-1';
-            badge.innerHTML = `⚠️ Exceeds Total by ${distSum}`;
-          }
-        }
-      }
+      // Automatically reflect Total Mortality above in Daily Transaction form (Read-Only)
+      const mortInput = document.getElementById('todayMortInput');
+      if (mortInput) mortInput.value = totalMort;
 
       // Farm Total Mortality = Previous cumulative (260) + Today Total Mortality
       const farmTotalMortEl = document.getElementById('dispFarmTotalMort');
@@ -1365,6 +1334,11 @@
       // 2. Culls & Bird Balance
       const culls = parseInt(document.getElementById('cullsInput')?.value || 0, 10);
       const birdBalEl = document.getElementById('dispBirdBalance');
+      if (birdBalEl) {
+        // Chicks (4028) - Mortality (260 + totalMort) - Culls (culls) - Sold (3768)
+        const bal = Math.max(0, 4028 - (260 + totalMort + culls + 3768));
+        birdBalEl.textContent = bal.toLocaleString();
+      }
       if (birdBalEl) {
         // Chicks (4028) - Mortality (260 + totalMort) - Culls (culls) - Sold (3768)
         const bal = Math.max(0, 4028 - (260 + totalMort + culls + 3768));
@@ -1414,13 +1388,21 @@
       }
 
       const mort = parseInt(document.getElementById('todayMortInput').value || 0, 10);
-      let distSum = 0;
-      document.querySelectorAll('.mort-qty').forEach(el => {
-        distSum += parseInt(el.value || 0, 10);
+
+      // Check if any mortality row has entered quantity > 0 but missing reason
+      let hasMissingReason = false;
+      document.querySelectorAll('#mortRowsContainer > div').forEach(row => {
+        const rSelect = row.querySelector('select');
+        const rQty = row.querySelector('.mort-qty');
+        const qty = parseInt(rQty?.value || 0, 10);
+        const reason = rSelect?.value || '';
+        if (qty > 0 && (!reason || reason === '')) {
+          hasMissingReason = true;
+        }
       });
 
-      if (mort !== distSum) {
-        alert(`⚠️ Mortality Validation Error:\n\nToday Total Mortality is ${mort}, but Distributed Reasons total is ${distSum}.\n\nPlease ensure the distributed reason quantities equal the Total Mortality (✓ Balanced) before saving.`);
+      if (hasMissingReason) {
+        alert("⚠️ Mortality Reason Required:\n\nPlease select a mortality reason for all rows where quantity is greater than 0 before saving.");
         return;
       }
 
@@ -1676,18 +1658,13 @@
       let account = supervisorAccounts[username];
 
       if (!account) {
-        if (!username || username === 'demo') {
-          account = supervisorAccounts['demo'];
-        } else if (username === 'demo2') {
-          account = supervisorAccounts['demo2'];
-        } else {
-          alert("Invalid username! Please use one of the demo logins:\n\n• Demo 1 (Single Branch): username 'demo', password 'Demo@123'\n• Demo 2 (Dual Branch): username 'demo2', password 'Demo@123'");
-          return;
-        }
+        alert("Invalid username or password. Please check your credentials and try again.");
+        return;
       }
 
-      if (password !== account.password && password !== 'Demo@123') {
-        alert("Invalid password! Please use 'Demo@123'");
+      const validPasswords = ['Spbf@2026', 'Password@123', 'Demo@123', account.password];
+      if (!validPasswords.includes(password)) {
+        alert("Invalid username or password. Please check your credentials and try again.");
         return;
       }
 
