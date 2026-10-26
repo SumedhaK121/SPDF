@@ -555,7 +555,7 @@
         <!-- FIXED BOTTOM ACTION BAR -->
         <div id="bottomBar" class="fixed bottom-0 left-0 right-0 bg-white border-t border-[#A4C2C5] py-2.5 px-4 shadow-xl z-30 flex justify-center">
           <div class="max-w-3xl w-full flex items-center justify-between gap-4">
-            <button onclick="goToScreen('recordsScreen')" class="flex-1 h-11 bg-[#B8D4D6] hover:bg-[#A4C2C5] border-2 border-[#4CD964] text-[#333333] font-bold text-xs sm:text-sm rounded shadow flex items-center justify-center transition cursor-pointer">
+            <button onclick="openBroilerRecordScreen()" class="flex-1 h-11 bg-[#B8D4D6] hover:bg-[#A4C2C5] border-2 border-[#4CD964] text-[#333333] font-bold text-xs sm:text-sm rounded shadow flex items-center justify-center transition cursor-pointer">
               Broiler Record
             </button>
             <button id="saveBtn" onclick="handleSaveTransaction()" class="flex-1 h-11 bg-[#C5DFE2] hover:bg-[#A4C2C5] border-2 border-[#A4C2C5] text-[#333333] font-bold text-xs sm:text-sm rounded shadow flex items-center justify-center transition cursor-pointer">
@@ -566,25 +566,95 @@
 
       </div>
 
-      <!-- ================= 3. BROILER RECORDS SCREEN (ONLY TODAY'S SAVED TRANSACTIONS) ================= -->
+      <!-- ================= 3. BROILER RECORDS DASHBOARD (STRICTLY FOR THE SELECTED FARMER) ================= -->
       <div id="recordsScreen" class="screen-content p-2 sm:p-4 pb-28">
-        <div class="bg-white p-3 rounded border border-[#A4C2C5] mb-3 flex justify-between items-center">
-          <div>
-            <div class="text-sm font-bold text-[#092F3D]" id="recordsFarmerTitle">Farmer: Babasaheb Patil</div>
-            <div class="text-[11px] text-slate-500">Daily transaction records</div>
+        
+        <!-- Header Banner for the active farmer -->
+        <div class="bg-white p-3 sm:p-4 rounded-lg border-2 border-[#A4C2C5] mb-3 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-2.5 mb-2.5">
+            <div>
+              <div class="text-[11px] text-slate-500 font-bold uppercase tracking-wider">Broiler Record Dashboard</div>
+              <div class="text-base sm:text-xl font-extrabold text-[#092F3D]" id="recordsFarmerName">RADHIKA KRISHNA DHADAM</div>
+            </div>
+            <button onclick="goToScreen('dailyTransactionScreen')" class="self-start sm:self-auto px-3 py-1.5 bg-[#C5DFE2] hover:bg-[#A4C2C5] border border-[#A4C2C5] text-[#092F3D] font-bold text-xs rounded shadow flex items-center gap-1.5 transition cursor-pointer">
+              ← Back to Daily Entry
+            </button>
+          </div>
+          
+          <div class="flex flex-wrap items-center gap-2 text-xs">
+            <span class="bg-[#EEF3F4] text-[#092F3D] px-2.5 py-1 rounded border border-[#C5DFE2]">
+              Branch: <strong id="recordsBranchName">KOLHAPUR</strong>
+            </span>
+            <span class="bg-[#EEF3F4] text-[#092F3D] px-2.5 py-1 rounded border border-[#C5DFE2]">
+              Supervisor: <strong id="recordsSupervisorName">RAMESH PATIL</strong>
+            </span>
+            <span class="bg-sky-50 text-sky-900 px-2.5 py-1 rounded border border-sky-200">
+              Batch: <strong>B-2026-01</strong>
+            </span>
+            <span class="bg-emerald-50 text-emerald-900 px-2.5 py-1 rounded border border-emerald-200">
+              Initial Chicks: <strong id="recordsInitialChicks">2,016</strong>
+            </span>
           </div>
         </div>
 
-        <!-- Filter banner -->
-        <div class="bg-sky-50 border border-sky-200 p-2 rounded mb-3 text-xs text-sky-800 flex justify-between items-center">
-          <span id="recordsFilterDateText">Date: <strong>Today</strong></span>
-          <button onclick="goToScreen('dailyTransactionScreen')" class="text-[#007AFF] font-bold hover:underline">+ New Entry</button>
+        <!-- Strict Isolation Notice -->
+        <div class="bg-emerald-50 border border-emerald-300 rounded p-2.5 mb-3 text-xs text-emerald-900 flex flex-wrap items-center justify-between gap-2 shadow-xs">
+          <div class="flex items-center gap-1.5">
+            <span class="text-emerald-700 font-bold">🔒 Isolated Farmer View:</span>
+            <span>Displaying entries for <strong id="isolatedFarmerLabel">RADHIKA KRISHNA DHADAM</strong> only.</span>
+          </div>
+          <span id="recordCountBadge" class="bg-white border border-emerald-400 text-emerald-800 font-bold px-2 py-0.5 rounded text-[11px] shadow-xs">
+            22 Records
+          </span>
         </div>
 
-        <!-- Dynamic Records List (Starts empty as requested) -->
-        <div id="recordsList" class="flex flex-col gap-2.5">
-          <!-- Dynamically populated or empty message -->
+        <!-- 14-Column Broiler Record Table (Exact replica of user demo) -->
+        <div class="overflow-x-auto border-2 border-slate-300 rounded-lg bg-white shadow-sm mb-3">
+          <table class="w-full text-center border-collapse text-xs whitespace-nowrap min-w-[960px]">
+            <thead class="bg-[#DCE7EC] text-slate-800 font-bold border-b-2 border-slate-300">
+              <tr>
+                <th class="border border-slate-300 px-2.5 py-2">Date</th>
+                <th class="border border-slate-300 px-2 py-2">Age</th>
+                <th class="border border-slate-300 px-2.5 py-2">Chicks</th>
+                <th class="border border-slate-300 px-2 py-2">Sold Birds</th>
+                <th class="border border-slate-300 px-2 py-2">Culls</th>
+                <th class="border border-slate-300 px-2 py-2">Mortality</th>
+                <th class="border border-slate-300 px-2.5 py-2">Cum Mortality</th>
+                <th class="border border-slate-300 px-2.5 py-2">Feed Used</th>
+                <th class="border border-slate-300 px-2 py-2">Feeder Feed</th>
+                <th class="border border-slate-300 px-2 py-2">Actual Weight</th>
+                <th class="border border-slate-300 px-2 py-2">Feed Received</th>
+                <th class="border border-slate-300 px-2 py-2">Feed In</th>
+                <th class="border border-slate-300 px-2 py-2">Feed Out</th>
+                <th class="border border-slate-300 px-2 py-2">Feed Balance</th>
+              </tr>
+            </thead>
+            <tbody id="broilerRecordTableBody" class="divide-y divide-slate-200">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
         </div>
+
+        <!-- Summary Statistics Card -->
+        <div id="broilerRecordSummaryBox" class="bg-white border border-[#A4C2C5] rounded-lg p-3 text-xs grid grid-cols-2 sm:grid-cols-4 gap-2 shadow-xs mb-3">
+          <div class="bg-slate-50 p-2 rounded border border-slate-200">
+            <span class="text-slate-500 block text-[10px] font-bold uppercase">Latest Age</span>
+            <strong class="text-sm text-slate-800" id="summaryLatestAge">22 Days</strong>
+          </div>
+          <div class="bg-slate-50 p-2 rounded border border-slate-200">
+            <span class="text-slate-500 block text-[10px] font-bold uppercase">Current Birds Left</span>
+            <strong class="text-sm text-emerald-700" id="summaryCurrentBirds">1,980</strong>
+          </div>
+          <div class="bg-slate-50 p-2 rounded border border-slate-200">
+            <span class="text-slate-500 block text-[10px] font-bold uppercase">Cum Mortality</span>
+            <strong class="text-sm text-red-600" id="summaryCumMort">36 Birds</strong>
+          </div>
+          <div class="bg-slate-50 p-2 rounded border border-slate-200">
+            <span class="text-slate-500 block text-[10px] font-bold uppercase">Latest ABW</span>
+            <strong class="text-sm text-sky-800" id="summaryLatestABW">1100.00 g</strong>
+          </div>
+        </div>
+
       </div>
 
       <!-- ================= 4. BROILER RECORD DETAIL SCREEN ================= -->
@@ -1171,7 +1241,12 @@
         document.getElementById('dispSupName').textContent = state.supervisor.name;
       }
       document.getElementById('formFarmerTag').textContent = `Farmer: ${state.farmer.name}`;
-      document.getElementById('recordsFarmerTitle').textContent = `Farmer: ${state.farmer.name}`;
+      if (document.getElementById('recordsFarmerName')) {
+        document.getElementById('recordsFarmerName').textContent = state.farmer.name;
+      }
+      if (document.getElementById('isolatedFarmerLabel')) {
+        document.getElementById('isolatedFarmerLabel').textContent = state.farmer.name;
+      }
 
       banner.classList.add('hidden');
       form.classList.remove('hidden');
@@ -1417,7 +1492,18 @@
         mortBreakdown.push({ reason, qty });
       });
 
+      const abwNum = parseInt(abw, 10);
       const today = getFormattedTodayDate();
+
+      // Retrieve existing records to compute running balance accurately
+      const currentFarmerRecords = getBroilerRecordsForFarmer(state.farmer.id, state.farmer.name);
+      const lastRec = currentFarmerRecords.length > 0 ? currentFarmerRecords[currentFarmerRecords.length - 1] : null;
+      const nextAge = lastRec ? (lastRec.age + 1) : 23;
+      const prevChicks = lastRec ? lastRec.chicks : 1980;
+      const newChicks = Math.max(0, prevChicks - mort - culls);
+      const prevCumMort = lastRec ? lastRec.cumMort : 36;
+      const newCumMort = prevCumMort + mort;
+
       const newRecord = {
         id: 'REC-' + Date.now(),
         farmerId: state.farmer.id,
@@ -1426,16 +1512,19 @@
         supervisor: state.supervisor.name,
         date: today.displayMedium,
         dateKey: today.key,
-        age: 20,
-        abw: parseInt(abw, 10),
+        age: nextAge,
+        abw: abwNum,
         culls: culls,
         mort: mort,
-        cumMort: 260 + mort,
+        cumMort: newCumMort,
         feedToday: totalFeedToday,
-        birdBal: document.getElementById('dispBirdBalance').textContent,
+        feederToday: feedsBreakdown.reduce((sum, f) => sum + (f.feederFeed || 0), 0),
+        birdBal: document.getElementById('dispBirdBalance') ? document.getElementById('dispBirdBalance').textContent : newChicks,
+        feedBal: document.getElementById('feedBal_starter') ? document.getElementById('feedBal_starter').textContent.replace('Bal: ', '') : '-10.00',
         feeds: feedsBreakdown,
         mortReasons: mortBreakdown,
-        badge: 'SAVED'
+        badge: 'SAVED',
+        isUserSaved: true
       };
 
       // Save to state & persist to localStorage (survives page refresh)
@@ -1454,55 +1543,200 @@
       }
     }
 
-    function renderBroilerRecords() {
-      const c = document.getElementById('recordsList');
-      c.innerHTML = '';
+    // Exact 22 historical rows matching user's uploaded demo image (media_1793001450598_ada713ff.png)
+    const BASE_DEMO_RECORDS_RADHIKA = [
+      { date: '05/09/2026', age: 1, chicks: 2016, soldBirds: 0, culls: 0, mortality: 0, cumMort: 0, feedUsed: '1.00', feederFeed: '0.00', actualWeight: '60.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-1.00' },
+      { date: '06/09/2026', age: 2, chicks: 2016, soldBirds: 0, culls: 0, mortality: 0, cumMort: 0, feedUsed: '0.00', feederFeed: '0.00', actualWeight: '80.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-1.00' },
+      { date: '07/09/2026', age: 3, chicks: 2008, soldBirds: 0, culls: 0, mortality: 8, cumMort: 8, feedUsed: '2.00', feederFeed: '0.00', actualWeight: '95.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-3.00' },
+      { date: '08/09/2026', age: 4, chicks: 2007, soldBirds: 0, culls: 0, mortality: 1, cumMort: 9, feedUsed: '1.00', feederFeed: '0.00', actualWeight: '115.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-4.00' },
+      { date: '09/09/2026', age: 5, chicks: 2007, soldBirds: 0, culls: 0, mortality: 0, cumMort: 9, feedUsed: '1.00', feederFeed: '0.00', actualWeight: '145.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-5.00' },
+      { date: '10/09/2026', age: 6, chicks: 2005, soldBirds: 0, culls: 0, mortality: 2, cumMort: 11, feedUsed: '1.00', feederFeed: '0.00', actualWeight: '180.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-6.00' },
+      { date: '11/09/2026', age: 7, chicks: 2005, soldBirds: 0, culls: 0, mortality: 0, cumMort: 11, feedUsed: '2.00', feederFeed: '0.00', actualWeight: '210.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-8.00' },
+      { date: '12/09/2026', age: 8, chicks: 2003, soldBirds: 0, culls: 0, mortality: 2, cumMort: 13, feedUsed: '2.00', feederFeed: '0.00', actualWeight: '240.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-10.00' },
+      { date: '13/09/2026', age: 9, chicks: 2003, soldBirds: 0, culls: 0, mortality: 0, cumMort: 13, feedUsed: '2.00', feederFeed: '0.00', actualWeight: '270.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-12.00' },
+      { date: '14/09/2026', age: 10, chicks: 2003, soldBirds: 0, culls: 0, mortality: 0, cumMort: 13, feedUsed: '0.00', feederFeed: '0.00', actualWeight: '320.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-12.00' },
+      { date: '15/09/2026', age: 11, chicks: 1998, soldBirds: 0, culls: 0, mortality: 5, cumMort: 18, feedUsed: '4.00', feederFeed: '0.00', actualWeight: '375.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-16.00' },
+      { date: '16/09/2026', age: 12, chicks: 1993, soldBirds: 0, culls: 0, mortality: 5, cumMort: 23, feedUsed: '3.00', feederFeed: '0.00', actualWeight: '420.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-19.00' },
+      { date: '17/09/2026', age: 13, chicks: 1991, soldBirds: 0, culls: 0, mortality: 2, cumMort: 25, feedUsed: '3.00', feederFeed: '0.00', actualWeight: '485.00', feedReceived: '45.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '23.00' },
+      { date: '18/09/2026', age: 14, chicks: 1990, soldBirds: 0, culls: 0, mortality: 1, cumMort: 26, feedUsed: '3.00', feederFeed: '0.00', actualWeight: '550.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '20.00' },
+      { date: '19/09/2026', age: 15, chicks: 1988, soldBirds: 0, culls: 0, mortality: 2, cumMort: 28, feedUsed: '2.00', feederFeed: '0.00', actualWeight: '590.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '18.00' },
+      { date: '20/09/2026', age: 16, chicks: 1988, soldBirds: 0, culls: 0, mortality: 0, cumMort: 28, feedUsed: '0.00', feederFeed: '0.00', actualWeight: '640.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '18.00' },
+      { date: '21/09/2026', age: 17, chicks: 1985, soldBirds: 0, culls: 0, mortality: 3, cumMort: 31, feedUsed: '7.00', feederFeed: '0.00', actualWeight: '727.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '11.00' },
+      { date: '22/09/2026', age: 18, chicks: 1984, soldBirds: 0, culls: 0, mortality: 1, cumMort: 32, feedUsed: '4.00', feederFeed: '0.00', actualWeight: '800.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '7.00' },
+      { date: '23/09/2026', age: 19, chicks: 1983, soldBirds: 0, culls: 0, mortality: 1, cumMort: 33, feedUsed: '4.00', feederFeed: '0.00', actualWeight: '875.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '3.00' },
+      { date: '24/09/2026', age: 20, chicks: 1982, soldBirds: 0, culls: 0, mortality: 1, cumMort: 34, feedUsed: '4.00', feederFeed: '0.00', actualWeight: '1000.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-1.00' },
+      { date: '25/09/2026', age: 21, chicks: 1982, soldBirds: 0, culls: 0, mortality: 0, cumMort: 34, feedUsed: '0.00', feederFeed: '0.00', actualWeight: '1050.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-1.00' },
+      { date: '26/09/2026', age: 22, chicks: 1980, soldBirds: 0, culls: 0, mortality: 2, cumMort: 36, feedUsed: '9.00', feederFeed: '0.00', actualWeight: '1100.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-10.00' }
+    ];
 
-      if (state.savedRecords.length === 0) {
-        c.innerHTML = `
-          <div class="bg-white border border-[#A4C2C5] rounded p-6 text-center text-slate-500 shadow-sm">
-            <div class="text-3xl mb-2">📋</div>
-            <div class="text-sm font-bold text-[#092F3D]">No Records Found</div>
-            <div class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
-              No daily transactions have been recorded yet.
-            </div>
-            <button onclick="goToScreen('dailyTransactionScreen')" class="mt-4 px-4 py-2 bg-[#B8D4D6] hover:bg-[#A4C2C5] text-[#333333] font-bold text-xs rounded border border-[#A4C2C5] shadow">
-              Add Transaction
-            </button>
-          </div>
-        `;
-        return;
+    function getSeedRecordsForFarmer(farmerId, farmerName) {
+      if (!farmerName) farmerName = '';
+      if (!farmerId) farmerId = '';
+      // If Radhika Krishna Dhadam or the first farmer, return the exact 22 demo rows from user screenshot
+      if (farmerName.toUpperCase().includes('RADHIKA') || farmerId.endsWith('-1001')) {
+        return JSON.parse(JSON.stringify(BASE_DEMO_RECORDS_RADHIKA));
       }
 
-      state.savedRecords.forEach((r) => {
-        const div = document.createElement('div');
-        div.className = 'bg-white border-2 border-[#34AADC] rounded p-3 shadow-sm';
-        div.innerHTML = `
-          <div class="flex justify-between items-center pb-2 border-b border-slate-100 mb-2">
-            <div>
-              <strong class="text-sm text-black">${r.farmerName}</strong>
-              <div class="text-[10px] text-slate-500">Supervisor: ${r.supervisor} • Date: ${r.date}</div>
-            </div>
-            <span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded">
-              ${r.badge}
-            </span>
-          </div>
+      // For any other farmer, generate a realistic, independent batch ledger
+      const hash = Math.abs(farmerId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0));
+      const initialChicks = 2000 + (hash % 10) * 100;
+      const rows = [];
+      let cumMort = 0;
+      let chicks = initialChicks;
+      let feedBal = 100;
 
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-xs mb-2">
-            <div class="bg-slate-50 p-1.5 rounded"><span class="text-[10px] text-slate-500 block">ABW Weight</span><strong>${r.abw} g</strong></div>
-            <div class="bg-slate-50 p-1.5 rounded"><span class="text-[10px] text-slate-500 block">Today Mortality</span><strong class="text-red-700">${r.mort} birds</strong></div>
-            <div class="bg-slate-50 p-1.5 rounded"><span class="text-[10px] text-slate-500 block">Today Total Feed</span><strong class="text-sky-900">${r.feedToday} kg</strong></div>
-            <div class="bg-slate-50 p-1.5 rounded"><span class="text-[10px] text-slate-500 block">Bird Balance</span><strong class="text-emerald-800">${r.birdBal}</strong></div>
-          </div>
+      for (let age = 1; age <= 18; age++) {
+        const day = age < 10 ? `0${age}` : `${age}`;
+        const date = `${day}/09/2026`;
+        const mort = (age % 4 === 0) ? 2 : (age % 7 === 0 ? 3 : 1);
+        cumMort += mort;
+        chicks -= mort;
+        const feedUsed = (age * 0.4).toFixed(2);
+        feedBal -= parseFloat(feedUsed);
+        const abw = (50 + age * 45).toFixed(2);
+        rows.push({
+          date: date,
+          age: age,
+          chicks: chicks,
+          soldBirds: 0,
+          culls: 0,
+          mortality: mort,
+          cumMort: cumMort,
+          feedUsed: feedUsed,
+          feederFeed: '0.00',
+          actualWeight: abw,
+          feedReceived: age === 10 ? '50.00' : '0.00',
+          feedIn: '0.00',
+          feedOut: '0.00',
+          feedBalance: feedBal.toFixed(2)
+        });
+      }
+      return rows;
+    }
 
-          <div class="text-right pt-1">
-            <button onclick="showRecordDetail('${r.id}')" class="text-xs font-bold text-[#007AFF] hover:underline flex items-center justify-end gap-1 ml-auto">
-              View Detailed Metrics & 4 Feeds →
-            </button>
-          </div>
-        `;
-        c.appendChild(div);
+    function getBroilerRecordsForFarmer(farmerId, farmerName) {
+      const seedRecords = getSeedRecordsForFarmer(farmerId, farmerName);
+
+      // Find user-saved daily transactions strictly for THIS farmer
+      const savedForThisFarmer = (state.savedRecords || []).filter(r => r.farmerId === farmerId);
+
+      // Clone seed records
+      const allRecords = [...seedRecords];
+
+      // Append saved transactions for this farmer in chronological order
+      savedForThisFarmer.slice().reverse().forEach((s) => {
+        const lastRow = allRecords[allRecords.length - 1];
+        const newAge = lastRow ? (lastRow.age + 1) : 23;
+        const newChicks = lastRow ? Math.max(0, lastRow.chicks - s.mort - s.culls) : 1978;
+        const newCumMort = lastRow ? (lastRow.cumMort + s.mort) : (36 + s.mort);
+
+        allRecords.push({
+          id: s.id,
+          date: s.date || 'Today',
+          age: newAge,
+          chicks: s.birdBal || newChicks,
+          soldBirds: 0,
+          culls: s.culls || 0,
+          mortality: s.mort || 0,
+          cumMort: newCumMort,
+          feedUsed: Number(s.feedToday || 0).toFixed(2),
+          feederFeed: Number(s.feederToday || 0).toFixed(2),
+          actualWeight: Number(s.abw || 0).toFixed(2),
+          feedReceived: '0.00',
+          feedIn: '0.00',
+          feedOut: '0.00',
+          feedBalance: s.feedBal || '-12.00',
+          isUserSaved: true
+        });
       });
+
+      return allRecords;
+    }
+
+    function openBroilerRecordScreen() {
+      if (!state.farmer) {
+        alert("Please select a Farmer Name first from the dropdown to view their Broiler Record.");
+        return;
+      }
+      renderBroilerRecords();
+      goToScreen('recordsScreen');
+    }
+
+    function renderBroilerRecords() {
+      if (!state.farmer) return;
+
+      const fName = state.farmer.name || 'Selected Farmer';
+      const fId = state.farmer.id;
+      const branch = state.branch || 'KOLHAPUR';
+      const sup = state.supervisor ? state.supervisor.name : 'RAMESH PATIL';
+
+      // Update header elements
+      const nameEl = document.getElementById('recordsFarmerName');
+      if (nameEl) nameEl.textContent = fName;
+
+      const branchEl = document.getElementById('recordsBranchName');
+      if (branchEl) branchEl.textContent = branch;
+
+      const supEl = document.getElementById('recordsSupervisorName');
+      if (supEl) supEl.textContent = sup;
+
+      const isolatedLabel = document.getElementById('isolatedFarmerLabel');
+      if (isolatedLabel) isolatedLabel.textContent = fName;
+
+      // Retrieve records strictly for THIS farmer
+      const records = getBroilerRecordsForFarmer(fId, fName);
+
+      // Update count badge
+      const badgeEl = document.getElementById('recordCountBadge');
+      if (badgeEl) badgeEl.textContent = `${records.length} Records`;
+
+      const tbody = document.getElementById('broilerRecordTableBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = '';
+
+      records.forEach((r, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = `border-b border-slate-200 transition ${
+          r.isUserSaved
+            ? 'bg-emerald-50/90 font-bold border-emerald-300'
+            : (idx % 2 === 0 ? 'bg-white hover:bg-sky-50/60' : 'bg-[#F9FBFC] hover:bg-sky-50/60')
+        }`;
+
+        tr.innerHTML = `
+          <td class="border border-slate-300 px-2.5 py-1.5 text-center font-medium">
+            ${r.date}
+            ${r.isUserSaved ? '<span class="ml-1.5 inline-block bg-emerald-600 text-white text-[9px] font-extrabold px-1.5 py-0.2 rounded shadow-xs">TODAY</span>' : ''}
+          </td>
+          <td class="border border-slate-300 px-2 py-1.5 text-center">${r.age}</td>
+          <td class="border border-slate-300 px-2.5 py-1.5 text-center font-bold text-slate-800">${r.chicks}</td>
+          <td class="border border-slate-300 px-2 py-1.5 text-center text-slate-600">${r.soldBirds}</td>
+          <td class="border border-slate-300 px-2 py-1.5 text-center ${r.culls > 0 ? 'text-amber-700 font-bold' : 'text-slate-500'}">${r.culls}</td>
+          <td class="border border-slate-300 px-2 py-1.5 text-center ${r.mortality > 0 ? 'text-red-600 font-bold' : 'text-slate-500'}">${r.mortality}</td>
+          <td class="border border-slate-300 px-2.5 py-1.5 text-center font-bold text-slate-800">${r.cumMort}</td>
+          <td class="border border-slate-300 px-2.5 py-1.5 text-center font-semibold text-sky-900">${r.feedUsed}</td>
+          <td class="border border-slate-300 px-2 py-1.5 text-center text-slate-600">${r.feederFeed}</td>
+          <td class="border border-slate-300 px-2.5 py-1.5 text-center font-extrabold text-[#092F3D]">${r.actualWeight}</td>
+          <td class="border border-slate-300 px-2.5 py-1.5 text-center text-slate-600">${r.feedReceived}</td>
+          <td class="border border-slate-300 px-2.5 py-1.5 text-center text-slate-600">${r.feedIn}</td>
+          <td class="border border-slate-300 px-2.5 py-1.5 text-center text-slate-600">${r.feedOut}</td>
+          <td class="border border-slate-300 px-2.5 py-1.5 text-center font-semibold ${parseFloat(r.feedBalance) < 0 ? 'text-amber-700' : 'text-emerald-700'}">${r.feedBalance}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Update Summary box with latest metrics
+      if (records.length > 0) {
+        const latest = records[records.length - 1];
+        const ageEl = document.getElementById('summaryLatestAge');
+        if (ageEl) ageEl.textContent = `${latest.age} Days`;
+        const birdsEl = document.getElementById('summaryCurrentBirds');
+        if (birdsEl) birdsEl.textContent = `${latest.chicks} Birds`;
+        const mortEl = document.getElementById('summaryCumMort');
+        if (mortEl) mortEl.textContent = `${latest.cumMort} Birds`;
+        const abwEl = document.getElementById('summaryLatestABW');
+        if (abwEl) abwEl.textContent = `${latest.actualWeight} g`;
+      }
     }
 
     function showRecordDetail(recordId) {
@@ -1587,7 +1821,8 @@
           title.textContent = 'Daily Transaction Portal';
         } else if (screenId === 'recordsScreen') {
           backBtn.classList.remove('hidden');
-          title.textContent = 'Broiler Records (Today)';
+          title.textContent = 'Broiler Record Dashboard';
+          renderBroilerRecords();
         } else if (screenId === 'recordDetailScreen') {
           backBtn.classList.remove('hidden');
           title.textContent = 'Transaction Details';
