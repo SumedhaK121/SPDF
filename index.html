@@ -597,17 +597,6 @@
           </div>
         </div>
 
-        <!-- Strict Isolation Notice -->
-        <div class="bg-emerald-50 border border-emerald-300 rounded p-2.5 mb-3 text-xs text-emerald-900 flex flex-wrap items-center justify-between gap-2 shadow-xs">
-          <div class="flex items-center gap-1.5">
-            <span class="text-emerald-700 font-bold">🔒 Isolated Farmer View:</span>
-            <span>Displaying entries for <strong id="isolatedFarmerLabel">RADHIKA KRISHNA DHADAM</strong> only.</span>
-          </div>
-          <span id="recordCountBadge" class="bg-white border border-emerald-400 text-emerald-800 font-bold px-2 py-0.5 rounded text-[11px] shadow-xs">
-            22 Records
-          </span>
-        </div>
-
         <!-- 14-Column Broiler Record Table (Exact replica of user demo) -->
         <div class="overflow-x-auto border-2 border-slate-300 rounded-lg bg-white shadow-sm mb-3">
           <table class="w-full text-center border-collapse text-xs whitespace-nowrap min-w-[960px]">
@@ -1244,9 +1233,6 @@
       if (document.getElementById('recordsFarmerName')) {
         document.getElementById('recordsFarmerName').textContent = state.farmer.name;
       }
-      if (document.getElementById('isolatedFarmerLabel')) {
-        document.getElementById('isolatedFarmerLabel').textContent = state.farmer.name;
-      }
 
       banner.classList.add('hidden');
       form.classList.remove('hidden');
@@ -1495,13 +1481,14 @@
       const abwNum = parseInt(abw, 10);
       const today = getFormattedTodayDate();
 
-      // Retrieve existing records to compute running balance accurately
-      const currentFarmerRecords = getBroilerRecordsForFarmer(state.farmer.id, state.farmer.name);
+      // Retrieve existing user-saved records for this farmer to compute running totals accurately
+      const currentFarmerRecords = getBroilerRecordsForFarmer(state.farmer.id);
       const lastRec = currentFarmerRecords.length > 0 ? currentFarmerRecords[currentFarmerRecords.length - 1] : null;
-      const nextAge = lastRec ? (lastRec.age + 1) : 23;
-      const prevChicks = lastRec ? lastRec.chicks : 1980;
+      const nextAge = lastRec ? (lastRec.age + 1) : 1;
+      const initialChicks = 2016;
+      const prevChicks = lastRec ? lastRec.chicks : initialChicks;
       const newChicks = Math.max(0, prevChicks - mort - culls);
-      const prevCumMort = lastRec ? lastRec.cumMort : 36;
+      const prevCumMort = lastRec ? lastRec.cumMort : 0;
       const newCumMort = prevCumMort + mort;
 
       const newRecord = {
@@ -1510,17 +1497,20 @@
         farmerName: state.farmer.name,
         branch: state.branch,
         supervisor: state.supervisor.name,
-        date: today.displayMedium,
+        date: today.displayShort || today.displayMedium,
         dateKey: today.key,
         age: nextAge,
         abw: abwNum,
         culls: culls,
         mort: mort,
         cumMort: newCumMort,
+        chicks: newChicks,
         feedToday: totalFeedToday,
         feederToday: feedsBreakdown.reduce((sum, f) => sum + (f.feederFeed || 0), 0),
-        birdBal: document.getElementById('dispBirdBalance') ? document.getElementById('dispBirdBalance').textContent : newChicks,
-        feedBal: document.getElementById('feedBal_starter') ? document.getElementById('feedBal_starter').textContent.replace('Bal: ', '') : '-10.00',
+        feedReceived: 0,
+        feedIn: 0,
+        feedOut: 0,
+        feedBal: document.getElementById('feedBal_starter') ? document.getElementById('feedBal_starter').textContent.replace('Bal: ', '') : '0.00',
         feeds: feedsBreakdown,
         mortReasons: mortBreakdown,
         badge: 'SAVED',
@@ -1543,114 +1533,31 @@
       }
     }
 
-    // Exact 22 historical rows matching user's uploaded demo image (media_1793001450598_ada713ff.png)
-    const BASE_DEMO_RECORDS_RADHIKA = [
-      { date: '05/09/2026', age: 1, chicks: 2016, soldBirds: 0, culls: 0, mortality: 0, cumMort: 0, feedUsed: '1.00', feederFeed: '0.00', actualWeight: '60.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-1.00' },
-      { date: '06/09/2026', age: 2, chicks: 2016, soldBirds: 0, culls: 0, mortality: 0, cumMort: 0, feedUsed: '0.00', feederFeed: '0.00', actualWeight: '80.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-1.00' },
-      { date: '07/09/2026', age: 3, chicks: 2008, soldBirds: 0, culls: 0, mortality: 8, cumMort: 8, feedUsed: '2.00', feederFeed: '0.00', actualWeight: '95.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-3.00' },
-      { date: '08/09/2026', age: 4, chicks: 2007, soldBirds: 0, culls: 0, mortality: 1, cumMort: 9, feedUsed: '1.00', feederFeed: '0.00', actualWeight: '115.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-4.00' },
-      { date: '09/09/2026', age: 5, chicks: 2007, soldBirds: 0, culls: 0, mortality: 0, cumMort: 9, feedUsed: '1.00', feederFeed: '0.00', actualWeight: '145.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-5.00' },
-      { date: '10/09/2026', age: 6, chicks: 2005, soldBirds: 0, culls: 0, mortality: 2, cumMort: 11, feedUsed: '1.00', feederFeed: '0.00', actualWeight: '180.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-6.00' },
-      { date: '11/09/2026', age: 7, chicks: 2005, soldBirds: 0, culls: 0, mortality: 0, cumMort: 11, feedUsed: '2.00', feederFeed: '0.00', actualWeight: '210.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-8.00' },
-      { date: '12/09/2026', age: 8, chicks: 2003, soldBirds: 0, culls: 0, mortality: 2, cumMort: 13, feedUsed: '2.00', feederFeed: '0.00', actualWeight: '240.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-10.00' },
-      { date: '13/09/2026', age: 9, chicks: 2003, soldBirds: 0, culls: 0, mortality: 0, cumMort: 13, feedUsed: '2.00', feederFeed: '0.00', actualWeight: '270.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-12.00' },
-      { date: '14/09/2026', age: 10, chicks: 2003, soldBirds: 0, culls: 0, mortality: 0, cumMort: 13, feedUsed: '0.00', feederFeed: '0.00', actualWeight: '320.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-12.00' },
-      { date: '15/09/2026', age: 11, chicks: 1998, soldBirds: 0, culls: 0, mortality: 5, cumMort: 18, feedUsed: '4.00', feederFeed: '0.00', actualWeight: '375.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-16.00' },
-      { date: '16/09/2026', age: 12, chicks: 1993, soldBirds: 0, culls: 0, mortality: 5, cumMort: 23, feedUsed: '3.00', feederFeed: '0.00', actualWeight: '420.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-19.00' },
-      { date: '17/09/2026', age: 13, chicks: 1991, soldBirds: 0, culls: 0, mortality: 2, cumMort: 25, feedUsed: '3.00', feederFeed: '0.00', actualWeight: '485.00', feedReceived: '45.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '23.00' },
-      { date: '18/09/2026', age: 14, chicks: 1990, soldBirds: 0, culls: 0, mortality: 1, cumMort: 26, feedUsed: '3.00', feederFeed: '0.00', actualWeight: '550.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '20.00' },
-      { date: '19/09/2026', age: 15, chicks: 1988, soldBirds: 0, culls: 0, mortality: 2, cumMort: 28, feedUsed: '2.00', feederFeed: '0.00', actualWeight: '590.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '18.00' },
-      { date: '20/09/2026', age: 16, chicks: 1988, soldBirds: 0, culls: 0, mortality: 0, cumMort: 28, feedUsed: '0.00', feederFeed: '0.00', actualWeight: '640.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '18.00' },
-      { date: '21/09/2026', age: 17, chicks: 1985, soldBirds: 0, culls: 0, mortality: 3, cumMort: 31, feedUsed: '7.00', feederFeed: '0.00', actualWeight: '727.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '11.00' },
-      { date: '22/09/2026', age: 18, chicks: 1984, soldBirds: 0, culls: 0, mortality: 1, cumMort: 32, feedUsed: '4.00', feederFeed: '0.00', actualWeight: '800.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '7.00' },
-      { date: '23/09/2026', age: 19, chicks: 1983, soldBirds: 0, culls: 0, mortality: 1, cumMort: 33, feedUsed: '4.00', feederFeed: '0.00', actualWeight: '875.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '3.00' },
-      { date: '24/09/2026', age: 20, chicks: 1982, soldBirds: 0, culls: 0, mortality: 1, cumMort: 34, feedUsed: '4.00', feederFeed: '0.00', actualWeight: '1000.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-1.00' },
-      { date: '25/09/2026', age: 21, chicks: 1982, soldBirds: 0, culls: 0, mortality: 0, cumMort: 34, feedUsed: '0.00', feederFeed: '0.00', actualWeight: '1050.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-1.00' },
-      { date: '26/09/2026', age: 22, chicks: 1980, soldBirds: 0, culls: 0, mortality: 2, cumMort: 36, feedUsed: '9.00', feederFeed: '0.00', actualWeight: '1100.00', feedReceived: '0.00', feedIn: '0.00', feedOut: '0.00', feedBalance: '-10.00' }
-    ];
-
-    function getSeedRecordsForFarmer(farmerId, farmerName) {
-      if (!farmerName) farmerName = '';
-      if (!farmerId) farmerId = '';
-      // If Radhika Krishna Dhadam or the first farmer, return the exact 22 demo rows from user screenshot
-      if (farmerName.toUpperCase().includes('RADHIKA') || farmerId.endsWith('-1001')) {
-        return JSON.parse(JSON.stringify(BASE_DEMO_RECORDS_RADHIKA));
-      }
-
-      // For any other farmer, generate a realistic, independent batch ledger
-      const hash = Math.abs(farmerId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0));
-      const initialChicks = 2000 + (hash % 10) * 100;
-      const rows = [];
-      let cumMort = 0;
-      let chicks = initialChicks;
-      let feedBal = 100;
-
-      for (let age = 1; age <= 18; age++) {
-        const day = age < 10 ? `0${age}` : `${age}`;
-        const date = `${day}/09/2026`;
-        const mort = (age % 4 === 0) ? 2 : (age % 7 === 0 ? 3 : 1);
-        cumMort += mort;
-        chicks -= mort;
-        const feedUsed = (age * 0.4).toFixed(2);
-        feedBal -= parseFloat(feedUsed);
-        const abw = (50 + age * 45).toFixed(2);
-        rows.push({
-          date: date,
-          age: age,
-          chicks: chicks,
-          soldBirds: 0,
-          culls: 0,
-          mortality: mort,
-          cumMort: cumMort,
-          feedUsed: feedUsed,
-          feederFeed: '0.00',
-          actualWeight: abw,
-          feedReceived: age === 10 ? '50.00' : '0.00',
-          feedIn: '0.00',
-          feedOut: '0.00',
-          feedBalance: feedBal.toFixed(2)
-        });
-      }
-      return rows;
-    }
-
-    function getBroilerRecordsForFarmer(farmerId, farmerName) {
-      const seedRecords = getSeedRecordsForFarmer(farmerId, farmerName);
-
-      // Find user-saved daily transactions strictly for THIS farmer
+    // STRICT USER-ENTRY ONLY: No hardcoded demo values.
+    // Returns only the transactions actually saved by the supervisor for this farmer.
+    function getBroilerRecordsForFarmer(farmerId) {
+      if (!farmerId) return [];
       const savedForThisFarmer = (state.savedRecords || []).filter(r => r.farmerId === farmerId);
 
-      // Clone seed records
-      const allRecords = [...seedRecords];
-
-      // Append saved transactions for this farmer in chronological order
-      savedForThisFarmer.slice().reverse().forEach((s) => {
-        const lastRow = allRecords[allRecords.length - 1];
-        const newAge = lastRow ? (lastRow.age + 1) : 23;
-        const newChicks = lastRow ? Math.max(0, lastRow.chicks - s.mort - s.culls) : 1978;
-        const newCumMort = lastRow ? (lastRow.cumMort + s.mort) : (36 + s.mort);
-
-        allRecords.push({
-          id: s.id,
-          date: s.date || 'Today',
-          age: newAge,
-          chicks: s.birdBal || newChicks,
-          soldBirds: 0,
-          culls: s.culls || 0,
-          mortality: s.mort || 0,
-          cumMort: newCumMort,
-          feedUsed: Number(s.feedToday || 0).toFixed(2),
-          feederFeed: Number(s.feederToday || 0).toFixed(2),
-          actualWeight: Number(s.abw || 0).toFixed(2),
-          feedReceived: '0.00',
-          feedIn: '0.00',
-          feedOut: '0.00',
-          feedBalance: s.feedBal || '-12.00',
-          isUserSaved: true
-        });
-      });
-
-      return allRecords;
+      // Chronological order (earliest entry to latest)
+      return savedForThisFarmer.slice().reverse().map((s, idx) => ({
+        id: s.id,
+        date: s.date || 'Today',
+        age: s.age || (idx + 1),
+        chicks: s.chicks !== undefined ? s.chicks : (s.birdBal || 2016),
+        soldBirds: s.soldBirds || 0,
+        culls: s.culls || 0,
+        mortality: s.mort || 0,
+        cumMort: s.cumMort !== undefined ? s.cumMort : s.mort,
+        feedUsed: Number(s.feedToday || 0).toFixed(2),
+        feederFeed: Number(s.feederToday || 0).toFixed(2),
+        actualWeight: Number(s.abw || 0).toFixed(2),
+        feedReceived: Number(s.feedReceived || 0).toFixed(2),
+        feedIn: Number(s.feedIn || 0).toFixed(2),
+        feedOut: Number(s.feedOut || 0).toFixed(2),
+        feedBalance: s.feedBal || '0.00',
+        isUserSaved: true
+      }));
     }
 
     function openBroilerRecordScreen() {
@@ -1680,22 +1587,31 @@
       const supEl = document.getElementById('recordsSupervisorName');
       if (supEl) supEl.textContent = sup;
 
-      const isolatedLabel = document.getElementById('isolatedFarmerLabel');
-      if (isolatedLabel) isolatedLabel.textContent = fName;
-
-      // Retrieve records strictly for THIS farmer
-      const records = getBroilerRecordsForFarmer(fId, fName);
-
-      // Update count badge
-      const badgeEl = document.getElementById('recordCountBadge');
-      if (badgeEl) badgeEl.textContent = `${records.length} Records`;
+      // Retrieve records strictly saved by the user for THIS farmer
+      const records = getBroilerRecordsForFarmer(fId);
 
       const tbody = document.getElementById('broilerRecordTableBody');
       if (!tbody) return;
 
       tbody.innerHTML = '';
 
-      records.forEach((r, idx) => {
+      if (records.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="14" class="py-10 text-center text-slate-500 bg-white">
+              <div class="text-3xl mb-1.5">📋</div>
+              <div class="font-bold text-sm text-[#092F3D]">No Entries Recorded Yet for ${fName}</div>
+              <div class="text-xs text-slate-400 mt-1 max-w-md mx-auto">
+                Only entries you save in the Daily Transaction Portal will be displayed in this ledger.
+              </div>
+              <button onclick="goToScreen('dailyTransactionScreen')" class="mt-3 px-4 py-1.5 bg-[#C5DFE2] hover:bg-[#A4C2C5] border border-[#A4C2C5] text-[#092F3D] font-bold text-xs rounded shadow cursor-pointer transition">
+                + Enter Today's Transaction
+              </button>
+            </td>
+          </tr>
+        `;
+      } else {
+        records.forEach((r, idx) => {
         const tr = document.createElement('tr');
         tr.className = `border-b border-slate-200 transition ${
           r.isUserSaved
@@ -1724,20 +1640,27 @@
         `;
         tbody.appendChild(tr);
       });
-
-      // Update Summary box with latest metrics
-      if (records.length > 0) {
-        const latest = records[records.length - 1];
-        const ageEl = document.getElementById('summaryLatestAge');
-        if (ageEl) ageEl.textContent = `${latest.age} Days`;
-        const birdsEl = document.getElementById('summaryCurrentBirds');
-        if (birdsEl) birdsEl.textContent = `${latest.chicks} Birds`;
-        const mortEl = document.getElementById('summaryCumMort');
-        if (mortEl) mortEl.textContent = `${latest.cumMort} Birds`;
-        const abwEl = document.getElementById('summaryLatestABW');
-        if (abwEl) abwEl.textContent = `${latest.actualWeight} g`;
-      }
     }
+
+    // Update Summary box with latest metrics
+    const ageEl = document.getElementById('summaryLatestAge');
+    const birdsEl = document.getElementById('summaryCurrentBirds');
+    const mortEl = document.getElementById('summaryCumMort');
+    const abwEl = document.getElementById('summaryLatestABW');
+
+    if (records.length > 0) {
+      const latest = records[records.length - 1];
+      if (ageEl) ageEl.textContent = `${latest.age} Days`;
+      if (birdsEl) birdsEl.textContent = `${latest.chicks} Birds`;
+      if (mortEl) mortEl.textContent = `${latest.cumMort} Birds`;
+      if (abwEl) abwEl.textContent = `${latest.actualWeight} g`;
+    } else {
+      if (ageEl) ageEl.textContent = '-';
+      if (birdsEl) birdsEl.textContent = document.getElementById('dispChicks') ? document.getElementById('dispChicks').textContent : '2,016';
+      if (mortEl) mortEl.textContent = '0';
+      if (abwEl) abwEl.textContent = '-';
+    }
+  }
 
     function showRecordDetail(recordId) {
       const r = state.savedRecords.find(x => x.id === recordId);
